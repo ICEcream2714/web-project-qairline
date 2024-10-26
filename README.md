@@ -2,7 +2,7 @@
 
 ## Tổng Quan
 
-Đây là dự án **QAirline** cho môn học **INT3306 - Phát triển Ứng dụng Web**. Dự án bao gồm cả hai phần **frontend** (React, Vite, TailwindCSS, Redux) và **backend** (Express.js, SQLite).
+Đây là dự án **QAirline** cho môn học **INT3306 - Phát triển Ứng dụng Web**. Dự án bao gồm cả hai phần **frontend** (React, Vite, TailwindCSS) và **backend** (Express.js, SQLite).
 
 Website cho phép người dùng đặt vé máy bay, xem thông tin chuyến bay, và thực hiện các chức năng liên quan. Quản trị viên có thể quản lý dữ liệu chuyến bay và cập nhật hệ thống...
 
@@ -12,7 +12,7 @@ Website cho phép người dùng đặt vé máy bay, xem thông tin chuyến ba
 
 ```
 web-project-qairline/
-├── client/      # Mã nguồn frontend (React, Vite, TailwindCSS, Redux)
+├── client/      # Mã nguồn frontend (React, Vite, TailwindCSS)
 └── server/       # Mã nguồn backend (Express.js, SQLite)
 ```
 
@@ -173,7 +173,6 @@ Hãy đảm bảo mã của bạn được định dạng đúng và tuân thủ
 - **Công Nghệ Sử Dụng**:
   - React (với Vite)
   - TailwindCSS
-  - Redux (quản lý trạng thái toàn cục)
 
 ### 2. **Backend**
 
