@@ -1,0 +1,75 @@
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs/
+*.log
+logs/*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+.log
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*~
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build files
+/dist/
+/build/
+/out/
+
+# Vite-specific cache and output
+.vite/
+.vite-cache/
+.vitest/
+coverage/
+
+# TailwindCSS cache
+.postcssrc.js
+.tailwindrc.js
+
+# Operating System files
+Thumbs.db
+.DS_Store
+
+# macOS files
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# Miscellaneous
+*.log
+*.lock
+*.pid
+*.seed
+*.tgz
+*.zip
+*.bak
+
+# npm package lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
