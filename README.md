@@ -94,7 +94,7 @@ Backend sử dụng SQLite làm cơ sở dữ liệu. Nếu file cơ sở dữ l
 Để tránh xung đột mã nguồn, tất cả thành viên nên tuân theo chiến lược **branching** nhất quán:
 
 - **Nhánh Chính (`main`)**: Nhánh này luôn chứa mã nguồn ổn định và sẵn sàng cho môi trường sản xuất. Không commit trực tiếp vào nhánh này.
-- **Nhánh Dev (`dev`)**: Nhánh này dùng để phát triển, các feature sau khi được review sẽ được merge vào nhánh này. Hoàng là người review và merge sau khi các thành viên đã phát triển xong tính năng trên các branch feature.
+- **Nhánh Dev (`dev`)**: Nhánh này dùng để phát triển, các feature sau khi được review sẽ được merge vào nhánh này. Hoàng là người review và merge sau khi các thành viên đã phát triển xong tính năng trên các branch feature. Không commit trực tiếp vào nhánh này.
 - **Nhánh Tính Năng**: Mỗi thành viên nên tạo một nhánh tính năng khi làm việc trên một task cụ thể. Ví dụ:
   - `feature/flight-booking`
   - `feature/admin-dashboard`
