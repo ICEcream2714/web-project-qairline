@@ -1,25 +1,30 @@
 const express = require("express");
-const sqlite3 = require("sqlite3").verbose();
+const { Sequelize } = require("sequelize");
+
 const app = express();
 const port = 5000;
 
-// Middleware to handle JSON requests
-app.use(express.json());
-
-// Connect to SQLite database
-let db = new sqlite3.Database("./qairline.db", (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log("Connected to the SQLite database.");
+// Initialize SQLite connection via Sequelize
+const sequelize = new Sequelize({
+  dialect: "sqlite",
+  storage: "./database.sqlite",
 });
 
-// Basic endpoint
+// Middleware to parse JSON requests
+app.use(express.json());
+
+// Define a simple route
 app.get("/", (req, res) => {
-  res.send("Welcome to QAirline Backend");
+  res.send("Hello from QAirline Backend");
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(port, async () => {
+  console.log(`Server running at http://localhost:${port}`);
+  try {
+    await sequelize.authenticate();
+    console.log("Connection to SQLite has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
 });

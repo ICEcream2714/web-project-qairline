@@ -2,18 +2,18 @@
 
 ## Tổng Quan
 
-Đây là dự án **QAirline** cho môn học **INT3306 - Phát triển Ứng dụng Web**. Dự án bao gồm cả hai phần **frontend** (React, Vite, TailwindCSS) và **backend** (Express.js, SQLite).
+Đây là dự án **QAirline** cho môn học **INT3306 - Phát triển Ứng dụng Web**. Dự án bao gồm cả hai phần **frontend** (Vite, React, TailwindCSS, ShadCN, Zustand) và **backend** (Express.js, SQLite, Sequelize).
 
-Website cho phép người dùng đặt vé máy bay, xem thông tin chuyến bay, và thực hiện các chức năng liên quan. Quản trị viên có thể quản lý dữ liệu chuyến bay và cập nhật hệ thống...
+Website cho phép người dùng đặt vé máy bay, xem thông tin chuyến bay, và thực hiện các chức năng liên quan. Quản trị viên có thể quản lý dữ liệu chuyến bay và cập nhật hệ thống.
 
 ---
 
 ## Cấu Trúc Dự Án
 
-```
+```bash
 web-project-qairline/
-├── client/      # Mã nguồn frontend (React, Vite, TailwindCSS)
-└── server/       # Mã nguồn backend (Express.js, SQLite)
+├── client/      # Mã nguồn frontend (Vite, React, TailwindCSS, ShadCN, Zustand)
+└── server/      # Mã nguồn backend (Express.js, SQLite, Sequelize)
 ```
 
 ---
@@ -22,7 +22,14 @@ web-project-qairline/
 
 - **Node.js** (phiên bản 16 trở lên)
 - **NPM** (đi kèm với Node.js)
-- **SQLite3** (để quản lý cơ sở dữ liệu)
+- **SQLite3** (quản lý cơ sở dữ liệu)
+
+---
+
+## Branches
+
+- `main`: Nhánh ổn định, dùng cho production
+- `dev`: Nhánh phát triển, chứa các tính năng thử nghiệm và log cho dev
 
 ---
 
@@ -83,23 +90,23 @@ cd web-project-qairline
 
 ### 4. Cài Đặt Cơ Sở Dữ Liệu
 
-Backend sử dụng SQLite làm cơ sở dữ liệu. Nếu file cơ sở dữ liệu (`qairline.db`) chưa tồn tại, nó sẽ được tạo tự động khi server backend chạy lần đầu tiên.
+Backend sử dụng SQLite làm cơ sở dữ liệu. Nếu file cơ sở dữ liệu (`database.sqlite`) chưa tồn tại, nó sẽ được tạo tự động khi server backend chạy lần đầu tiên.
 
 ---
 
 ## Cách Đóng Góp (Làm Việc Nhóm Hiệu Quả)
 
-### 1. **Cách Branching**
+### 1. **Chiến Lược Branching**
 
-Để tránh xung đột mã nguồn, tất cả thành viên nên tuân theo chiến lược **branching** nhất quán:
+Để tránh xung đột mã nguồn, các thành viên nên tuân thủ chiến lược **branching**:
 
-- **Nhánh Chính (`main`)**: Nhánh này luôn chứa mã nguồn ổn định và sẵn sàng cho môi trường sản xuất. Không commit trực tiếp vào nhánh này.
-- **Nhánh Dev (`dev`)**: Nhánh này dùng để phát triển, các feature sau khi được review sẽ được merge vào nhánh này. Hoàng là người review và merge sau khi các thành viên đã phát triển xong tính năng trên các branch feature. Không commit trực tiếp vào nhánh này.
-- **Nhánh Tính Năng**: Mỗi thành viên nên tạo một nhánh tính năng khi làm việc trên một task cụ thể. Ví dụ:
+- **Nhánh Chính (`main`)**: Luôn chứa mã nguồn ổn định và sẵn sàng cho sản xuất. Không commit trực tiếp vào nhánh này.
+- **Nhánh Phát Triển (`dev`)**: Dùng để phát triển, các tính năng sẽ được merge vào sau khi review. Hoàng sẽ là người review và merge. Không commit trực tiếp vào nhánh này.
+- **Nhánh Tính Năng**: Mỗi thành viên tạo một nhánh riêng khi làm việc trên một task cụ thể. Ví dụ:
   - `feature/flight-booking`
   - `feature/admin-dashboard`
 
-#### Các bước để tạo và làm việc trên một nhánh tính năng:
+#### Các bước tạo và làm việc trên nhánh tính năng:
 
 1. Lấy các thay đổi mới nhất từ nhánh `dev`:
 
@@ -114,7 +121,7 @@ Backend sử dụng SQLite làm cơ sở dữ liệu. Nếu file cơ sở dữ l
    git checkout -b feature/my-feature
    ```
 
-3. Sau khi hoàn thành công việc, commit và đẩy các thay đổi lên:
+3. Sau khi hoàn thành, commit và đẩy thay đổi lên:
 
    ```bash
    git add .
@@ -122,35 +129,34 @@ Backend sử dụng SQLite làm cơ sở dữ liệu. Nếu file cơ sở dữ l
    git push origin feature/my-feature
    ```
 
-4. Nhắn Hoàng để Hoàng review và merge vào (`dev`) hay tạo pull request vào (`main`)
+4. Nhắn Hoàng để review và merge hoặc tạo pull request.
 
 ### 2. **Quy Tắc Đặt Tên Commit**
 
-Hãy sử dụng các thông báo commit rõ ràng và nhất quán để dễ dàng theo dõi các thay đổi. Sử dụng các từ khóa sau:
+Sử dụng các thông báo commit rõ ràng và nhất quán:
 
-- **feat:** cho các tính năng mới
-- **fix:** cho các bản sửa lỗi
-- **refactor:** cho việc cấu trúc lại mã
-- **chore:** cho các công việc liên quan đến build tools, dependencies, ...
+- **feat:** cho tính năng mới
+- **fix:** cho sửa lỗi
+- **refactor:** cho cấu trúc lại mã
+- **chore:** cho công việc liên quan đến build tools hoặc dependencies
 - **docs:** cho các thay đổi về tài liệu
 
 Ví dụ:
 
-```
+```bash
 feat: Thêm form đặt vé máy bay với validation
-fix: Sửa lỗi chuyển đổi múi giờ cho giờ khởi hành chuyến bay
+fix: Sửa lỗi chuyển đổi múi giờ cho giờ khởi hành
 ```
 
 ### 3. **Quy Trình Code Review**
 
-- Trước khi merge vào nhánh `main` hay `dev`, mỗi **pull request** cần được review bởi ít nhất một thành viên khác.
-- Hoàng thường sẽ là người merge.
-- Sử dụng **GitHub Issues** hoặc các bình luận trên pull request để thảo luận về các vấn đề hoặc đề xuất. (Or nhắn mess cho nhanh tùy tình huống)
-- Hãy kiểm tra tính năng cẩn thận trên môi trường local trước khi gửi pull request.
+- Mỗi pull request cần được review trước khi merge vào `main` hoặc `dev`.
+- Hoàng sẽ là người chịu trách nhiệm merge.
+- Sử dụng **GitHub Issues** hoặc bình luận trên pull request để thảo luận (hoặc nhắn Messenger khi cần).
 
 ### 4. **Prettier và ESLint**
 
-Hãy đảm bảo mã của bạn được định dạng đúng và tuân thủ các tiêu chuẩn code bằng cách sử dụng **Prettier** và **ESLint** (nếu đã được cấu hình). Bạn có thể chạy các công cụ này trước khi commit mã:
+Đảm bảo mã được định dạng đúng bằng **Prettier** và **ESLint** (nếu đã cấu hình). Bạn có thể chạy các công cụ này trước khi commit:
 
 - Định dạng code:
 
@@ -159,6 +165,7 @@ Hãy đảm bảo mã của bạn được định dạng đúng và tuân thủ
   ```
 
 - Kiểm tra lỗi mã:
+
   ```bash
   npm run lint
   ```
@@ -173,6 +180,8 @@ Hãy đảm bảo mã của bạn được định dạng đúng và tuân thủ
 - **Công Nghệ Sử Dụng**:
   - React (với Vite)
   - TailwindCSS
+  - ShadCN
+  - Zustand
 
 ### 2. **Backend**
 
@@ -180,18 +189,19 @@ Hãy đảm bảo mã của bạn được định dạng đúng và tuân thủ
 - **Công Nghệ Sử Dụng**:
   - Express.js
   - SQLite (Cơ sở dữ liệu)
+  - Sequelize
 
 ---
 
 ## Tài Liệu API
 
-Chúng ta sẽ có các API để xử lý thông tin chuyến bay, đặt vé, xác thực người dùng, v.v. Hãy đảm bảo tài liệu API được cập nhật khi bạn thêm tính năng mới.
+Chúng ta sẽ có các API để xử lý thông tin chuyến bay, đặt vé, và xác thực người dùng. Hãy đảm bảo tài liệu API được cập nhật khi có tính năng mới.
 
-- Sử dụng các công cụ như **Postman** hoặc **Insomnia** để kiểm tra các yêu cầu API.
-- Tài liệu API sẽ được bổ sung trong thư mục backend khi dự án tiến triển (có thể sử dụng **Swagger** hoặc markdown).
+- Sử dụng **Postman** hoặc **Insomnia** để kiểm tra API.
+- Tài liệu API sẽ được bổ sung trong thư mục backend khi dự án tiến triển.
 
 ---
 
 ## Liên Hệ
 
-Nhắn vào nhóm messenger.
+Nhắn vào nhóm Messenger.
