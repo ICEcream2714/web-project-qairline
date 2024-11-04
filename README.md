@@ -154,24 +154,6 @@ fix: Sửa lỗi chuyển đổi múi giờ cho giờ khởi hành
 - Hoàng sẽ là người chịu trách nhiệm merge.
 - Sử dụng **GitHub Issues** hoặc bình luận trên pull request để thảo luận (hoặc nhắn Messenger khi cần).
 
-### 4. **Prettier và ESLint**
-
-Đảm bảo mã được định dạng đúng bằng **Prettier** và **ESLint** (nếu đã cấu hình). Bạn có thể chạy các công cụ này trước khi commit:
-
-- Định dạng code:
-
-  ```bash
-  npm run format
-  ```
-
-- Kiểm tra lỗi mã:
-
-  ```bash
-  npm run lint
-  ```
-
----
-
 ## Môi Trường Phát Triển
 
 ### 1. **Frontend**
@@ -181,7 +163,7 @@ fix: Sửa lỗi chuyển đổi múi giờ cho giờ khởi hành
   - React (với Vite)
   - TailwindCSS
   - ShadCN
-  - Zustand
+  - Zustand (Dùng khi cần thiết)
 
 ### 2. **Backend**
 
