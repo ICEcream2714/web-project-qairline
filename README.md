@@ -42,6 +42,9 @@ web-project-qairline/
 ```bash
 git clone https://github.com/ICEcream2714/web-project-qairline.git
 cd web-project-qairline
+# Nên checkout sang dev rồi hẵng sang bước 2 nhé.
+# Nếu lỡ sang bước 2 khi đang ở main rồi thì npm install lại để cập nhật các thư viện
+git checkout dev
 ```
 
 ### 2. Cài Đặt Frontend
