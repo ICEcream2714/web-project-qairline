@@ -16,7 +16,8 @@ lerna-debug.log*
 .log
 
 # Editor directories and files
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 .idea/
 .DS_Store
 *.swp
@@ -56,9 +57,9 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# JetBrains IDEs
-.idea/
-*.iml
+# # JetBrains IDEs
+# .idea/
+# *.iml
 
 # Miscellaneous
 *.log
