@@ -8,11 +8,12 @@ import {
 import { Terminal } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
-("use client");
 import { Toaster } from "@/components/ui/toaster";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function HomePage() {
   const { toast } = useToast();
+  const navigate = useNavigate(); // Initialize navigate
 
   return (
     <div className="justify-center">
@@ -65,13 +66,9 @@ function HomePage() {
         </Alert>
         <Button
           variant="outline"
-          onClick={() => {
-            toast({
-              description: "Your message has been sent.",
-            });
-          }}
+          onClick={() => navigate("/login")} // Navigate to LoginPage on click
         >
-          Show Toast
+          Go to Login
         </Button>
       </div>
     </div>
