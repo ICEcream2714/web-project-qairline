@@ -41,7 +41,7 @@ const LoginPage = () => {
           <div className="mb-6">
             <div className="relative">
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 id="password"
                 className="peer block h-11 w-full rounded-lg border border-gray-500 bg-transparent px-3 pb-2 pt-5 text-sm text-gray-900 focus:border-blue-400 focus:outline-none"
                 placeholder=""
