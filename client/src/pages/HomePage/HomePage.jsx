@@ -70,6 +70,12 @@ function HomePage() {
         >
           Go to Login
         </Button>
+        <Button
+          variant="outline"
+          onClick={() => navigate("/signup")} // Navigate to SignupPage on click
+        >
+          Go to Signup
+        </Button>
       </div>
     </div>
   );
