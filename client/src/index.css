@@ -7,8 +7,14 @@
   * {
     @apply border-border;
   }
+  html {
+    @apply min-h-screen;
+    overflow-x: hidden; /* Ngăn cuộn ngang nếu không cần thiết */
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply min-h-screen;
+    margin: 0;
   }
   :root {
     --background: 0 0% 100%;
