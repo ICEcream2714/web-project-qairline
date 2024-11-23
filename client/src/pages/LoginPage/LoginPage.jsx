@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import "tailwindcss/tailwind.css";
 
@@ -15,11 +21,12 @@ const LoginPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 px-4">
       <Card className="w-full max-w-sm rounded-lg bg-white p-6 shadow-md sm:max-w-md md:max-w-lg">
-        <CardContent>
-          <h2 className="mb-6 text-center text-xl font-semibold text-gray-800 md:text-2xl">
+        <CardHeader>
+          <h2 className="text-center text-xl font-semibold text-gray-800 md:text-2xl">
             Log in to your account
           </h2>
-
+        </CardHeader>
+        <CardContent>
           {/* Input Text (Changed from Email) */}
           <div className="relative mb-4">
             <Input
@@ -110,6 +117,14 @@ const LoginPage = () => {
             </button>
           </div>
         </CardContent>
+        <CardFooter className="justify-center text-center">
+          <p>
+            Haven't got an account yet?{" "}
+            <Link to="/signup" className="text-blue-500 underline">
+              Sign up now!
+            </Link>{" "}
+          </p>
+        </CardFooter>
       </Card>
     </div>
   );
