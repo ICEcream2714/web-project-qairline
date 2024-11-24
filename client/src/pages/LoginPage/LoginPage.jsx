@@ -19,8 +19,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-yellow-400 via-red-500 to-pink-500 px-4">
-      <Card className="w-full max-w-sm rounded-lg bg-white p-6 shadow-md sm:max-w-md md:max-w-lg">
+    <div className="flex min-h-screen items-center justify-center bg-background bg-gradient-to-r px-4">
+      <Card className="w-full max-w-sm rounded-lg bg-card p-6 shadow-md sm:max-w-md md:max-w-lg">
         <CardHeader>
           <h2 className="text-center text-xl font-semibold text-gray-800 md:text-2xl">
             Log in to your account
@@ -28,7 +28,7 @@ const LoginPage = () => {
         </CardHeader>
         <CardContent>
           {/* Input Text (Changed from Email) */}
-          <div className="relative mb-4">
+          <div className="relative mb-4 max-w-full">
             <Input
               type="text"
               id="username"
@@ -38,7 +38,7 @@ const LoginPage = () => {
             />
             <label
               htmlFor="username"
-              className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-valid:top-0 peer-valid:text-sm peer-valid:text-blue-400 peer-focus:top-0 peer-focus:text-sm peer-focus:text-blue-400"
+              className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate whitespace-nowrap pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-valid:top-0 peer-valid:text-sm peer-valid:text-blue-400 peer-focus:top-0 peer-focus:text-sm peer-focus:text-blue-400"
             >
               Enter your email or membership number
             </label>
@@ -56,7 +56,7 @@ const LoginPage = () => {
               />
               <label
                 htmlFor="password"
-                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-valid:top-0 peer-valid:text-sm peer-valid:text-blue-400 peer-focus:top-0 peer-focus:text-sm peer-focus:text-blue-400"
+                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-valid:top-0 peer-valid:text-sm peer-valid:text-blue-400 peer-focus:top-0 peer-focus:text-sm peer-focus:text-blue-400"
               >
                 Enter your password
               </label>
