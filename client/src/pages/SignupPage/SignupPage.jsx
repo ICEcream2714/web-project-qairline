@@ -175,7 +175,7 @@ const SignupPage = () => {
 
           {/* Sign up Button */}
           <div className="mt-5">
-            <Button className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/90">
+            <Button className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/50">
               Sign up
             </Button>
           </div>
