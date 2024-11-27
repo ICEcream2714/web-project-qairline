@@ -1,4 +1,5 @@
-import React from "react";
+
+import { Separator } from '@/components/ui/separator'; // shadcn Separator
 
 const Footer = () => {
   return (
@@ -11,34 +12,22 @@ const Footer = () => {
             <h2 className="text-lg font-semibold mb-4">About us</h2>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Our story
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Careers
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Media Center
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Sustainability
                 </a>
               </li>
@@ -50,34 +39,22 @@ const Footer = () => {
             <h2 className="text-lg font-semibold mb-4">Customer Support</h2>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Contact us
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   FAQs
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Feedback
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Privacy Policy
                 </a>
               </li>
@@ -89,34 +66,22 @@ const Footer = () => {
             <h2 className="text-lg font-semibold mb-4">Explore</h2>
             <ul className="space-y-2 text-sm">
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Destinations
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Offers
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Plan your trip
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  className="hover:text-gray-600 transition duration-200"
-                >
+                <a href="#" className="hover:text-gray-600 transition duration-200">
                   Student Club
                 </a>
               </li>
@@ -147,7 +112,7 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <hr className="border-gray-300 mb-6" />
+        <Separator className="border-gray-300 mb-6" />
 
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">

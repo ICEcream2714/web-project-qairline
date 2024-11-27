@@ -1,14 +1,13 @@
-import Navbar from "@/layouts/Navbar";
 import { Button } from "@/components/ui/button"; // Button từ shadcn
 
 const BookingSection = () => {
   return (
     <div className="font-sans">
-      {/* Thanh menu */}
-      <Navbar />
-
       {/* Nội dung phần "Đặt vé ngay" */}
-      <div className="relative flex flex-col items-center justify-center px-6 py-12 md:flex-row bg-gray-100 rounded-lg shadow-lg my-8 overflow-hidden" style={{ height: "px" }}>
+      <div
+        className="relative flex flex-col items-start justify-center px-6 py-12 md:flex-row bg-gray-100 rounded-lg shadow-lg my-8 overflow-hidden"
+        style={{ minHeight: "400px" }}  // Tăng chiều cao phần Booking
+      >
         {/* Hình ảnh */}
         <div className="absolute inset-0">
           <img
@@ -22,12 +21,12 @@ const BookingSection = () => {
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
         {/* Phần thông tin */}
-        <div className="relative z-10 w-full md:w-1/2 text-center md:text-left text-white">
-          <h1 className="text-3xl font-bold mb-4">Đặt vé ngay</h1>
-          <p className="text-lg mb-6">Khám phá thế giới với Qatar Airways</p>
+        <div className="relative left-10 top-10 z-10 w-full text-left text-white ml-1">
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">Save up to 30% with our Black Friday Exclusive</h1>
+          <p className="text-lg mb-6">Amazing offers await</p>
           {/* Sử dụng Button từ shadcn */}
           <Button variant="default" size="lg" className="bg-blue-800 text-white hover:bg-blue-900">
-            Đặt vé ngay
+            Book now
           </Button>
         </div>
       </div>

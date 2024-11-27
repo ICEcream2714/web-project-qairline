@@ -43,7 +43,7 @@ const DynamicBanner = () => {
 
   return (
     <div
-      className="relative bg-cover bg-center h-[225px] md:h-[300px] lg:h-[375px] text-white my-8 rounded-lg shadow-lg overflow-hidden"
+    className="relative bg-cover bg-center min-h-[225px] md:min-h-[300px] lg:min-h-[375px] text-white my-8 rounded-lg shadow-lg overflow-hidden"
       style={{
         backgroundImage: `url(${activeTab.image})`,
       }}

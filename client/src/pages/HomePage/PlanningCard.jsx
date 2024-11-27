@@ -1,38 +1,49 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+
 const StartPlanningCard = ({ image, title, cta }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border hover:shadow-lg transition-shadow duration-300 flex flex-col">
+    <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col">
       {/* Hình ảnh */}
-      <img
-        src={image}
-        alt={title}
-        className="w-full h-40 object-cover"
-      />
-      {/* Nội dung */}
-      <div className="p-4 flex-1">
-        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+      <div className="relative">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-40 object-cover rounded-t-lg"
+        />
       </div>
-      {/* Dòng CTA */}
-      <button
-        className="flex items-center justify-between px-4 py-3 border-t bg-gray-50 hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-600"
-        onClick={() => alert(`Clicked on ${title}`)}
-      >
-        <span className="text-blue-600 text-sm font-medium">{cta}</span>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="2"
-          stroke="currentColor"
-          className="w-5 h-5 text-blue-600"
+      {/* Nội dung */}
+      <CardContent className="p-4 flex-1 flex flex-col">
+        <CardHeader className="p-0 flex-1">
+          <CardTitle className="text-lg font-semibold text-gray-800">
+            {title}
+          </CardTitle>
+        </CardHeader>
+      </CardContent>
+      {/* CTA */}
+      <CardFooter className="p-0">
+        <Button
+          variant="ghost"
+          className={cn(
+            "flex w-full items-center justify-between border-t px-4 py-3 bg-gray-50 hover:bg-gray-100"
+          )}
+          onClick={() => alert(`Clicked on ${title}`)}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
-      </button>
-    </div>
+          <span className="text-blue-600 text-sm font-medium">{cta}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="2"
+            stroke="currentColor"
+            className="w-5 h-5 text-blue-600"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

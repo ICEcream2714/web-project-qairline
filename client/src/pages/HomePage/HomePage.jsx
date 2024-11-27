@@ -1,16 +1,24 @@
-import Booking from "@/layouts/Booking";
-import FlightTab from "@/layouts/FlightTab";
-import PlanningCard from "@/layouts/PlanningCard";
-import SuggestionHome from "@/layouts/SuggestionHome"
-import Fares from "@/layouts/Fares"
-import SubscribeForm from "@/layouts/SubcribeForm";
+import Booking from "@/pages/HomePage/Booking";
+import FlightTab from "@/pages/HomePage/FlightTab";
+import PlanningCard from "@/pages/HomePage/PlanningCard";
+import SuggestionHome from "@/pages/HomePage/SuggestionHome"
+import Fares from "@/pages/HomePage/Fares"
+import SubscribeForm from "@/pages/HomePage/SubcribeForm";
 import Footer from "@/layouts/Footer";
 
 function HomePage() {
   return (
     <div>
-      <Booking/>
-      <FlightTab/>
+       <div className="relative">
+        {/* Booking Section */}
+        <Booking />
+
+        {/* FlightTab Section */}
+          <div className="relative z-20 -mt-24">
+            <FlightTab />
+          </div>
+    </div>
+
       <PlanningCard/>
       <Fares/>
       <SuggestionHome/>

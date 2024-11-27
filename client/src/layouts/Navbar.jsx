@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Button } from "@/components/ui/button"; // Import Button từ ShadCN
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);            // Trạng thái để mở menu trong màn hình thu nhỏ
@@ -35,14 +36,15 @@ function Navbar() {
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-8">
           <div className="relative">
-            <button
+            <Button
+              variant="link" // Sử dụng Button với variant "link"
               onClick={() => toggleDropdown(1)}
               className={`${
                 isScrolled ? "text-gray-800" : "text-white"
               } hover:text-purple-600 font-semibold`}
             >
               Book
-            </button>
+            </Button>
             {dropdownOpen === 1 && (
               <div className="absolute bg-white shadow-md rounded-md mt-2 py-2 w-48">
                 <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
@@ -57,18 +59,22 @@ function Navbar() {
               </div>
             )}
           </div>
-          <a href="/" className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}>
+          <Button
+            variant="link"
+            className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}
+          >
             Discover
-          </a>
+          </Button>
           <div className="relative">
-            <button
+            <Button
+              variant="link"
               onClick={() => toggleDropdown(2)}
               className={`${
                 isScrolled ? "text-gray-800" : "text-white"
               } hover:text-purple-600 font-semibold`}
             >
               Experience
-            </button>
+            </Button>
             {dropdownOpen === 2 && (
               <div className="absolute bg-white shadow-md rounded-md mt-2 py-2 w-48">
                 <a href="/" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
@@ -80,20 +86,30 @@ function Navbar() {
               </div>
             )}
           </div>
-          <a href="/" className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}>
+          <Button
+            variant="link"
+            className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}
+          >
             Help
-          </a>
-          <a href="/" className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}>
+          </Button>
+          <Button
+            variant="link"
+            className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}
+          >
             Privilege Club
-          </a>
-          <a href="/" className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}>
+          </Button>
+          <Button
+            variant="link"
+            className={`${isScrolled ? "text-gray-800" : "text-white"} hover:text-purple-600 font-semibold`}
+          >
             Login / Sign Up
-          </a>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="md:hidden">
-          <button
+          <Button
+            variant="link" // Sử dụng Button với variant "link"
             onClick={() => setIsOpen(!isOpen)}
             className={`${isScrolled ? "text-gray-800" : "text-white"} focus:outline-none`}
           >
@@ -111,16 +127,20 @@ function Navbar() {
                 d="M4 6h16M4 12h16M4 18h16"
               ></path>
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Mobile Dropdown Menu */}
       {isOpen && (
         <div className="md:hidden absolute top-16 left-0 right-0 bg-white shadow-md flex flex-col items-start p-4 space-y-4">
-          <button onClick={() => toggleDropdown(1)} className="text-gray-800 font-semibold">
+          <Button
+            variant="link"
+            onClick={() => toggleDropdown(1)}
+            className="text-gray-800 font-semibold"
+          >
             Book
-          </button>
+          </Button>
           {dropdownOpen === 1 && (
             <div className="ml-4 flex flex-col space-y-2">
               <a href="/" className="text-gray-700">
@@ -134,12 +154,19 @@ function Navbar() {
               </a>
             </div>
           )}
-          <a href="/" className="text-gray-800 font-semibold">
+          <Button
+            variant="link"
+            className="text-gray-800 font-semibold"
+          >
             Discover
-          </a>
-          <button onClick={() => toggleDropdown(2)} className="text-gray-800 font-semibold">
+          </Button>
+          <Button
+            variant="link"
+            onClick={() => toggleDropdown(2)}
+            className="text-gray-800 font-semibold"
+          >
             Experience
-          </button>
+          </Button>
           {dropdownOpen === 2 && (
             <div className="ml-4 flex flex-col space-y-2">
               <a href="/" className="text-gray-700">
@@ -150,15 +177,24 @@ function Navbar() {
               </a>
             </div>
           )}
-          <a href="/" className="text-gray-800 font-semibold">
+          <Button
+            variant="link"
+            className="text-gray-800 font-semibold"
+          >
             Help
-          </a>
-          <a href="/" className="text-gray-800 font-semibold">
+          </Button>
+          <Button
+            variant="link"
+            className="text-gray-800 font-semibold"
+          >
             Privilege Club
-          </a>
-          <a href="/" className="text-gray-800 font-semibold">
+          </Button>
+          <Button
+            variant="link"
+            className="text-gray-800 font-semibold"
+          >
             Login / Sign Up
-          </a>
+          </Button>
         </div>
       )}
     </nav>
