@@ -1,21 +1,21 @@
 import Booking from "@/pages/HomePage/Booking";
-import FlightTab from "@/pages/HomePage/FlightTab";
 import PlanningCard from "@/pages/HomePage/PlanningCard";
 import SuggestionHome from "@/pages/HomePage/SuggestionHome"
 import Fares from "@/pages/HomePage/Fares"
 import SubscribeForm from "@/pages/HomePage/SubcribeForm";
 import Footer from "@/layouts/Footer";
+import FlightTabs from "@/pages/HomePage/BookingTab";
 
 function HomePage() {
   return (
-    <div>
+    <div className="-pt-20">
        <div className="relative">
         {/* Booking Section */}
         <Booking />
 
         {/* FlightTab Section */}
           <div className="relative z-20 -mt-24">
-            <FlightTab />
+            <FlightTabs />
           </div>
     </div>
 

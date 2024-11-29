@@ -2,37 +2,76 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const Stopover = () => {
-  const [activeTab, setActiveTab] = useState("stopover"); // Tab mặc định là Stopover
-  const [tripType, setTripType] = useState("round-trip"); // Mặc định là round-trip
+  const [activeTab, setActiveTab] = useState("stopover");
+  const [tripType, setTripType] = useState("round-trip");
+  const [isOpen, setIsOpen] = useState(false);
+  const [passengers, setPassengers] = useState({
+    adults: 1,
+    children: 0,
+    infants: 0,
+    class: "economy",
+    rooms: 1, // Add rooms state
+  });
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handlePassengerChange = (type, operation) => {
+    setPassengers((prev) => ({
+      ...prev,
+      [type]: operation === "increase" ? prev[type] + 1 : Math.max(prev[type] - 1, 0),
+    }));
+  };
+
+  const handleClassChange = (value) => {
+    setPassengers((prev) => ({ ...prev, class: value }));
+  };
+
+  const handleRoomChange = (operation) => {
+    setPassengers((prev) => ({
+      ...prev,
+      rooms: operation === "increase" ? prev.rooms + 1 : Math.max(prev.rooms - 1, 1),
+    }));
+  };
 
   return (
-    <Card className="bg-gray-100 rounded-lg shadow-md">
+    <Card className="bg-white rounded-lg shadow-md p-6">
       {/* Tabs điều hướng */}
       <CardHeader className="border-b">
-        <div className="flex justify-center space-x-4 py-4">
-          <Button
-            variant={activeTab === "stopover" ? "default" : "outline"}
-            onClick={() => setActiveTab("stopover")}
-          >
-            Stopover
-          </Button>
-          <Button
-            variant={activeTab === "flights-hotel" ? "default" : "outline"}
-            onClick={() => setActiveTab("flights-hotel")}
-          >
-            Flights + Hotel
-          </Button>
-        </div>
-      </CardHeader>
+  <div className="flex">
+    <Button
+      variant="ghost"
+      onClick={() => setActiveTab("stopover")}
+      className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
+        activeTab === "stopover"
+          ? "text-purple-600 border-b-4 border-purple-600"
+          : "text-gray-600 hover:text-purple-500"
+      }`}
+    >
+      Stopover
+    </Button>
+    <Button
+      variant="ghost"
+      onClick={() => setActiveTab("flights-hotel")}
+      className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
+        activeTab === "flights-hotel"
+          ? "text-purple-600 border-b-4 border-purple-600"
+          : "text-gray-600 hover:text-purple-500"
+      }`}
+    >
+      Flights + Hotel
+    </Button>
+  </div>
+</CardHeader>
+
 
       {/* Nội dung tab */}
       <CardContent className="py-6">
         {activeTab === "stopover" && (
-          <form className="space-y-6">
+          <div className="space-y-6">
             {/* Trip Type */}
             <RadioGroup
               value={tripType}
@@ -40,12 +79,12 @@ const Stopover = () => {
               className="flex space-x-6"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="round-trip" id="round-trip" />
-                <Label htmlFor="round-trip">Round Trip</Label>
+                <RadioGroupItem value="round-trip" id="round-trip" className="text-purple-600" />
+                <Label htmlFor="round-trip" className="text-lg font-medium">Round Trip</Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="one-way" id="one-way" />
-                <Label htmlFor="one-way">One Way</Label>
+                <RadioGroupItem value="one-way" id="one-way" className="text-purple-600"/>
+                <Label htmlFor="one-way" className="text-lg font-medium">One Way</Label>
               </div>
             </RadioGroup>
 
@@ -69,49 +108,123 @@ const Stopover = () => {
               </div>
             </div>
 
-            {/* Passengers và Class */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  {/* Passengers */}
-  <div>
-    <Label htmlFor="passengers">Number of Passengers</Label>
-    <select
-      id="passengers"
-      className="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-      defaultValue=""
-    >
-      <option value="" disabled>
-        Select passengers
-      </option>
-      <option value="1">1 Passenger</option>
-      <option value="2">2 Passengers</option>
-      <option value="3">3 Passengers</option>
-      <option value="4">4 Passengers</option>
-    </select>
-  </div>
+            {/* Passengers and Class */}
+            <div className="mt-6 flex justify-between items-center">
+              <div className="relative w-full max-w-xs">
+                <Button
+                  onClick={toggleDropdown}
+                  className="w-full border border-gray-300 rounded-md p-2 text-left bg-white text-gray-700"
+                >
+                  {`${passengers.adults + passengers.children + passengers.infants} Passenger${
+                    passengers.adults + passengers.children + passengers.infants > 1 ? "s" : ""
+                  } ${passengers.class === "economy" ? "Economy" : "Premium"} | ${passengers.rooms} Room${
+                    passengers.rooms >= 1 ? "s" : "1 Room"
+                  }`}
+                </Button>
 
-  {/* Class */}
-  <div>
-    <Label htmlFor="class">Class</Label>
-    <select
-      id="class"
-      className="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-      defaultValue=""
-    >
-      <option value="" disabled>
-        Select class
-      </option>
-      <option value="economy">Economy</option>
-      <option value="business">Business</option>
-      <option value="first">First Class</option>
-    </select>
-  </div>
-</div>
+                {isOpen && (
+                  <div className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+                    {/* Passengers Section */}
+                    <div className="p-4 space-y-4">
+                      <Label className="text-sm font-medium">Passengers</Label>
 
-          </form>
+                      {[{ label: "Adults", type: "adults", age: "12+ years" },
+                        { label: "Child", type: "children", age: "2-11 years" },
+                        { label: "Infant", type: "infants", age: "Under 2 years" }]
+                        .map(({ label, type, age }) => (
+                          <div key={type} className="flex justify-between items-center">
+                            <div>
+                              <p className="text-gray-700">{label}</p>
+                              <p className="text-xs text-gray-500">{age}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handlePassengerChange(type, "decrease")}
+                              >
+                                −
+                              </Button>
+                              <span>{passengers[type]}</span>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handlePassengerChange(type, "increase")}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </div>
+                      ))}
+                    </div>
+
+                    {/* Room Section */}
+                    <div className="p-4 border-t space-y-4">
+                      <Label className="text-sm font-medium">Rooms</Label>
+                      <div className="flex justify-between items-center">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleRoomChange("decrease")}
+                        >
+                          −
+                        </Button>
+                        <span>{passengers.rooms}</span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleRoomChange("increase")}
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Class Section */}
+                    <div className="p-4 border-t space-y-4">
+                      <Label className="text-sm font-medium">Class</Label>
+                      <RadioGroup
+                        value={passengers.class}
+                        onValueChange={handleClassChange}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="economy" id="economy" />
+                          <Label htmlFor="economy" className="text-gray-700">
+                            Economy
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="premium" id="premium" />
+                          <Label htmlFor="premium" className="text-gray-700">
+                            Premium (Business/First)
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+
+                    {/* Confirm Button */}
+                    <div className="p-4 border-t">
+                      <Button
+                        className="w-full bg-purple-600 text-white hover:bg-purple-700"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Confirm
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <Button className="bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg">
+                Search flights
+              </Button>
+            </div>
+          </div>
         )}
 
         {activeTab === "flights-hotel" && (
-          <form className="space-y-6">
+          <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <Label htmlFor="from">From</Label>
@@ -131,54 +244,121 @@ const Stopover = () => {
               </div>
             </div>
 
-           {/* Passengers và Class */}
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-  {/* Passengers */}
-  <div>
-    <Label htmlFor="passengers">Number of Passengers</Label>
-    <select
-      id="passengers"
-      className="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-      defaultValue=""
-    >
-      <option value="" disabled>
-        Select passengers
-      </option>
-      <option value="1">1 Passenger</option>
-      <option value="2">2 Passengers</option>
-      <option value="3">3 Passengers</option>
-      <option value="4">4 Passengers</option>
-    </select>
-  </div>
+            {/* Passengers and Rooms Section */}
+            <div className="mt-6 flex justify-between items-center">
+              <div className="relative w-full max-w-xs">
+                <Button
+                  onClick={toggleDropdown}
+                  className="w-full border border-gray-300 rounded-md p-2 text-left bg-white text-gray-700"
+                >
+                  {`${passengers.adults + passengers.children + passengers.infants} Passenger${
+                    passengers.adults + passengers.children + passengers.infants > 1 ? "s" : ""
+                  } ${passengers.class === "economy" ? "Economy" : "Premium"} | ${passengers.rooms} Room${
+                    passengers.rooms >= 1 ? "s" : "1 Room"
+                  }`}
+                </Button>
 
-  {/* Class */}
-  <div>
-    <Label htmlFor="class">Class</Label>
-    <select
-      id="class"
-      className="block w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-      defaultValue=""
-    >
-      <option value="" disabled>
-        Select class
-      </option>
-      <option value="economy">Economy</option>
-      <option value="business">Business</option>
-      <option value="first">First Class</option>
-    </select>
-  </div>
-</div>
+                {isOpen && (
+                  <div className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+                    {/* Passengers Section */}
+                    <div className="p-4 space-y-4">
+                      <Label className="text-sm font-medium">Passengers</Label>
 
-          </form>
+                      {[{ label: "Adults", type: "adults", age: "12+ years" },
+                        { label: "Child", type: "children", age: "2-11 years" },
+                        { label: "Infant", type: "infants", age: "Under 2 years" }]
+                        .map(({ label, type, age }) => (
+                          <div key={type} className="flex justify-between items-center">
+                            <div>
+                              <p className="text-gray-700">{label}</p>
+                              <p className="text-xs text-gray-500">{age}</p>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handlePassengerChange(type, "decrease")}
+                              >
+                                −
+                              </Button>
+                              <span>{passengers[type]}</span>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handlePassengerChange(type, "increase")}
+                              >
+                                +
+                              </Button>
+                            </div>
+                          </div>
+                      ))}
+                    </div>
+
+                    {/* Room Section */}
+                    <div className="p-4 border-t space-y-4">
+                      <Label className="text-sm font-medium">Rooms</Label>
+                      <div className="flex justify-between items-center">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleRoomChange("decrease")}
+                        >
+                          −
+                        </Button>
+                        <span>{passengers.rooms}</span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleRoomChange("increase")}
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Class Section */}
+                    <div className="p-4 border-t space-y-4">
+                      <Label className="text-sm font-medium">Class</Label>
+                      <RadioGroup
+                        value={passengers.class}
+                        onValueChange={handleClassChange}
+                        className="space-y-2"
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="economy" id="economy" />
+                          <Label htmlFor="economy" className="text-gray-700">
+                            Economy
+                          </Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="premium" id="premium" />
+                          <Label htmlFor="premium" className="text-gray-700">
+                            Premium (Business/First)
+                          </Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+
+                    {/* Confirm Button */}
+                    <div className="p-4 border-t">
+                      <Button
+                        className="w-full bg-purple-600 text-white hover:bg-purple-700"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Confirm
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <Button className="bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg">
+                Search flights
+              </Button>
+            </div>
+          </div>
         )}
       </CardContent>
-
-      {/* Footer */}
-      <CardFooter className="text-center">
-        <Button className="w-full bg-blue-900 text-white hover:bg-blue-800">
-          Search
-        </Button>
-      </CardFooter>
     </Card>
   );
 };

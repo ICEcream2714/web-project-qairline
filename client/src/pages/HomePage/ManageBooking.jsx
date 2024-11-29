@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast"
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
 const ManageBooking = () => {
+  const [activeTab, setActiveTab] = useState("manage_booking");
   const [bookingCode, setBookingCode] = useState("");
   const [lastName, setLastName] = useState("");
   const [birthDate, setBirthDate] = useState("");
@@ -20,22 +21,48 @@ const ManageBooking = () => {
       });
     } else {
       toast({
-        title: "Booking Found",
-        description: `Booking for ${lastName} with reference ${bookingCode} retrieved.`,
+        title: activeTab === "manage_booking" ? "Booking Found" : "Check-in Successful",
+        description: activeTab === "manage_booking"
+          ? `Booking for ${lastName} with reference ${bookingCode} retrieved.`
+          : `Check-in for ${lastName} with reference ${bookingCode} completed.`,
         variant: "success",
       });
     }
   };
 
   return (
-    <Card className="max-w-lg mx-auto">
-      <CardHeader>
-        <CardTitle className="text-center text-lg font-bold">Manage Booking</CardTitle>
+    <Card className="bg-white rounded-lg shadow-md p-6">
+      <CardHeader className="border-b">
+        <div className="flex">
+          <Button
+            variant="ghost"
+            onClick={() => setActiveTab("manage_booking")}
+            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
+              activeTab === "manage_booking"
+                ? "text-purple-600 border-b-4 border-purple-600"
+                : "text-gray-600 hover:text-purple-500"
+            }`}
+          >
+            Manage Booking
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => setActiveTab("checkin")}
+            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
+              activeTab === "checkin"
+                ? "text-purple-600 border-b-4 border-purple-600"
+                : "text-gray-600 hover:text-purple-500"
+            }`}
+          >
+            Checkin
+          </Button>
+        </div>
       </CardHeader>
+
       <CardContent>
-        <form className="space-y-4">
+        <form className="flex items-center gap-4">
           {/* Booking Reference */}
-          <div>
+          <div className="flex-1">
             <Label htmlFor="bookingCode">Booking Reference</Label>
             <Input
               id="bookingCode"
@@ -46,7 +73,7 @@ const ManageBooking = () => {
           </div>
 
           {/* Last Name */}
-          <div>
+          <div className="flex-1">
             <Label htmlFor="lastName">Last Name</Label>
             <Input
               id="lastName"
@@ -57,7 +84,7 @@ const ManageBooking = () => {
           </div>
 
           {/* Date of Birth */}
-          <div>
+          <div className="flex-1">
             <Label htmlFor="birthDate">Date of Birth</Label>
             <Input
               id="birthDate"
@@ -66,13 +93,18 @@ const ManageBooking = () => {
               onChange={(e) => setBirthDate(e.target.value)}
             />
           </div>
+
+          {/* Submit Button */}
+          <div className="mt-5">
+            <Button
+              onClick={handleSubmit}
+              className="bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg"
+            >
+              {activeTab === "manage_booking" ? "Retrieve Booking" : "Checkin"}
+            </Button>
+          </div>
         </form>
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <Button onClick={handleSubmit} className="w-full bg-blue-600 text-white hover:bg-blue-700">
-          Search Booking
-        </Button>
-      </CardFooter>
     </Card>
   );
 };
