@@ -25,7 +25,7 @@ const FlightStatus = () => {
   };
 
   return (
-    <Card className="bg-white rounded-lg shadow-md p-6 max-w-4xl mx-auto">
+    <Card className="bg-white rounded-lg shadow-md p-6">
       {/* Header Tabs */}
       <CardHeader className="border-b mb-4">
         <div className="flex">
@@ -90,6 +90,15 @@ const FlightStatus = () => {
                 onChange={(e) => setDate(e.target.value)}
               />
             </div>
+            {/* Search Button */}
+        <div className="flex justify-center mt-6">
+          <Button
+            onClick={handleSearch}
+            className="bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-lg"
+          >
+            Check Status
+          </Button>
+        </div>
           </form>
         ) : (
           <form className="flex items-center gap-4">
@@ -113,10 +122,7 @@ const FlightStatus = () => {
                 onChange={(e) => setDate(e.target.value)}
               />
             </div>
-          </form>
-        )}
-
-        {/* Search Button */}
+            {/* Search Button */}
         <div className="flex justify-center mt-6">
           <Button
             onClick={handleSearch}
@@ -125,6 +131,8 @@ const FlightStatus = () => {
             Check Status
           </Button>
         </div>
+          </form>
+        )}
       </CardContent>
     </Card>
   );
