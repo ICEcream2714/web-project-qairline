@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -106,129 +107,124 @@ const SignupPage = () => {
         </CardHeader>
 
         <CardContent className="rounded-lg bg-card">
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-6 md:gap-4">
             {/* credentials card */}
-            <div className="col-span-full sm:col-span-2">
+            <div className="col-span-full md:col-span-2">
               <p className="text-primary">Let's create your credentials</p>
             </div>
-            <div className="col-span-full sm:col-span-4">
-              <div className="flex flex-col">
-                <p className="text-primary">Create an account using</p>
-                <div className="flex gap-4">
-                  <button className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
-                    <a href="https://accounts.google.com/v3/signin/identifier?authuser=0&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAlAmgQ&hl=vi&flowName=GlifWebSignIn&flowEntry=AddSession&dsh=S252850339%3A1731953360109578&ddm=1">
-                      <img
-                        src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-1024.png"
-                        alt="Google"
-                        className="h-6 w-6"
-                      />
-                    </a>
-                  </button>
-                  <button className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
-                    <a href="https://www.facebook.com/r.php">
-                      <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
-                        alt="Facebook"
-                        className="h-6 w-6"
-                      />
-                    </a>
-                  </button>
-                </div>
-                <p className="text-primary">
-                  or join by filling up the form below or join by filling up the
-                  form below
-                </p>
-                {/* Email Input */}
-                <div className="relative my-3">
+            <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
+              <p className="text-primary">Create an account using</p>
+              <div className="flex gap-4">
+                <button className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
+                  <a href="https://accounts.google.com/v3/signin/identifier?authuser=0&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAlAmgQ&hl=vi&flowName=GlifWebSignIn&flowEntry=AddSession&dsh=S252850339%3A1731953360109578&ddm=1">
+                    <img
+                      src="https://cdn1.iconfinder.com/data/icons/google-s-logo/150/Google_Icons-09-1024.png"
+                      alt="Google"
+                      className="h-6 w-6"
+                    />
+                  </a>
+                </button>
+                <button className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
+                  <a href="https://www.facebook.com/r.php">
+                    <img
+                      src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                      alt="Facebook"
+                      className="h-6 w-6"
+                    />
+                  </a>
+                </button>
+              </div>
+              <p className="text-primary">
+                or join by filling up the form below or join by filling up the
+                form below
+              </p>
+
+              {/* Email Input */}
+              <div className="relative my-3">
+                <Input
+                  type="text"
+                  id="email"
+                  value={email}
+                  onChange={handleEmailChange}
+                  className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
+                  placeholder=""
+                  required
+                />
+                <label
+                  htmlFor="email"
+                  className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                >
+                  Enter your email*
+                </label>
+              </div>
+
+              {/* Password Input */}
+              <div className="grid w-full grid-cols-2">
+                <div className="relative col-span-full md:col-span-1">
                   <Input
-                    type="text"
-                    id="email"
-                    value={email}
-                    onChange={handleEmailChange}
+                    type={showPassword ? "text" : "password"}
+                    id="password"
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
                     required
                   />
                   <label
-                    htmlFor="email"
-                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                    htmlFor="password"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
                   >
-                    Enter your email*
+                    Type a password
                   </label>
+                  <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? (
+                      <EyeSlashIcon className="h-6 w-6" />
+                    ) : (
+                      <EyeIcon className="h-6 w-6" />
+                    )}
+                  </button>
                 </div>
 
-                {/* Password Input */}
-                <div className="flex">
-                  <div className="mb-4 flex-1">
-                    <div className="relative">
-                      <Input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
-                        placeholder=""
-                        required
-                      />
-                      <label
-                        htmlFor="password"
-                        className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
-                      >
-                        Type a password
-                      </label>
-                      <button
-                        type="button"
-                        onClick={togglePasswordVisibility}
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                      >
-                        {showPassword ? (
-                          <EyeSlashIcon className="h-6 w-6" />
-                        ) : (
-                          <EyeIcon className="h-6 w-6" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Re-Password Input */}
-                  <div className="mb-4 ml-3 flex-1">
-                    <div className="relative">
-                      <Input
-                        type={showRePassword ? "text" : "password"}
-                        id="re-password"
-                        className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
-                        placeholder=""
-                        required
-                      />
-                      <label
-                        htmlFor="re-password"
-                        className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
-                      >
-                        Retype password
-                      </label>
-                      <button
-                        type="button"
-                        onClick={toggleRePasswordVisibility}
-                        className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                      >
-                        {showRePassword ? (
-                          <EyeSlashIcon className="h-6 w-6" />
-                        ) : (
-                          <EyeIcon className="h-6 w-6" />
-                        )}
-                      </button>
-                    </div>
-                  </div>
+                {/* Re-Password Input */}
+                <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">
+                  <Input
+                    type={showRePassword ? "text" : "password"}
+                    id="re-password"
+                    className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
+                    placeholder=""
+                    required
+                  />
+                  <label
+                    htmlFor="re-password"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                  >
+                    Retype password
+                  </label>
+                  <button
+                    type="button"
+                    onClick={toggleRePasswordVisibility}
+                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                  >
+                    {showRePassword ? (
+                      <EyeSlashIcon className="h-6 w-6" />
+                    ) : (
+                      <EyeIcon className="h-6 w-6" />
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
             <hr className="col-span-full" />
 
             {/* detail */}
-            <div className="col-span-full sm:col-span-2">
+            <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
               <p className="text-primary">Your personal details</p>
             </div>
-            <div className="col-span-full sm:col-span-4">
+            <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <Select>
-                <SelectTrigger className="mb-3 w-1/2">
+                <SelectTrigger className="mb-3 w-full sm:w-1/2">
                   <SelectValue placeholder="Title" />
                 </SelectTrigger>
                 <SelectContent>
@@ -247,9 +243,9 @@ const SignupPage = () => {
                 </SelectContent>
               </Select>
 
-              {/* Name Input */}
-              <div className="flex justify-center text-center">
-                <div className="relative flex-1">
+              <div className="grid w-full grid-cols-2 justify-center text-center">
+                {/* Name Input */}
+                <div className="relative col-span-full md:col-span-1">
                   <Input
                     type="text"
                     id="username"
@@ -266,7 +262,7 @@ const SignupPage = () => {
                     Family Name*
                   </label>
                 </div>
-                <div className="relative ml-3 flex-1">
+                <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">
                   <Input
                     type="text"
                     id="givenname"
@@ -283,18 +279,53 @@ const SignupPage = () => {
                     Given Name*
                   </label>
                 </div>
+
+                {/* date */}
+                <div className="relative col-span-full mt-3 md:col-span-1">
+                  <Input
+                    type="date"
+                    id="date-birth"
+                    className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
+                    placeholder=""
+                    required
+                  />
+                  <label
+                    htmlFor="date-birth"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-0.5 max-w-full truncate pr-4 text-sm/5 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                  >
+                    Date of birth
+                  </label>
+                </div>
+
+                {/* gender */}
+                <div className="col-span-full mt-3 md:col-span-1 md:ml-3">
+                  <p className="w-full">Gender</p>
+                  <RadioGroup
+                    defaultValue="option-one"
+                    className="grid grid-cols-2"
+                  >
+                    <div className="flex justify-end space-x-2">
+                      <RadioGroupItem value="male" id="male" />
+                      <Label htmlFor="male">Male</Label>
+                    </div>
+                    <div className="flex justify-start space-x-2">
+                      <RadioGroupItem value="female" id="female" />
+                      <Label htmlFor="female">Female</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
               </div>
             </div>
             <hr className="col-span-full" />
 
             {/* country */}
-            <div className="col-span-full sm:col-span-2">
+            <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
               {" "}
               <p className="text-primary">Where do you live?</p>
             </div>
-            <div className="col-span-full sm:col-span-4">
-              <Select>
-                <SelectTrigger className="w-full">
+            <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
+              <Select className="w-full">
+                <SelectTrigger>
                   <SelectValue placeholder="Country/region of residence" />
                 </SelectTrigger>
                 <SelectContent>
@@ -335,12 +366,12 @@ const SignupPage = () => {
             <hr className="col-span-full" />
 
             {/* promocode */}
-            <div className="col-span-full sm:col-span-2">
+            <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
               {" "}
               <p className="text-primary">Enrolment promo code</p>
             </div>
-            <div className="col-span-full sm:col-span-4">
-              <div className="relative w-1/2">
+            <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
+              <div className="relative w-full sm:w-1/2">
                 <Input
                   type={showRePassword ? "text" : "password"}
                   id="enrolment-code"
@@ -359,10 +390,10 @@ const SignupPage = () => {
             <hr className="col-span-full" />
 
             {/* news & offer */}
-            <div className="col-span-full sm:col-span-2">
+            <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
               <p className="text-primary">Sign up for our news and offers</p>
             </div>
-            <div className="col-span-full sm:col-span-4">
+            <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <p className="mb-2 text-primary">
                 I would like to receive news and offers from:
               </p>
