@@ -8,6 +8,14 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import "tailwindcss/tailwind.css";
 
@@ -19,7 +27,20 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background bg-gradient-to-r px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background bg-gradient-to-r px-4">
+      <div className="mb-6">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Log in</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
       <Card className="w-full max-w-sm rounded-lg bg-card p-6 shadow-md sm:max-w-md md:max-w-lg">
         <CardHeader className="flex flex-col items-center space-y-2">
           <img
