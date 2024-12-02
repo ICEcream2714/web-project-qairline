@@ -28,7 +28,7 @@ const FlightStatus = () => {
     <Card className="bg-white rounded-lg shadow-md p-6">
       {/* Header Tabs */}
       <CardHeader className="border-b mb-4">
-        <div className="flex">
+        <div className="flex justify-center space-x-4">
           <Button
             variant="ghost"
             onClick={() => setActiveTab("route")}
@@ -57,7 +57,7 @@ const FlightStatus = () => {
       {/* Content */}
       <CardContent>
         {activeTab === "route" ? (
-          <form className="flex items-center gap-4">
+          <form className="flex flex-col md:flex-row gap-4">
             {/* From */}
             <div className="flex-1">
               <Label htmlFor="from">From</Label>
@@ -91,17 +91,17 @@ const FlightStatus = () => {
               />
             </div>
             {/* Search Button */}
-        <div className="flex justify-center mt-6">
-          <Button
-            onClick={handleSearch}
-            className="bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-lg"
-          >
-            Check Status
-          </Button>
-        </div>
+            <div className="flex justify-center mt-6">
+              <Button
+                onClick={handleSearch}
+                className="bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-lg"
+              >
+                Check Status
+              </Button>
+            </div>
           </form>
         ) : (
-          <form className="flex items-center gap-4">
+          <form className="flex flex-col md:flex-row gap-4">
             {/* Flight Number */}
             <div className="flex-1">
               <Label htmlFor="flightNumber">Flight Number</Label>
@@ -123,14 +123,14 @@ const FlightStatus = () => {
               />
             </div>
             {/* Search Button */}
-        <div className="flex justify-center mt-6">
-          <Button
-            onClick={handleSearch}
-            className="bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-lg"
-          >
-            Check Status
-          </Button>
-        </div>
+            <div className="flex justify-center mt-6">
+              <Button
+                onClick={handleSearch}
+                className="bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-lg"
+              >
+                Check Status
+              </Button>
+            </div>
           </form>
         )}
       </CardContent>

@@ -27,7 +27,6 @@ export default function BookAFlight() {
     setPassengers((prev) => ({ ...prev, class: value }));
   };
 
-
   return (
     <div className="bg-white p-6 rounded-lg shadow-md w-full">
       {/* Trip Type Options */}
@@ -72,102 +71,107 @@ export default function BookAFlight() {
           <Label htmlFor="departure" className="block text-sm text-gray-600 mb-1">
             Departure
           </Label>
-          <Input id="departure" type="date" />
+          <Input
+            id="departure"
+            type="date"
+            className="p-3 border rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+          />
         </div>
         {tripType === "return" && (
           <div>
             <Label htmlFor="return" className="block text-sm text-gray-600 mb-1">
               Return
             </Label>
-            <Input id="return" type="date" />
+            <Input
+              id="return"
+              type="date"
+              className="p-3 border rounded-lg bg-white text-gray-700 focus:ring-2 focus:ring-purple-600 focus:outline-none"
+            />
           </div>
         )}
       </div>
 
       {/* Passenger Selector */}
       <div className="mt-6 flex justify-between items-center">
-      <div className="relative w-full max-w-xs">
-      <Button
-        onClick={toggleDropdown}
-        className="w-full border border-gray-300 rounded-md p-2 text-left bg-white text-gray-700"
-      >
-        {`${passengers.adults + passengers.children + passengers.infants} Passenger${
-          passengers.adults + passengers.children + passengers.infants > 1 ? "s" : ""
-        } ${passengers.class === "economy" ? "Economy" : "Premium"}`}
-      </Button>
+        <div className="relative w-full max-w-xs">
+          <Button
+            onClick={toggleDropdown}
+            className="w-full border border-gray-300 rounded-md p-2 text-left bg-white text-gray-700"
+          >
+            {`${passengers.adults + passengers.children + passengers.infants} Passenger${
+              passengers.adults + passengers.children + passengers.infants > 1 ? "s" : ""
+            } ${passengers.class === "economy" ? "Economy" : "Premium"}`}
+          </Button>
 
-      {isOpen && (
-        <div className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
-          {/* Passengers Section */}
-          <div className="p-4 space-y-4">
-            <Label className="text-sm font-medium">Passengers</Label>
+          {isOpen && (
+            <div className="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+              {/* Passengers Section */}
+              <div className="p-4 space-y-4">
+                <Label className="text-sm font-medium">Passengers</Label>
 
-            {[
-              { label: "Adults", type: "adults", age: "12+ years" },
-              { label: "Child", type: "children", age: "2-11 years" },
-              { label: "Infant", type: "infants", age: "Under 2 years" },
-            ].map(({ label, type, age }) => (
-              <div key={type} className="flex justify-between items-center">
-                <div>
-                  <p className="text-gray-700">{label}</p>
-                  <p className="text-xs text-gray-500">{age}</p>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handlePassengerChange(type, "decrease")}
-                  >
-                    −
-                  </Button>
-                  <span>{passengers[type]}</span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handlePassengerChange(type, "increase")}
-                  >
-                    +
-                  </Button>
-                </div>
+                {[{ label: "Adults", type: "adults", age: "12+ years" }, { label: "Child", type: "children", age: "2-11 years" }, { label: "Infant", type: "infants", age: "Under 2 years" }]
+                  .map(({ label, type, age }) => (
+                    <div key={type} className="flex justify-between items-center">
+                      <div>
+                        <p className="text-gray-700">{label}</p>
+                        <p className="text-xs text-gray-500">{age}</p>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePassengerChange(type, "decrease")}
+                        >
+                          −
+                        </Button>
+                        <span>{passengers[type]}</span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePassengerChange(type, "increase")}
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
               </div>
-            ))}
-          </div>
 
-          {/* Class Section */}
-          <div className="p-4 border-t space-y-4">
-            <Label className="text-sm font-medium">Class</Label>
-            <RadioGroup
-              value={passengers.class}
-              onValueChange={handleClassChange}
-              className="space-y-2"
-            >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="economy" id="economy" />
-                <Label htmlFor="economy" className="text-gray-700">
-                  Economy
-                </Label>
+              {/* Class Section */}
+              <div className="p-4 border-t space-y-4">
+                <Label className="text-sm font-medium">Class</Label>
+                <RadioGroup
+                  value={passengers.class}
+                  onValueChange={handleClassChange}
+                  className="space-y-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="economy" id="economy" />
+                    <Label htmlFor="economy" className="text-gray-700">
+                      Economy
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="premium" id="premium" />
+                    <Label htmlFor="premium" className="text-gray-700">
+                      Premium (Business/First)
+                    </Label>
+                  </div>
+                </RadioGroup>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="premium" id="premium" />
-                <Label htmlFor="premium" className="text-gray-700">
-                  Premium (Business/First)
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
 
-          {/* Confirm Button */}
-          <div className="p-4 border-t">
-            <Button
-              className="w-full bg-purple-600 text-white hover:bg-purple-700"
-              onClick={() => setIsOpen(false)}
-            >
-              Confirm
-            </Button>
-          </div>
+              {/* Confirm Button */}
+              <div className="p-4 border-t">
+                <Button
+                  className="w-full bg-purple-600 text-white hover:bg-purple-700"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Confirm
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
-      )}
-    </div>
         <Button className="bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg">
           Search flights
         </Button>

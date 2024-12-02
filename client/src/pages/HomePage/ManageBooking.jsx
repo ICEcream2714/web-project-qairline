@@ -60,45 +60,48 @@ const ManageBooking = () => {
       </CardHeader>
 
       <CardContent>
-        <form className="flex items-center gap-4">
+        <form className="flex flex-col md:flex-row gap-4 md:gap-6">
           {/* Booking Reference */}
-          <div className="flex-1">
+          <div className="flex-1 w-full md:w-auto">
             <Label htmlFor="bookingCode">Booking Reference</Label>
             <Input
               id="bookingCode"
               placeholder="Enter your booking reference"
               value={bookingCode}
               onChange={(e) => setBookingCode(e.target.value)}
+              className="w-full"
             />
           </div>
 
           {/* Last Name */}
-          <div className="flex-1">
+          <div className="flex-1 w-full md:w-auto">
             <Label htmlFor="lastName">Last Name</Label>
             <Input
               id="lastName"
               placeholder="Enter your last name"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              className="w-full"
             />
           </div>
 
           {/* Date of Birth */}
-          <div className="flex-1">
+          <div className="flex-1 w-full md:w-auto">
             <Label htmlFor="birthDate">Date of Birth</Label>
             <Input
               id="birthDate"
               type="date"
               value={birthDate}
               onChange={(e) => setBirthDate(e.target.value)}
+              className="w-full"
             />
           </div>
 
           {/* Submit Button */}
-          <div className="mt-5">
+          <div className="w-full md:w-auto mt-5">
             <Button
               onClick={handleSubmit}
-              className="bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg"
+              className="bg-purple-600 text-white hover:bg-purple-700 w-full md:w-auto py-3 rounded-lg"
             >
               {activeTab === "manage_booking" ? "Retrieve Booking" : "Checkin"}
             </Button>

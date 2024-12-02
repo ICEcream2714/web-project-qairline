@@ -14,7 +14,7 @@ const Stopover = () => {
     children: 0,
     infants: 0,
     class: "economy",
-    rooms: 1, // Add rooms state
+    rooms: 1,
   });
 
   const toggleDropdown = () => setIsOpen(!isOpen);
@@ -41,42 +41,41 @@ const Stopover = () => {
     <Card className="bg-white rounded-lg shadow-md p-6">
       {/* Tabs điều hướng */}
       <CardHeader className="border-b">
-  <div className="flex">
-    <Button
-      variant="ghost"
-      onClick={() => setActiveTab("stopover")}
-      className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
-        activeTab === "stopover"
-          ? "text-purple-600 border-b-4 border-purple-600"
-          : "text-gray-600 hover:text-purple-500"
-      }`}
-    >
-      Stopover
-    </Button>
-    <Button
-      variant="ghost"
-      onClick={() => setActiveTab("flights-hotel")}
-      className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
-        activeTab === "flights-hotel"
-          ? "text-purple-600 border-b-4 border-purple-600"
-          : "text-gray-600 hover:text-purple-500"
-      }`}
-    >
-      Flights + Hotel
-    </Button>
-  </div>
-</CardHeader>
-
+        <div className="flex">
+          <Button
+            variant="ghost"
+            onClick={() => setActiveTab("stopover")}
+            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
+              activeTab === "stopover"
+                ? "text-purple-600 border-b-4 border-purple-600"
+                : "text-gray-600 hover:text-purple-500"
+            }`}
+          >
+            Stopover
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => setActiveTab("flights-hotel")}
+            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
+              activeTab === "flights-hotel"
+                ? "text-purple-600 border-b-4 border-purple-600"
+                : "text-gray-600 hover:text-purple-500"
+            }`}
+          >
+            Flights + Hotel
+          </Button>
+        </div>
+      </CardHeader>
 
       {/* Nội dung tab */}
       <CardContent className="py-6">
         {activeTab === "stopover" && (
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Trip Type */}
             <RadioGroup
               value={tripType}
               onValueChange={(value) => setTripType(value)}
-              className="flex space-x-6"
+              className="flex space-x-4"
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="round-trip" id="round-trip" className="text-purple-600" />
@@ -109,8 +108,8 @@ const Stopover = () => {
             </div>
 
             {/* Passengers and Class */}
-            <div className="mt-6 flex justify-between items-center">
-              <div className="relative w-full max-w-xs">
+            <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <div className="relative w-full max-w-xs sm:max-w-md">
                 <Button
                   onClick={toggleDropdown}
                   className="w-full border border-gray-300 rounded-md p-2 text-left bg-white text-gray-700"
@@ -130,8 +129,7 @@ const Stopover = () => {
 
                       {[{ label: "Adults", type: "adults", age: "12+ years" },
                         { label: "Child", type: "children", age: "2-11 years" },
-                        { label: "Infant", type: "infants", age: "Under 2 years" }]
-                        .map(({ label, type, age }) => (
+                        { label: "Infant", type: "infants", age: "Under 2 years" }].map(({ label, type, age }) => (
                           <div key={type} className="flex justify-between items-center">
                             <div>
                               <p className="text-gray-700">{label}</p>
@@ -156,6 +154,7 @@ const Stopover = () => {
                             </div>
                           </div>
                       ))}
+
                     </div>
 
                     {/* Room Section */}
@@ -224,7 +223,24 @@ const Stopover = () => {
         )}
 
         {activeTab === "flights-hotel" && (
-          <div className="space-y-6">
+          <div className="space-y-4">
+            {/* Trip Type */}
+            <RadioGroup
+              value={tripType}
+              onValueChange={(value) => setTripType(value)}
+              className="flex space-x-4"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="round-trip" id="round-trip" className="text-purple-600" />
+                <Label htmlFor="round-trip" className="text-lg font-medium">Round Trip</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="one-way" id="one-way" className="text-purple-600"/>
+                <Label htmlFor="one-way" className="text-lg font-medium">One Way</Label>
+              </div>
+            </RadioGroup>
+
+            {/* From, To, Departure Date, Return Date */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div>
                 <Label htmlFor="from">From</Label>
@@ -244,9 +260,9 @@ const Stopover = () => {
               </div>
             </div>
 
-            {/* Passengers and Rooms Section */}
-            <div className="mt-6 flex justify-between items-center">
-              <div className="relative w-full max-w-xs">
+            {/* Passengers and Class */}
+            <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+              <div className="relative w-full max-w-xs sm:max-w-md">
                 <Button
                   onClick={toggleDropdown}
                   className="w-full border border-gray-300 rounded-md p-2 text-left bg-white text-gray-700"
@@ -266,8 +282,7 @@ const Stopover = () => {
 
                       {[{ label: "Adults", type: "adults", age: "12+ years" },
                         { label: "Child", type: "children", age: "2-11 years" },
-                        { label: "Infant", type: "infants", age: "Under 2 years" }]
-                        .map(({ label, type, age }) => (
+                        { label: "Infant", type: "infants", age: "Under 2 years" }].map(({ label, type, age }) => (
                           <div key={type} className="flex justify-between items-center">
                             <div>
                               <p className="text-gray-700">{label}</p>
@@ -292,6 +307,7 @@ const Stopover = () => {
                             </div>
                           </div>
                       ))}
+
                     </div>
 
                     {/* Room Section */}
@@ -353,7 +369,7 @@ const Stopover = () => {
               </div>
 
               <Button className="bg-purple-600 text-white hover:bg-purple-700 px-6 py-3 rounded-lg">
-                Search flights
+                Search flights & hotels
               </Button>
             </div>
           </div>

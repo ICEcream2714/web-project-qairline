@@ -5,10 +5,12 @@ import Fares from "@/pages/HomePage/Fares"
 import SubscribeForm from "@/pages/HomePage/SubcribeForm";
 import Footer from "@/layouts/Footer";
 import FlightTabs from "@/pages/HomePage/BookingTab";
+import Navbar from "@/layouts/Navbar";
 
 function HomePage() {
   return (
-    <div className="-pt-20">
+    <div className="-mt-11">
+      <Navbar/>
        <div className="relative">
         {/* Booking Section */}
         <Booking />
