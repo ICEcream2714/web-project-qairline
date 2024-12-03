@@ -1,43 +1,47 @@
-'use strict';
+// models/index.js
+const sequelize = require("../config/database");
+const User = require("./users")(sequelize, require("sequelize").DataTypes);
+const Customer = require("./customers")(
+  sequelize,
+  require("sequelize").DataTypes
+);
+const Admin = require("./admins")(sequelize, require("sequelize").DataTypes);
+const Post = require("./posts")(sequelize, require("sequelize").DataTypes);
+const Flight = require("./flights")(sequelize, require("sequelize").DataTypes);
+const Booking = require("./bookings")(
+  sequelize,
+  require("sequelize").DataTypes
+);
+const Seat = require("./seats")(sequelize, require("sequelize").DataTypes);
+const Airplane = require("./airplanes")(
+  sequelize,
+  require("sequelize").DataTypes
+);
+const Airline = require("./airlines")(
+  sequelize,
+  require("sequelize").DataTypes
+);
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
-const process = require('process');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
+// Định nghĩa mối quan hệ
+User.associate({ Customer, Admin });
+Customer.associate({ User, Booking });
+Admin.associate({ User, Post });
+Post.associate({ Admin });
+Flight.associate({ Airplane, Booking, Seat });
+Booking.associate({ Customer, Flight, Seat });
+Seat.associate({ Flight, Booking });
+Airplane.associate({ Airline, Flight });
+Airline.associate({ Airplane });
 
-let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-  .readdirSync(__dirname)
-  .filter(file => {
-    return (
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
-    );
-  })
-  .forEach(file => {
-    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model;
-  });
-
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+module.exports = {
+  User,
+  Customer,
+  Admin,
+  Post,
+  Flight,
+  Booking,
+  Seat,
+  Airplane,
+  Airline,
+  sequelize,
+};

@@ -73,6 +73,14 @@ export default {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
+      width: {
+        112: '28rem', // 448px
+        144: '36rem', // 576px
+        192: '48rem', // 768px
+      },
+      height: {
+        'screen-plus': '150vh',
+      },
     },
   },
   plugins: [import('tailwindcss-animate')],
