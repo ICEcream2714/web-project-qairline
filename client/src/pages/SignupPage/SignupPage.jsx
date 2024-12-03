@@ -1,23 +1,24 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Button } from '@/components/ui/button';
+import Navbar from '@/layouts/Navbar';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,18 +26,18 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+} from '@/components/ui/breadcrumb';
 
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import "tailwindcss/tailwind.css";
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import 'tailwindcss/tailwind.css';
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [isCheckedTerm, setIsCheckedTerm] = useState(false);
-  const [email, setEmail] = useState("");
-  const [familyName, setFamilyName] = useState("");
-  const [givenName, setGivenName] = useState("");
+  const [email, setEmail] = useState('');
+  const [familyName, setFamilyName] = useState('');
+  const [givenName, setGivenName] = useState('');
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -69,8 +70,9 @@ const SignupPage = () => {
     isCheckedTerm;
 
   return (
-    <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-background px-4">
+    <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-background">
       {/*  */}
+      <Navbar />
       <div className="mb-6 w-full">
         <img
           src="https://i.pinimg.com/736x/db/ab/6a/dbab6a956301ae1bf0c218f438d6f094.jpg"
@@ -162,7 +164,7 @@ const SignupPage = () => {
               <div className="grid w-full grid-cols-2">
                 <div className="relative col-span-full md:col-span-1">
                   <Input
-                    type={showPassword ? "text" : "password"}
+                    type={showPassword ? 'text' : 'password'}
                     id="password"
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
@@ -190,7 +192,7 @@ const SignupPage = () => {
                 {/* Re-Password Input */}
                 <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">
                   <Input
-                    type={showRePassword ? "text" : "password"}
+                    type={showRePassword ? 'text' : 'password'}
                     id="re-password"
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
@@ -320,7 +322,7 @@ const SignupPage = () => {
 
             {/* country */}
             <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
-              {" "}
+              {' '}
               <p className="text-primary">Where do you live?</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
@@ -367,13 +369,13 @@ const SignupPage = () => {
 
             {/* promocode */}
             <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
-              {" "}
+              {' '}
               <p className="text-primary">Enrolment promo code</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <div className="relative w-full sm:w-1/2">
                 <Input
-                  type={showRePassword ? "text" : "password"}
+                  type={showRePassword ? 'text' : 'password'}
                   id="enrolment-code"
                   className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                   placeholder=""
@@ -403,7 +405,7 @@ const SignupPage = () => {
                   htmlFor="entities"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Other{" "}
+                  Other{' '}
                   <a href="#" className="cursor-pointer text-primary underline">
                     Q Airways group entities
                   </a>
@@ -430,12 +432,12 @@ const SignupPage = () => {
               onClick={toggleCheckedTerm}
             />
             <Label htmlFor="terms" className="text-sm text-muted-foreground">
-              I agree to{" "}
+              I agree to{' '}
               <a href="#" className="text-primary underline">
                 Terms and Conditions
               </a>
               , and understand that my information will be processed in
-              accordance with the QAirline{" "}
+              accordance with the QAirline{' '}
               <a href="#" className="text-primary underline">
                 Privacy Notice
               </a>
@@ -456,7 +458,7 @@ const SignupPage = () => {
 
         <CardFooter className="flex flex-row justify-center text-center">
           <p>
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link to="/login" className="text-muted-foreground underline">
               Log in
             </Link>
