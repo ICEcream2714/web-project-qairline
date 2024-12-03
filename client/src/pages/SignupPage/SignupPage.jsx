@@ -73,13 +73,7 @@ const SignupPage = () => {
     <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-background">
       {/*  */}
       <Navbar />
-      <div className="mb-6 w-full">
-        <img
-          src="https://i.pinimg.com/736x/db/ab/6a/dbab6a956301ae1bf0c218f438d6f094.jpg"
-          alt="bg-img"
-          className="h-64 w-full object-cover object-center"
-        />
-      </div>
+      <div className="mb-6 h-[450px] w-full bg-gradient-to-r from-gray-700 to-gray-300"></div>
 
       <div className="mb-6">
         <Breadcrumb>
@@ -96,7 +90,7 @@ const SignupPage = () => {
       </div>
 
       {/* Form Signup */}
-      <Card className="mb-10 w-full max-w-5xl rounded-lg bg-slate-100 p-8 text-card-foreground shadow-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
+      <Card className="mb-10 w-full max-w-5xl rounded-lg bg-slate-100 p-6 text-card-foreground shadow-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
         <CardHeader className="flex flex-col items-center space-y-2">
           <img
             src="https://i.pinimg.com/control2/736x/b2/63/62/b2636225a15957cad9babd1bd8272e06.jpg"
@@ -111,10 +105,10 @@ const SignupPage = () => {
         <CardContent className="rounded-lg bg-card">
           <div className="grid grid-cols-6 md:gap-4">
             {/* credentials card */}
-            <div className="col-span-full md:col-span-2">
+            <div className="col-span-full mt-3 md:col-span-2">
               <p className="text-primary">Let's create your credentials</p>
             </div>
-            <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
+            <div className="col-span-full mb-4 md:col-span-4 md:mb-0 md:mt-3">
               <p className="text-primary">Create an account using</p>
               <div className="flex gap-4">
                 <button className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
@@ -245,7 +239,7 @@ const SignupPage = () => {
                 </SelectContent>
               </Select>
 
-              <div className="grid w-full grid-cols-2 justify-center text-center">
+              <div className="grid w-full grid-cols-3 justify-center text-center">
                 {/* Name Input */}
                 <div className="relative col-span-full md:col-span-1">
                   <Input
@@ -262,6 +256,21 @@ const SignupPage = () => {
                     className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
                   >
                     Family Name*
+                  </label>
+                </div>
+                <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">
+                  <Input
+                    type="text"
+                    id="middlename"
+                    className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
+                    placeholder=""
+                    required
+                  />
+                  <label
+                    htmlFor="middlename"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                  >
+                    Middle Name
                   </label>
                 </div>
                 <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">

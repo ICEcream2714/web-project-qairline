@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,9 +15,10 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import "tailwindcss/tailwind.css";
+} from '@/components/ui/breadcrumb';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
+import Navbar from '@/layouts/Navbar';
+import 'tailwindcss/tailwind.css';
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +28,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background bg-gradient-to-r px-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-gray-700 to-gray-300">
+      <Navbar />
       <div className="mb-6">
         <Breadcrumb>
           <BreadcrumbList>
@@ -41,7 +43,7 @@ const LoginPage = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <Card className="w-full max-w-sm rounded-lg bg-card p-6 shadow-md sm:max-w-md md:max-w-lg">
+      <Card className="w-full max-w-sm rounded-lg bg-card shadow-md sm:max-w-md md:max-w-lg">
         <CardHeader className="flex flex-col items-center space-y-2">
           <img
             src="https://i.pinimg.com/control2/736x/56/ed/da/56edda40a95cab939a8cc5f04b5b2109.jpg"
@@ -74,7 +76,7 @@ const LoginPage = () => {
           <div className="mb-6">
             <div className="relative">
               <Input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 id="password"
                 className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
                 placeholder=""
@@ -147,10 +149,10 @@ const LoginPage = () => {
         </CardContent>
         <CardFooter className="justify-center text-center">
           <p>
-            Haven't got an account yet?{" "}
+            Haven't got an account yet?{' '}
             <Link to="/signup" className="text-primary/80 underline">
               Sign up now!
-            </Link>{" "}
+            </Link>{' '}
           </p>
         </CardFooter>
       </Card>
