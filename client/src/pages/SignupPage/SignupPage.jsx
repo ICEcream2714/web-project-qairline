@@ -35,33 +35,42 @@ const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [isCheckedTerm, setIsCheckedTerm] = useState(false);
+
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [title, setTitle] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [gender, setGender] = useState('');
+  const [country, setCountry] = useState('');
+  const [promoCode, setPromoCode] = useState('');
+
   const [familyName, setFamilyName] = useState('');
   const [givenName, setGivenName] = useState('');
 
-  const togglePasswordVisibility = () => {
+  const togglePasswordVisibility = () =>
     setShowPassword((prevState) => !prevState);
-  };
-
-  const toggleRePasswordVisibility = () => {
+  const toggleRePasswordVisibility = () =>
     setShowRePassword((prevState) => !prevState);
-  };
+  const toggleCheckedTerm = () => setIsCheckedTerm((prevState) => !prevState);
 
-  const toggleCheckedTerm = () => {
-    setIsCheckedTerm((prevState) => !prevState);
-  };
+  const handleEmailChange = (e) => setEmail(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleAddressChange = (e) => setAddress(e.target.value);
+  const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleFirstNameChange = (e) => setFirstName(e.target.value);
+  const handleLastNameChange = (e) => setLastName(e.target.value);
+  const handleMiddleNameChange = (e) => setMiddleName(e.target.value);
+  const handleDateOfBirthChange = (e) => setDateOfBirth(e.target.value);
+  const handleGenderChange = (e) => setGender(e.target.value);
+  const handleCountryChange = (value) => setCountry(value);
+  const handlePromoCode = (e) => setPromoCode(e.target.value);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleFamilyNameChange = (e) => {
-    setFamilyName(e.target.value);
-  };
-
-  const handleGivenNameChange = (e) => {
-    setGivenName(e.target.value);
-  };
+  const handleFamilyNameChange = (e) => setFamilyName(e.target.value);
+  const handleGivenNameChange = (e) => setGivenName(e.target.value);
 
   const isLoginBtnValid =
     email.length > 0 &&
@@ -69,9 +78,58 @@ const SignupPage = () => {
     givenName.length > 0 &&
     isCheckedTerm;
 
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    console.log({
+      email,
+      password,
+      title,
+      firstName,
+      lastName,
+      middleName,
+      dateOfBirth,
+      gender,
+      country,
+      promoCode,
+    });
+    const payload = {
+      email,
+      password,
+      title,
+      firstName,
+      lastName,
+      middleName,
+      dateOfBirth,
+      gender,
+      country,
+      promoCode,
+    };
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Đăng ký thành công:', data);
+        history.push('/login'); // Chuyển hướng người dùng về trang login
+      } else {
+        const error = await response.json();
+        console.error('Lỗi đăng ký:', error);
+        alert('Lỗi đăng ký: ' + error.message);
+      }
+    } catch (error) {
+      console.error('Lỗi kết nối:', error);
+      alert('Lỗi kết nối, vui lòng thử lại sau.');
+    }
+  };
+
   return (
     <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-background">
-      {/*  */}
       <Navbar />
       <div className="mb-6 w-full">
         <img
@@ -112,7 +170,7 @@ const SignupPage = () => {
           <div className="grid grid-cols-6 md:gap-4">
             {/* credentials card */}
             <div className="col-span-full md:col-span-2">
-              <p className="text-primary">Let's create your credentials</p>
+              <p className="text-primary">Let&apos;s create your credentials</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <p className="text-primary">Create an account using</p>
@@ -169,6 +227,7 @@ const SignupPage = () => {
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
                     required
+                    onChange={handlePasswordChange}
                   />
                   <label
                     htmlFor="password"
@@ -227,7 +286,10 @@ const SignupPage = () => {
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <Select>
                 <SelectTrigger className="mb-3 w-full sm:w-1/2">
-                  <SelectValue placeholder="Title" />
+                  <SelectValue
+                    placeholder="Title"
+                    onChange={handleTitleChange}
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Mr">Mr</SelectItem>
@@ -290,6 +352,7 @@ const SignupPage = () => {
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
                     required
+                    onChange={handleDateOfBirthChange}
                   />
                   <label
                     htmlFor="date-birth"
@@ -305,6 +368,7 @@ const SignupPage = () => {
                   <RadioGroup
                     defaultValue="option-one"
                     className="grid grid-cols-2"
+                    onChange={handleGenderChange}
                   >
                     <div className="flex justify-end space-x-2">
                       <RadioGroupItem value="male" id="male" />
@@ -326,7 +390,7 @@ const SignupPage = () => {
               <p className="text-primary">Where do you live?</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
-              <Select className="w-full">
+              <Select className="w-full" onValueChange={handleCountryChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Country/region of residence" />
                 </SelectTrigger>
@@ -450,6 +514,7 @@ const SignupPage = () => {
             <Button
               className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/50"
               disabled={!isLoginBtnValid}
+              onClick={handleSignup}
             >
               Sign up
             </Button>
