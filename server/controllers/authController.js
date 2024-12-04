@@ -15,9 +15,7 @@ exports.register = async (req, res) => {
     middle_name,
     last_name,
     date_of_birth,
-    address,
     country_name,
-    country_code,
     gender,
     promo_code,
   } = req.body;
@@ -48,9 +46,7 @@ exports.register = async (req, res) => {
       middle_name,
       last_name,
       date_of_birth,
-      address,
       country_name,
-      country_code,
       gender,
       promo_code,
     });
@@ -75,10 +71,8 @@ exports.register = async (req, res) => {
         id: newCustomer.id,
         first_name: newCustomer.first_name,
         last_name: newCustomer.last_name,
-        address: newCustomer.address,
         country_name: newCustomer.country_name,
         title: newCustomer.title,
-        country_code: newCustomer.country_code,
         date_of_birth: newCustomer.date_of_birth,
       },
     });

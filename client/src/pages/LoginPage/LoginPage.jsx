@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,10 +21,59 @@ import Navbar from '@/layouts/Navbar';
 import 'tailwindcss/tailwind.css';
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const payload = {
+      email,
+      password,
+    };
+
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Login ok', data);
+        localStorage.setItem('token', data.token); // Lưu token vào localStorage
+        alert('Login successfully!');
+        navigate('/');
+      } else {
+        const error = await response.json();
+        const errorMessage =
+          error.errors && error.errors.length > 0
+            ? error.errors[0].msg
+            : 'Login failed!';
+        console.log('Login failed', error);
+        alert('Lỗi đăng nhập: ', errorMessage);
+      }
+    } catch (error) {
+      console.error('Lỗi kết nối:', error);
+      alert('Lỗi kết nối, vui lòng thử lại sau.');
+    }
   };
 
   return (
@@ -63,6 +112,7 @@ const LoginPage = () => {
               className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
               placeholder=""
               required
+              onChange={handleEmailChange}
             />
             <label
               htmlFor="username"
@@ -81,6 +131,7 @@ const LoginPage = () => {
                 className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
                 placeholder=""
                 required
+                onChange={handlePasswordChange}
               />
               <label
                 htmlFor="password"
@@ -112,7 +163,10 @@ const LoginPage = () => {
 
           {/* Log in Button */}
           <div className="mt-4">
-            <Button className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/50">
+            <Button
+              className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/50"
+              onClick={handleLogin}
+            >
               Log in
             </Button>
           </div>

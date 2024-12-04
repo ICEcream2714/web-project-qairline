@@ -1,11 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button'; // Import Button từ ShadCN
 import { Navigate, useNavigate } from 'react-router-dom';
+import { CircleUserRound } from 'lucide-react';
 
 function Navbar() {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false); // Trạng thái để mở menu trong màn hình thu nhỏ
   const [dropdownOpen, setDropdownOpen] = useState(null); // Trạng thái để mở dropdown
   const [isScrolled, setIsScrolled] = useState(false); // Trạng thái để thay đổi nền khi cuộn
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Kiểm tra nếu người dùng đã đăng nhập
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true); // Người dùng đã đăng nhập
+    } else {
+      setIsLoggedIn(false); // Người dùng chưa đăng nhập
+    }
+  }, []);
 
   // Hàm bật/tắt dropdown
   const toggleDropdown = (index) => {
@@ -24,10 +38,13 @@ function Navbar() {
     };
   }, []);
 
-  const navigate = useNavigate();
-
   const handleLoginClick = () => {
     navigate('/login');
+  };
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setIsLoggedIn(false);
+    navigate('/');
   };
 
   return (
@@ -38,7 +55,7 @@ function Navbar() {
     >
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="text-lg font-bold text-gray-800">Qatar Airways</div>
+        <div className="text-lg font-bold text-gray-800">QAirlines</div>
 
         {/* Desktop Menu */}
         <div className="hidden space-x-8 md:flex">
@@ -81,7 +98,7 @@ function Navbar() {
           >
             Discover
           </Button>
-          <div className="relative">
+          <div className="">
             <Button
               variant="link"
               onClick={() => toggleDropdown(2)}
@@ -120,13 +137,25 @@ function Navbar() {
           >
             Privilege Club
           </Button>
-          <Button
-            variant="link"
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
-            onClick={handleLoginClick}
-          >
-            Login / Sign Up
-          </Button>
+          <div className="relative m-0 p-0">
+            {!isLoggedIn ? (
+              <Button
+                variant="link"
+                onClick={handleLoginClick}
+                className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+              >
+                Login / Sign Up
+              </Button>
+            ) : (
+              <Button
+                variant="link"
+                onClick={handleLogout}
+                className={`${isScrolled ? 'text-gray-800' : 'text-white'} p-0 font-semibold hover:text-purple-600 [&_svg]:size-auto`}
+              >
+                <CircleUserRound size={24} />
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -203,6 +232,7 @@ function Navbar() {
           <Button variant="link" className="font-semibold text-gray-800">
             Privilege Club
           </Button>
+          {}
           <Button variant="link" className="font-semibold text-gray-800">
             Login / Sign Up
           </Button>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -32,13 +32,14 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import 'tailwindcss/tailwind.css';
 
 const SignupPage = () => {
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showRePassword, setShowRePassword] = useState(false);
   const [isCheckedTerm, setIsCheckedTerm] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [address, setAddress] = useState('');
   const [title, setTitle] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -48,9 +49,6 @@ const SignupPage = () => {
   const [country, setCountry] = useState('');
   const [promoCode, setPromoCode] = useState('');
 
-  const [familyName, setFamilyName] = useState('');
-  const [givenName, setGivenName] = useState('');
-
   const togglePasswordVisibility = () =>
     setShowPassword((prevState) => !prevState);
   const toggleRePasswordVisibility = () =>
@@ -59,23 +57,19 @@ const SignupPage = () => {
 
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
-  const handleAddressChange = (e) => setAddress(e.target.value);
-  const handleTitleChange = (e) => setTitle(e.target.value);
+  const handleTitleChange = (value) => setTitle(value);
   const handleFirstNameChange = (e) => setFirstName(e.target.value);
   const handleLastNameChange = (e) => setLastName(e.target.value);
   const handleMiddleNameChange = (e) => setMiddleName(e.target.value);
   const handleDateOfBirthChange = (e) => setDateOfBirth(e.target.value);
-  const handleGenderChange = (e) => setGender(e.target.value);
+  const handleGenderChange = (value) => setGender(value);
   const handleCountryChange = (value) => setCountry(value);
   const handlePromoCode = (e) => setPromoCode(e.target.value);
 
-  const handleFamilyNameChange = (e) => setFamilyName(e.target.value);
-  const handleGivenNameChange = (e) => setGivenName(e.target.value);
-
   const isLoginBtnValid =
     email.length > 0 &&
-    familyName.length > 0 &&
-    givenName.length > 0 &&
+    firstName.length > 0 &&
+    lastName.length > 0 &&
     isCheckedTerm;
 
   const handleSignup = async (e) => {
@@ -96,13 +90,13 @@ const SignupPage = () => {
       email,
       password,
       title,
-      firstName,
-      lastName,
-      middleName,
-      dateOfBirth,
+      first_name: firstName,
+      last_name: lastName,
+      middle_name: middleName,
+      date_of_birth: dateOfBirth,
       gender,
-      country,
-      promoCode,
+      country_name: country,
+      promo_code: promoCode,
     };
     try {
       const response = await fetch('http://localhost:5000/api/auth/register', {
@@ -116,11 +110,17 @@ const SignupPage = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Đăng ký thành công:', data);
-        history.push('/login'); // Chuyển hướng người dùng về trang login
+        alert('Register successfully, please login to continue.');
+        navigate('/login'); // Chuyển hướng người dùng về trang login
       } else {
+        // Xử lý lỗi trả về từ server
         const error = await response.json();
+        const errorMessage =
+          error.errors && error.errors.length > 0
+            ? error.errors[0].msg
+            : 'Lỗi đăng ký';
         console.error('Lỗi đăng ký:', error);
-        alert('Lỗi đăng ký: ' + error.message);
+        alert('Lỗi đăng ký: ' + errorMessage);
       }
     } catch (error) {
       console.error('Lỗi kết nối:', error);
@@ -278,12 +278,9 @@ const SignupPage = () => {
               <p className="text-primary">Your personal details</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
-              <Select>
+              <Select onValueChange={handleTitleChange}>
                 <SelectTrigger className="mb-3 w-full sm:w-1/2">
-                  <SelectValue
-                    placeholder="Title"
-                    onChange={handleTitleChange}
-                  />
+                  <SelectValue placeholder="Title" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="Mr">Mr</SelectItem>
@@ -306,24 +303,26 @@ const SignupPage = () => {
                 <div className="relative col-span-full md:col-span-1">
                   <Input
                     type="text"
-                    id="username"
-                    value={familyName}
-                    onChange={handleFamilyNameChange}
+                    id="firstname"
+                    value={firstName}
+                    onChange={handleFirstNameChange}
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
                     required
                   />
                   <label
-                    htmlFor="username"
+                    htmlFor="firstname"
                     className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
                   >
-                    Family Name*
+                    First Name*
                   </label>
                 </div>
                 <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">
                   <Input
                     type="text"
                     id="middlename"
+                    value={middleName}
+                    onChange={handleMiddleNameChange}
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
                     required
@@ -338,18 +337,18 @@ const SignupPage = () => {
                 <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">
                   <Input
                     type="text"
-                    id="givenname"
-                    value={givenName}
-                    onChange={handleGivenNameChange}
+                    id="lastname"
+                    value={lastName}
+                    onChange={handleLastNameChange}
                     className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                     placeholder=""
                     required
                   />
                   <label
-                    htmlFor="givenname"
+                    htmlFor="lastname"
                     className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
                   >
-                    Given Name*
+                    Last Name*
                   </label>
                 </div>
 
@@ -377,7 +376,7 @@ const SignupPage = () => {
                   <RadioGroup
                     defaultValue="option-one"
                     className="grid grid-cols-2"
-                    onChange={handleGenderChange}
+                    onValueChange={handleGenderChange}
                   >
                     <div className="flex justify-end space-x-2">
                       <RadioGroupItem value="male" id="male" />
@@ -404,37 +403,39 @@ const SignupPage = () => {
                   <SelectValue placeholder="Country/region of residence" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="US">United States</SelectItem>
-                  <SelectItem value="CA">Canada</SelectItem>
-                  <SelectItem value="GB">United Kingdom</SelectItem>
-                  <SelectItem value="FR">France</SelectItem>
-                  <SelectItem value="DE">Germany</SelectItem>
-                  <SelectItem value="IN">India</SelectItem>
-                  <SelectItem value="JP">Japan</SelectItem>
-                  <SelectItem value="AU">Australia</SelectItem>
-                  <SelectItem value="BR">Brazil</SelectItem>
-                  <SelectItem value="ZA">South Africa</SelectItem>
-                  <SelectItem value="MX">Mexico</SelectItem>
-                  <SelectItem value="IT">Italy</SelectItem>
-                  <SelectItem value="ES">Spain</SelectItem>
-                  <SelectItem value="CN">China</SelectItem>
-                  <SelectItem value="RU">Russia</SelectItem>
-                  <SelectItem value="KR">South Korea</SelectItem>
-                  <SelectItem value="VN">Vietnam</SelectItem>
-                  <SelectItem value="SG">Singapore</SelectItem>
-                  <SelectItem value="TH">Thailand</SelectItem>
-                  <SelectItem value="PH">Philippines</SelectItem>
-                  <SelectItem value="MY">Malaysia</SelectItem>
-                  <SelectItem value="ID">Indonesia</SelectItem>
-                  <SelectItem value="PK">Pakistan</SelectItem>
-                  <SelectItem value="NG">Nigeria</SelectItem>
-                  <SelectItem value="EG">Egypt</SelectItem>
-                  <SelectItem value="AE">United Arab Emirates</SelectItem>
-                  <SelectItem value="SE">Sweden</SelectItem>
-                  <SelectItem value="NO">Norway</SelectItem>
-                  <SelectItem value="DK">Denmark</SelectItem>
-                  <SelectItem value="FI">Finland</SelectItem>
-                  <SelectItem value="GR">Greece</SelectItem>
+                  <SelectItem value="United States">United States</SelectItem>
+                  <SelectItem value="Canada">Canada</SelectItem>
+                  <SelectItem value="United Kingdom">United Kingdom</SelectItem>
+                  <SelectItem value="France">France</SelectItem>
+                  <SelectItem value="Germany">Germany</SelectItem>
+                  <SelectItem value="India">India</SelectItem>
+                  <SelectItem value="Japan">Japan</SelectItem>
+                  <SelectItem value="Australia">Australia</SelectItem>
+                  <SelectItem value="Brazil">Brazil</SelectItem>
+                  <SelectItem value="South Africa">South Africa</SelectItem>
+                  <SelectItem value="Mexico">Mexico</SelectItem>
+                  <SelectItem value="Italy">Italy</SelectItem>
+                  <SelectItem value="Spain">Spain</SelectItem>
+                  <SelectItem value="China">China</SelectItem>
+                  <SelectItem value="Russia">Russia</SelectItem>
+                  <SelectItem value="South Korea">South Korea</SelectItem>
+                  <SelectItem value="Vietnam">Vietnam</SelectItem>
+                  <SelectItem value="Singapore">Singapore</SelectItem>
+                  <SelectItem value="Thailand">Thailand</SelectItem>
+                  <SelectItem value="Philippines">Philippines</SelectItem>
+                  <SelectItem value="Malaysia">Malaysia</SelectItem>
+                  <SelectItem value="Indonesia">Indonesia</SelectItem>
+                  <SelectItem value="Pakistan">Pakistan</SelectItem>
+                  <SelectItem value="Nigeria">Nigeria</SelectItem>
+                  <SelectItem value="Egypt">Egypt</SelectItem>
+                  <SelectItem value="United Arab Emirates">
+                    United Arab Emirates
+                  </SelectItem>
+                  <SelectItem value="Sweden">Sweden</SelectItem>
+                  <SelectItem value="Norway">Norway</SelectItem>
+                  <SelectItem value="Denmark">Denmark</SelectItem>
+                  <SelectItem value="Finland">Finland</SelectItem>
+                  <SelectItem value="Greece">Greece</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -453,6 +454,7 @@ const SignupPage = () => {
                   className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
                   placeholder=""
                   required
+                  onChange={handlePromoCode}
                 />
                 <label
                   htmlFor="enrolment-code"

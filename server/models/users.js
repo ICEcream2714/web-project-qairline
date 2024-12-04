@@ -28,5 +28,5 @@ module.exports = (sequelize, DataTypes) => {
     User.hasOne(models.Admin, { foreignKey: "user_id" });
   };
 
-  return User;
+  return User; // Trả về model User đã định nghĩa
 };

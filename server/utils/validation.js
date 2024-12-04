@@ -10,7 +10,7 @@ exports.validateRegister = [
     .custom(async (value) => {
       const user = await User.findOne({ where: { email: value } });
       if (user) {
-        throw new Error("Email này đã được đăng ký trước đó.");
+        throw new Error("Email has already been registered.");
       }
     }),
 
@@ -26,9 +26,6 @@ exports.validateRegister = [
   body("country_name")
     .notEmpty()
     .withMessage("Tên quốc gia không được bỏ trống."),
-  body("country_code")
-    .isLength({ min: 2, max: 3 })
-    .withMessage("Mã quốc gia phải từ 2-3 ký tự."),
 
   // Xử lý các lỗi trên và trả về thông báo lỗi nếu có
   (req, res, next) => {
@@ -41,7 +38,7 @@ exports.validateRegister = [
 ];
 
 exports.validateLogin = [
-  body("email").isEmail().withMessage("Email không hợp lệ.").normalizeEmail(),
+  body("email").isEmail().withMessage("Email is invalid").normalizeEmail(),
   body("password")
     .isLength({ min: 6 })
     .withMessage("Mật khẩu phải có ít nhất 6 ký tự."),

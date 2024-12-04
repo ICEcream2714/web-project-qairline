@@ -1,3 +1,7 @@
+## Note
+
+- Đang dùng DB browser cho SQlite để xem database
+
 ## Cài Đặt Backend
 
 1. Di chuyển đến thư mục `server`:
