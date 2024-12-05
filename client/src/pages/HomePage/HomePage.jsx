@@ -5,7 +5,7 @@ import Fares from '@/pages/HomePage/Fares';
 import SubscribeForm from '@/pages/HomePage/SubcribeForm';
 import Footer from '@/layouts/Footer';
 import FlightTabs from '@/pages/HomePage/BookingTab';
-import Navbar from '@/layouts/Navbar';
+import Navbar from '@/layouts/Navbar/Navbar';
 
 function HomePage() {
   return (

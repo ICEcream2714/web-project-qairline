@@ -1,57 +1,61 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 
 const ManageBooking = () => {
-  const [activeTab, setActiveTab] = useState("manage_booking");
-  const [bookingCode, setBookingCode] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [activeTab, setActiveTab] = useState('manage_booking');
+  const [bookingCode, setBookingCode] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const { toast } = useToast();
 
   const handleSubmit = () => {
     if (!bookingCode || !lastName || !birthDate) {
       toast({
-        title: "Error",
-        description: "Please fill in all fields.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Please fill in all fields.',
+        variant: 'destructive',
       });
     } else {
       toast({
-        title: activeTab === "manage_booking" ? "Booking Found" : "Check-in Successful",
-        description: activeTab === "manage_booking"
-          ? `Booking for ${lastName} with reference ${bookingCode} retrieved.`
-          : `Check-in for ${lastName} with reference ${bookingCode} completed.`,
-        variant: "success",
+        title:
+          activeTab === 'manage_booking'
+            ? 'Booking Found'
+            : 'Check-in Successful',
+        description:
+          activeTab === 'manage_booking'
+            ? `Booking for ${lastName} with reference ${bookingCode} retrieved.`
+            : `Check-in for ${lastName} with reference ${bookingCode} completed.`,
+        variant: 'success',
       });
     }
   };
 
   return (
-    <Card className="bg-white rounded-lg shadow-md p-6">
+    <Card className="rounded-lg bg-white p-6 shadow-md">
       <CardHeader className="border-b">
         <div className="flex">
           <Button
             variant="ghost"
-            onClick={() => setActiveTab("manage_booking")}
-            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
-              activeTab === "manage_booking"
-                ? "text-purple-600 border-b-4 border-purple-600"
-                : "text-gray-600 hover:text-purple-500"
+            onClick={() => setActiveTab('manage_booking')}
+            className={`flex-1 py-2 text-center text-lg font-medium ${
+              activeTab === 'manage_booking'
+                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
             Manage Booking
           </Button>
           <Button
             variant="ghost"
-            onClick={() => setActiveTab("checkin")}
-            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
-              activeTab === "checkin"
-                ? "text-purple-600 border-b-4 border-purple-600"
-                : "text-gray-600 hover:text-purple-500"
+            onClick={() => setActiveTab('checkin')}
+            className={`flex-1 py-2 text-center text-lg font-medium ${
+              activeTab === 'checkin'
+                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
             Checkin
@@ -60,9 +64,9 @@ const ManageBooking = () => {
       </CardHeader>
 
       <CardContent>
-        <form className="flex flex-col md:flex-row gap-4 md:gap-6">
+        <form className="flex flex-col gap-4 md:flex-row md:gap-6">
           {/* Booking Reference */}
-          <div className="flex-1 w-full md:w-auto">
+          <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="bookingCode">Booking Reference</Label>
             <Input
               id="bookingCode"
@@ -74,7 +78,7 @@ const ManageBooking = () => {
           </div>
 
           {/* Last Name */}
-          <div className="flex-1 w-full md:w-auto">
+          <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="lastName">Last Name</Label>
             <Input
               id="lastName"
@@ -86,7 +90,7 @@ const ManageBooking = () => {
           </div>
 
           {/* Date of Birth */}
-          <div className="flex-1 w-full md:w-auto">
+          <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="birthDate">Date of Birth</Label>
             <Input
               id="birthDate"
@@ -98,12 +102,12 @@ const ManageBooking = () => {
           </div>
 
           {/* Submit Button */}
-          <div className="w-full md:w-auto mt-5">
+          <div className="mt-5 w-full md:w-auto">
             <Button
               onClick={handleSubmit}
-              className="bg-purple-600 text-white hover:bg-purple-700 w-full md:w-auto py-3 rounded-lg"
+              className="w-full rounded-lg bg-purple-600 py-3 text-white hover:bg-purple-700 md:w-auto"
             >
-              {activeTab === "manage_booking" ? "Retrieve Booking" : "Checkin"}
+              {activeTab === 'manage_booking' ? 'Retrieve Booking' : 'Checkin'}
             </Button>
           </div>
         </form>

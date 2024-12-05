@@ -1,6 +1,8 @@
 ## Note
 
 - Đang dùng DB browser cho SQlite để xem database
+- TK test login sau khi chạy seed: customer1@example.com | password123
+- Có thể tạo tk mới thử cx đc
 
 ## Cài Đặt Backend
 

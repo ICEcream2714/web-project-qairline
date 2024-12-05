@@ -1,23 +1,23 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 
 const FlightStatus = () => {
-  const [activeTab, setActiveTab] = useState("route");
-  const [route, setRoute] = useState({ from: "", to: "" });
-  const [flightNumber, setFlightNumber] = useState("");
-  const [date, setDate] = useState("");
+  const [activeTab, setActiveTab] = useState('route');
+  const [route, setRoute] = useState({ from: '', to: '' });
+  const [flightNumber, setFlightNumber] = useState('');
+  const [date, setDate] = useState('');
 
   const handleSearch = () => {
-    if (activeTab === "route" && (!route.from || !route.to || !date)) {
-      alert("Please fill in all required fields for route search.");
-    } else if (activeTab === "flightNumber" && (!flightNumber || !date)) {
-      alert("Please fill in all required fields for flight number search.");
+    if (activeTab === 'route' && (!route.from || !route.to || !date)) {
+      alert('Please fill in all required fields for route search.');
+    } else if (activeTab === 'flightNumber' && (!flightNumber || !date)) {
+      alert('Please fill in all required fields for flight number search.');
     } else {
       alert(
-        activeTab === "route"
+        activeTab === 'route'
           ? `Searching flights from ${route.from} to ${route.to} on ${date}.`
           : `Searching flight ${flightNumber} on ${date}.`
       );
@@ -25,28 +25,28 @@ const FlightStatus = () => {
   };
 
   return (
-    <Card className="bg-white rounded-lg shadow-md p-6">
+    <Card className="rounded-lg bg-white p-6 shadow-md">
       {/* Header Tabs */}
-      <CardHeader className="border-b mb-4">
+      <CardHeader className="mb-4 border-b">
         <div className="flex justify-center space-x-4">
           <Button
             variant="ghost"
-            onClick={() => setActiveTab("route")}
-            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
-              activeTab === "route"
-                ? "text-purple-600 border-b-4 border-purple-600"
-                : "text-gray-600 hover:text-purple-500"
+            onClick={() => setActiveTab('route')}
+            className={`flex-1 py-2 text-center text-lg font-medium ${
+              activeTab === 'route'
+                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
             By Route
           </Button>
           <Button
             variant="ghost"
-            onClick={() => setActiveTab("flightNumber")}
-            className={`flex-1 py-2 text-center text-lg font-medium transition-all duration-300 ${
-              activeTab === "flightNumber"
-                ? "text-purple-600 border-b-4 border-purple-600"
-                : "text-gray-600 hover:text-purple-500"
+            onClick={() => setActiveTab('flightNumber')}
+            className={`flex-1 py-2 text-center text-lg font-medium ${
+              activeTab === 'flightNumber'
+                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
             By Flight Number
@@ -56,8 +56,8 @@ const FlightStatus = () => {
 
       {/* Content */}
       <CardContent>
-        {activeTab === "route" ? (
-          <form className="flex flex-col md:flex-row gap-4">
+        {activeTab === 'route' ? (
+          <form className="flex flex-col gap-4 md:flex-row">
             {/* From */}
             <div className="flex-1">
               <Label htmlFor="from">From</Label>
@@ -65,9 +65,7 @@ const FlightStatus = () => {
                 id="from"
                 placeholder="Enter departure city"
                 value={route.from}
-                onChange={(e) =>
-                  setRoute({ ...route, from: e.target.value })
-                }
+                onChange={(e) => setRoute({ ...route, from: e.target.value })}
               />
             </div>
             {/* To */}
@@ -91,17 +89,17 @@ const FlightStatus = () => {
               />
             </div>
             {/* Search Button */}
-            <div className="flex justify-center mt-6">
+            <div className="mt-6 flex justify-center">
               <Button
                 onClick={handleSearch}
-                className="bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-lg"
+                className="rounded-lg bg-purple-600 px-8 py-3 text-white hover:bg-purple-700"
               >
                 Check Status
               </Button>
             </div>
           </form>
         ) : (
-          <form className="flex flex-col md:flex-row gap-4">
+          <form className="flex flex-col gap-4 md:flex-row">
             {/* Flight Number */}
             <div className="flex-1">
               <Label htmlFor="flightNumber">Flight Number</Label>
@@ -123,10 +121,10 @@ const FlightStatus = () => {
               />
             </div>
             {/* Search Button */}
-            <div className="flex justify-center mt-6">
+            <div className="mt-6 flex justify-center">
               <Button
                 onClick={handleSearch}
-                className="bg-purple-600 text-white hover:bg-purple-700 px-8 py-3 rounded-lg"
+                className="rounded-lg bg-purple-600 px-8 py-3 text-white hover:bg-purple-700"
               >
                 Check Status
               </Button>

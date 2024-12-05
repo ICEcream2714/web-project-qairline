@@ -5,7 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
-import Navbar from '@/layouts/Navbar';
+import Navbar from '@/layouts/Navbar/Navbar';
 import {
   Card,
   CardContent,

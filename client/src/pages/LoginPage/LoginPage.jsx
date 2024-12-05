@@ -17,7 +17,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
-import Navbar from '@/layouts/Navbar';
+import Navbar from '@/layouts/Navbar/Navbar';
 import 'tailwindcss/tailwind.css';
 
 const LoginPage = () => {

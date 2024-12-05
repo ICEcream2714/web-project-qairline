@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button'; // Import Button từ ShadCN
-import { Navigate, useNavigate } from 'react-router-dom';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import UserProfile from '@/layouts/Navbar/UserProfile'; // Import UserProfile từ ShadCN
 import { CircleUserRound } from 'lucide-react';
 
 function Navbar() {
@@ -31,7 +37,6 @@ function Navbar() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -47,15 +52,24 @@ function Navbar() {
     navigate('/');
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   return (
     <nav
-      className={`fixed left-0 top-0 z-30 w-full p-4 transition-all duration-300 ${
+      className={`fixed left-0 top-0 z-30 w-full p-4 ${
         isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="text-lg font-bold text-gray-800">QAirlines</div>
+        <button
+          className={`text-lg font-bold ${isScrolled ? 'text-gray-800' : 'text-white'}`}
+          onClick={handleLogoClick}
+        >
+          QAirlines
+        </button>
 
         {/* Desktop Menu */}
         <div className="hidden space-x-8 md:flex">
@@ -147,13 +161,47 @@ function Navbar() {
                 Login / Sign Up
               </Button>
             ) : (
-              <Button
-                variant="link"
-                onClick={handleLogout}
-                className={`${isScrolled ? 'text-gray-800' : 'text-white'} p-0 font-semibold hover:text-purple-600 [&_svg]:size-auto`}
-              >
-                <CircleUserRound size={24} />
-              </Button>
+              <UserProfile
+                name="Hoang Nguyen"
+                id="681897319"
+                tier="Burgundy"
+                avios={0}
+                qpoints={0}
+                isScrolled={isScrolled}
+                onLogout={handleLogout}
+              />
+              // <Popover>
+              //   <PopoverTrigger>
+              //     <Button
+              //       variant="link"
+              //       className={`${isScrolled ? 'text-gray-800' : 'text-white'} p-0 font-semibold hover:text-purple-600 [&_svg]:size-auto`}
+              //     >
+              //       <CircleUserRound size={24} />
+              //     </Button>
+              //   </PopoverTrigger>
+              //   <PopoverContent className="border-0 bg-white">
+              //     <UserProfile
+              //       name="Hoang Nguyen"
+              //       id="681897319"
+              //       tier="Burgundy"
+              //       avios={0}
+              //       qpoints={0}
+              //       onLogout={handleLogout}
+              //     />
+              //     <div className="border-b-2">
+              //       <div>Hoang Nguyen</div>
+              //       <div>681897319 | Burgundy</div>
+              //     </div>
+              //     <div>2</div>
+              //     <div className="flex flex-row">
+              //       <Button variant="link">Flight</Button>
+              //       <Button variant="link">Profile</Button>
+              //       <Button variant="link" onClick={handleLogout}>
+              //         Logout
+              //       </Button>
+              //     </div>
+              //   </PopoverContent>
+              // </Popover>
             )}
           </div>
         </div>
