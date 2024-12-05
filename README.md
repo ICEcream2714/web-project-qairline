@@ -1,5 +1,7 @@
 # web-project-qairline
 
+link ER DB: https://dbdiagram.io/d/Web-Qairline-672d977de9daa85acabd9096
+
 ## Tổng Quan
 
 Đây là dự án **QAirline** cho môn học **INT3306 - Phát triển Ứng dụng Web**. Dự án bao gồm cả hai phần **frontend** (Vite, React, TailwindCSS, ShadCN, Zustand) và **backend** (Express.js, SQLite, Sequelize).
