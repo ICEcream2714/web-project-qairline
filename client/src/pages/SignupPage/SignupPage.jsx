@@ -35,11 +35,20 @@ const SignupPage = () => {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showValidPassword, setShowValidPassword] = useState(true);
   const [showRePassword, setShowRePassword] = useState(false);
+  const [passwordCriteria, setPasswordCriteria] = useState({
+    length: false,
+    number: false,
+    specialChar: false,
+    upperCase: false,
+    lowerCase: false,
+  });
   const [isCheckedTerm, setIsCheckedTerm] = useState(false);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [repassword, setRePassword] = useState('');
   const [title, setTitle] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -49,14 +58,71 @@ const SignupPage = () => {
   const [country, setCountry] = useState('');
   const [promoCode, setPromoCode] = useState('');
 
+  // Criteria for password
+  const minLength = 8;
+  const hasNumber = /\d/;
+  const hasUpperCase = /[A-Z]/;
+  const hasLowerCase = /[a-z]/;
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
+
   const togglePasswordVisibility = () =>
     setShowPassword((prevState) => !prevState);
-  const toggleRePasswordVisibility = () =>
+
+  const toggleRePasswordVisibility = () => {
     setShowRePassword((prevState) => !prevState);
-  const toggleCheckedTerm = () => setIsCheckedTerm((prevState) => !prevState);
+  };
+
+  const toggleCheckedTerm = () => {
+    setIsCheckedTerm((prevState) => !prevState);
+  };
+
+  const validatePassword = (password) => {
+    const lengthValid = password.length >= minLength;
+    const numberValid = hasNumber.test(password);
+    const specialCharValid = hasSpecialChar.test(password);
+    const upperCaseValid = hasUpperCase.test(password);
+    const lowerCaseValid = hasLowerCase.test(password);
+    const isValid =
+      lengthValid &&
+      numberValid &&
+      specialCharValid &&
+      upperCaseValid &&
+      lowerCaseValid;
+
+    setPasswordCriteria({
+      length: lengthValid,
+      number: numberValid,
+      specialChar: specialCharValid,
+      upperCase: upperCaseValid,
+      lowerCase: lowerCaseValid,
+    });
+    if (password.length === 0) {
+      setPasswordCriteria({
+        length: false,
+        number: false,
+        specialChar: false,
+        upperCase: false,
+        lowerCase: false,
+      });
+      setShowValidPassword(false); // Đặt lại trạng thái khi mật khẩu rỗng
+    } else {
+      // Cập nhật trạng thái hiển thị kết quả hợp lệ
+      setShowValidPassword(isValid);
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const newPass = e.target.value;
+    setPassword(newPass);
+    validatePassword(newPass);
+  };
+
+  const handleRePasswordChange = (e) => {
+    const newRePass = e.target.value;
+    setRePassword(newRePass);
+  };
 
   const handleEmailChange = (e) => setEmail(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleTitleChange = (value) => setTitle(value);
   const handleFirstNameChange = (e) => setFirstName(e.target.value);
   const handleLastNameChange = (e) => setLastName(e.target.value);
@@ -131,7 +197,7 @@ const SignupPage = () => {
   return (
     <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-background">
       <Navbar />
-      <div className="mb-6 h-[450px] w-full bg-gradient-to-r from-gray-700 to-gray-300"></div>
+      <div className="mb-6 h-[350px] w-full bg-gradient-to-r from-gray-700 to-gray-300"></div>
 
       <div className="mb-6">
         <Breadcrumb>
@@ -148,7 +214,7 @@ const SignupPage = () => {
       </div>
 
       {/* Form Signup */}
-      <Card className="mb-10 w-full max-w-5xl rounded-lg bg-slate-100 p-6 text-card-foreground shadow-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
+      <Card className="mb-10 w-full max-w-5xl rounded-lg bg-slate-100 px-3 py-6 text-card-foreground shadow-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
         <CardHeader className="flex flex-col items-center space-y-2">
           <img
             src="https://i.pinimg.com/control2/736x/b2/63/62/b2636225a15957cad9babd1bd8272e06.jpg"
@@ -189,8 +255,7 @@ const SignupPage = () => {
                 </button>
               </div>
               <p className="text-primary">
-                or join by filling up the form below or join by filling up the
-                form below
+                or join by filling up the form below
               </p>
 
               {/* Email Input */}
@@ -212,62 +277,122 @@ const SignupPage = () => {
                 </label>
               </div>
 
-              {/* Password Input */}
+              {/* pass & re-pass label */}
               <div className="grid w-full grid-cols-2">
-                <div className="relative col-span-full md:col-span-1">
-                  <Input
-                    type={showPassword ? 'text' : 'password'}
-                    id="password"
-                    className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
-                    placeholder=""
-                    required
-                    onChange={handlePasswordChange}
-                  />
-                  <label
-                    htmlFor="password"
-                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
-                  >
-                    Type a password
-                  </label>
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="h-6 w-6" />
-                    ) : (
-                      <EyeIcon className="h-6 w-6" />
-                    )}
-                  </button>
+                <div className="col-span-full grid md:col-span-1">
+                  {/* Password Input */}
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? 'text' : 'password'}
+                      id="password"
+                      className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pr-10 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
+                      value={password}
+                      onChange={handlePasswordChange}
+                      placeholder=""
+                      required
+                    />
+                    <label
+                      htmlFor="password"
+                      className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                    >
+                      Type a password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? (
+                        <EyeSlashIcon className="h-6 w-6" />
+                      ) : (
+                        <EyeIcon className="h-6 w-6" />
+                      )}
+                    </button>
+                  </div>
+
+                  {/* warning pass */}
+                  {!showValidPassword && password != '' && (
+                    <div
+                      className={`col-span-full rounded border border-red-600 border-t-white bg-red-200 text-sm md:col-span-1`}
+                    >
+                      <ul
+                        className={`rounded border py-1 text-[12px] text-gray-600`}
+                      >
+                        <li className="pl-2">Password criteria:</li>
+                        <li className="flex items-center">
+                          <span className={`ml-2 w-5 items-center`}>
+                            {passwordCriteria.length ? '✔' : '○'}
+                          </span>
+                          Minimum length {minLength} characters
+                        </li>
+                        <li className="flex items-center">
+                          <span className={`ml-2 w-5 items-center`}>
+                            {passwordCriteria.upperCase ? '✔' : '○'}
+                          </span>
+                          Contains at least one uppercase letter
+                        </li>
+                        <li className="flex items-center">
+                          <span className={`ml-2 w-5 items-center`}>
+                            {passwordCriteria.lowerCase ? '✔' : '○'}
+                          </span>
+                          Contains at least one lowercase letter
+                        </li>
+                        <li className="flex items-center">
+                          <span className={`ml-2 w-5 items-center`}>
+                            {passwordCriteria.number ? '✔' : '○'}
+                          </span>
+                          Contains at least one number
+                        </li>
+                        <li className="flex items-center">
+                          <span className={`ml-2 w-5 items-center`}>
+                            {passwordCriteria.specialChar ? '✔' : '○'}
+                          </span>
+                          Contains at least one special character
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </div>
 
-                {/* Re-Password Input */}
-                <div className="relative col-span-full mt-3 md:col-span-1 md:ml-3 md:mt-0">
-                  <Input
-                    type={showRePassword ? 'text' : 'password'}
-                    id="re-password"
-                    className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
-                    placeholder=""
-                    required
-                  />
-                  <label
-                    htmlFor="re-password"
-                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
-                  >
-                    Retype password
-                  </label>
-                  <button
-                    type="button"
-                    onClick={toggleRePasswordVisibility}
-                    className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                  >
-                    {showRePassword ? (
-                      <EyeSlashIcon className="h-6 w-6" />
-                    ) : (
-                      <EyeIcon className="h-6 w-6" />
-                    )}
-                  </button>
+                <div className="col-span-full grid md:col-span-1">
+                  {/* Re-Password Input */}
+                  <div className="relative mt-3 md:ml-3 md:mt-0">
+                    <Input
+                      type={showRePassword ? 'text' : 'password'}
+                      id="re-password"
+                      className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pr-10 pt-5 text-sm text-foreground focus:border-primary focus:outline-none"
+                      value={repassword}
+                      onChange={handleRePasswordChange}
+                      placeholder=""
+                      required
+                    />
+                    <label
+                      htmlFor="re-password"
+                      className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                    >
+                      Retype password
+                    </label>
+                    <button
+                      type="button"
+                      onClick={toggleRePasswordVisibility}
+                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                    >
+                      {showRePassword ? (
+                        <EyeSlashIcon className="h-6 w-6" />
+                      ) : (
+                        <EyeIcon className="h-6 w-6" />
+                      )}
+                    </button>
+                  </div>
+
+                  {/* wanring re-pass */}
+                  {showValidPassword &&
+                    repassword != '' &&
+                    (repassword.length > password.length ? (
+                      <div className="rounded border border-red-600 border-t-white bg-red-200 text-sm">
+                        Password Not Matching
+                      </div>
+                    ) : null)}
                 </div>
               </div>
             </div>
