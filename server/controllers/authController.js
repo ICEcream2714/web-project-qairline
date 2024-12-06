@@ -51,6 +51,12 @@ exports.register = async (req, res) => {
       promo_code,
     });
 
+    // Tạo JWT token
+    const token = jwt.sign(
+      { id: newUser.id, role: newUser.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "12h" }
+    );
 
     // Trả về phản hồi đăng ký thành công
     res.status(201).json({

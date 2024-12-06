@@ -40,6 +40,13 @@ exports.registerUser = async (
     gender,
   });
 
+  // Tạo JWT token
+  const token = jwt.sign(
+    { id: newUser.id, role: newUser.role },
+    process.env.JWT_SECRET,
+    { expiresIn: "12h" }
+  );
+
   return user;
 };
 
