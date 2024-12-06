@@ -1,4 +1,5 @@
 // services/customerService.js
+const { Op } = require("sequelize");
 const { Flight, Booking, Seat, Customer } = require("../models");
 
 // Lấy thông tin khách hàng từ userId
@@ -16,7 +17,7 @@ exports.searchFlights = async (origin, destination, date) => {
       origin,
       destination,
       departureTime: {
-        [Op.gte]: date, // Tìm chuyến bay khởi hành từ ngày hiện tại trở đi
+        [Op.gte]: date, // Tìm chuyến bay khởi hành từ ngày date trở đi bằng Op.gte (greater than or equal)
       },
     },
     include: [Seat], // Bao gồm thông tin về ghế
