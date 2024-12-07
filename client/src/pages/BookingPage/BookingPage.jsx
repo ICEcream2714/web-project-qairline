@@ -8,190 +8,247 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '@/components/ui/dialog';
-
-import { useState } from 'react';
-import process from 'process';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { format } from 'date-fns';
 
 function BookingPage() {
   const navigate = useNavigate();
-  const apiUrl = 'http://localhost:5000/api/customer/search-flights?';
+  const location = useLocation(); // Nhận dữ liệu từ location
 
-  const date = new Date();
-  const dates = [
-    new Date(2024, 11, 6),
-    new Date(2024, 11, 7),
-    new Date(2024, 11, 8),
-    new Date(2024, 11, 9),
-    new Date(2024, 11, 10),
-    new Date(2024, 11, 11),
-    new Date(2024, 11, 12),
-  ];
-  const flights = [
-    {
-      departureTime: '23:10',
-      arrivalTime: '10:00',
-      origin: 'DOH',
-      destination: 'ABT',
-      duration: '1 Stop, 10h 50m',
-      economyPrice: 1030,
-      firstPrice: 4390,
-    },
-    {
-      departureTime: '18:00',
-      arrivalTime: '08:45',
-      origin: 'DOH',
-      destination: 'ABT',
-      duration: '1 Stop, 14h 45m',
-      economyPrice: 1370,
-      firstPrice: 5990,
-    },
-    {
-      departureTime: '18:05',
-      arrivalTime: '10:00',
-      origin: 'DOH',
-      destination: 'ABT',
-      duration: '1 Stop, 15h 55m',
-      economyPrice: 1030,
-      firstPrice: 4390,
-    },
-    {
-      departureTime: '16:45',
-      arrivalTime: '08:45',
-      origin: 'DOH',
-      destination: 'ABT',
-      duration: '1 Stop, 16h',
-      economyPrice: 1370,
-      firstPrice: 5240,
-    },
-    {
-      departureTime: '15:20',
-      arrivalTime: '10:00',
-      origin: 'DOH',
-      destination: 'ABT',
-      duration: '1 Stop, 18h 40m',
-      economyPrice: 1260,
-      firstPrice: 4390,
-    },
-  ];
+  const [outgoingFlights, setOutgoingFlights] = useState([]); // Mảng các chuyến bay đi
+  const [returnFlights, setReturnFlights] = useState([]); // Mảng các chuyến bay về
+  const [outgoingDates, setOutgoingDates] = useState([]); // Mảng ngày chuyến bay đi
+  const [returnDates, setReturnDates] = useState([]); // Mảng ngày chuyến bay về
+  const [selectedOutgoingDate, setSelectedOutgoingDate] = useState(null); // Ngày chuyến bay đi được chọn
+  const [selectedReturnDate, setSelectedReturnDate] = useState(null); // Ngày chuyến bay về được chọn
+  const [selectedOutgoingFlight, setSelectedOutgoingFlight] = useState(null); // Chuyến bay đi được chọn
+  const [selectedReturnFlight, setSelectedReturnFlight] = useState(null); // Chuyến bay về được chọn
+  const [showFareDetails, setShowFareDetails] = useState(false); // Hiển thị dialog fare details
+  const [isSelectingReturnFlight, setIsSelectingReturnFlight] = useState(false); // State to track if selecting return flight
+  const [origin, setOrigin] = useState('Doha'); // Default origin
+  const [destination, setDestination] = useState('Al-Baha'); // Default destination
+  const [totalPrice, setTotalPrice] = useState(0); // State to track total price
 
-  const [selectedFlight, setSelectedFlight] = useState(null);
-  const [showFareDetails, setShowFareDetails] = useState(false);
+  // Lấy dữ liệu chuyến bay từ location.state
+  useEffect(() => {
+    if (location.state) {
+      const { flights, origin, destination } = location.state;
+      if (flights) {
+        setOutgoingFlights(flights.flights.outgoing || flights.flights);
+        setReturnFlights(flights.flights.return || []);
+      }
+      if (origin) setOrigin(origin);
+      if (destination) setDestination(destination);
+    }
+  }, [location.state]);
+
+  // Tạo mảng outgoingDates và returnDates từ outgoingFlights và returnFlights
+  useEffect(() => {
+    if (outgoingFlights.length > 0) {
+      const outgoingDates = outgoingFlights.map((flight) => {
+        const departureDate = new Date(flight.departure_time);
+        return departureDate.toISOString().split('T')[0];
+      });
+      const uniqueOutgoingDates = [...new Set(outgoingDates)];
+      uniqueOutgoingDates.sort((a, b) => new Date(a) - new Date(b));
+      setOutgoingDates(uniqueOutgoingDates);
+      setSelectedOutgoingDate(uniqueOutgoingDates[0]);
+    }
+
+    if (returnFlights.length > 0) {
+      const returnDates = returnFlights.map((flight) => {
+        const returnDate = new Date(flight.departure_time);
+        return returnDate.toISOString().split('T')[0];
+      });
+      const uniqueReturnDates = [...new Set(returnDates)];
+      uniqueReturnDates.sort((a, b) => new Date(a) - new Date(b));
+      setReturnDates(uniqueReturnDates);
+      setSelectedReturnDate(uniqueReturnDates[0]);
+    }
+  }, [outgoingFlights, returnFlights]);
 
   const handleSelectFare = (flight, fare) => {
-    setSelectedFlight({ ...flight, fare });
-    setShowFareDetails(true);
+    const selectedSeat = flight.Seats.find((seat) => seat.seat_type === fare);
+    if (selectedSeat) {
+      if (isSelectingReturnFlight) {
+        setSelectedReturnFlight({ ...flight, fare });
+      } else {
+        setSelectedOutgoingFlight({ ...flight, fare });
+      }
+      setTotalPrice((prevPrice) => prevPrice + selectedSeat.price);
+      setShowFareDetails(true);
+    }
   };
 
   const handleConfirmBooking = () => {
-    navigate('/booking/passenger-details');
+    if (returnFlights.length > 0 && !isSelectingReturnFlight) {
+      setIsSelectingReturnFlight(true);
+      setSelectedOutgoingDate(null);
+      setShowFareDetails(false);
+    } else {
+      navigate('/booking/passenger-details', {
+        state: {
+          totalPrice,
+          outboundFlight: selectedOutgoingFlight,
+          returnFlight: selectedReturnFlight,
+        },
+      });
+    }
   };
 
   return (
-    <div className="h-auto bg-slate-50">
-      {/* TODO: Need a new navbar */}
+    <div className="h-screen min-h-screen bg-slate-50">
       <Navbar />
-      <main className="bg-slate-200 pt-28 md:px-10">
-        {/* Header */}
-        <div>
-          <p>{`${date.toUTCString()}`}</p>
-          <div></div>
-          <div className="mb-8">
-            <h1 className="text-2xl font-medium">
-              Select your departure flight
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              from <span className="text-purple-600">Doha</span> to{' '}
-              <span className="text-purple-600">Al-Baha</span>
-            </p>
-          </div>
+      <main className="h-full bg-slate-200 pt-28 md:px-10">
+        <div className="mb-8">
+          <h1 className="text-2xl font-medium">
+            {isSelectingReturnFlight
+              ? 'Select your return flight'
+              : 'Select your departure flight'}
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            from{' '}
+            <span className="text-purple-600">
+              {isSelectingReturnFlight ? destination : origin}
+            </span>{' '}
+            to{' '}
+            <span className="text-purple-600">
+              {isSelectingReturnFlight ? origin : destination}
+            </span>
+          </p>
         </div>
+
         <div className="mb-8 overflow-x-auto">
-          {/* /* Date picker */}
-          <Tabs defaultValue={dates[0].toISOString()}>
-            <TabsList className="h-auto w-full gap-0 rounded-t-lg">
-              {dates.map((date) => (
-                <TabsTrigger
-                  key={date.toISOString()}
-                  value={date.toISOString()}
-                  className="flex w-full flex-col gap-1 rounded-t-lg p-4 data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
-                  // onClick={() =>
-                  //   console.log(`Selected date: ${date.toISOString()}`)
-                  // }
-                >
-                  <span className="text-sm">{format(date, 'EEE, d MMM')}</span>
-                  <span className="text-xs text-muted-foreground">
-                    QAR 1,030
-                  </span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <TabsContent
-              className="grid w-full gap-4"
-              value={date.toISOString()}
-            ></TabsContent>
-          </Tabs>
-          {/* Flights */}
-          <div className="grid gap-4">
-            {flights.map((flight) => (
-              <Card key={flight.id}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-8">
-                      <div>
-                        <p className="text-2xl font-bold">
-                          {flight.departureTime}
-                        </p>
-                        <p className="text-sm text-gray-500">{flight.origin}</p>
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {flight.duration}
-                      </div>
-                      <div>
-                        <p className="text-2xl font-bold">
-                          {flight.arrivalTime}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {flight.destination}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex space-x-4">
-                      <div className="text-center">
-                        <p className="text-sm text-gray-500">Economy</p>
-                        <p className="text-lg font-bold">
-                          USD {flight.economyPrice}
-                        </p>
-                        <Button
-                          variant="outline"
-                          onClick={() => handleSelectFare(flight, 'economy')}
-                        >
-                          Select fare
-                        </Button>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-sm text-gray-500">First</p>
-                        <p className="text-lg font-bold">
-                          USD {flight.firstPrice}
-                        </p>
-                        <Button
-                          variant="outline"
-                          onClick={() => handleSelectFare(flight, 'first')}
-                        >
-                          Select fare
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {/* Date picker for outgoing or return flights */}
+          {(isSelectingReturnFlight ? returnDates : outgoingDates)?.length >
+            0 && (
+            <Tabs
+              value={
+                isSelectingReturnFlight
+                  ? selectedReturnDate
+                  : selectedOutgoingDate
+              }
+              onValueChange={
+                isSelectingReturnFlight
+                  ? setSelectedReturnDate
+                  : setSelectedOutgoingDate
+              }
+            >
+              <TabsList className="h-auto w-full gap-0 rounded-t-lg">
+                {(isSelectingReturnFlight ? returnDates : outgoingDates).map(
+                  (date, index) => (
+                    <TabsTrigger
+                      key={`${date}-${index}`}
+                      value={date}
+                      className="flex w-full flex-col gap-1 rounded-t-lg p-4 data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
+                    >
+                      <span className="text-sm">
+                        {format(new Date(date), 'EEE, d MMM')}
+                      </span>
+                    </TabsTrigger>
+                  )
+                )}
+              </TabsList>
+              {/* Filter and display flights for the selected date */}
+              <TabsContent
+                value={
+                  isSelectingReturnFlight
+                    ? selectedReturnDate
+                    : selectedOutgoingDate
+                }
+              >
+                {(isSelectingReturnFlight ? returnFlights : outgoingFlights)
+                  .filter(
+                    (flight) =>
+                      new Date(flight.departure_time)
+                        .toISOString()
+                        .split('T')[0] ===
+                      (isSelectingReturnFlight
+                        ? selectedReturnDate
+                        : selectedOutgoingDate)
+                  )
+                  .map((flight) => {
+                    const economySeat = flight.Seats.find(
+                      (seat) => seat.seat_type === 'economy'
+                    );
+                    const premiumSeat = flight.Seats.find(
+                      (seat) => seat.seat_type === 'premium'
+                    );
+                    return (
+                      <Card key={flight.id} className="mb-3">
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-8">
+                              <div>
+                                <p className="text-2xl font-bold">
+                                  {format(
+                                    new Date(flight.departure_time),
+                                    'HH:mm'
+                                  )}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  {flight.origin}
+                                </p>
+                              </div>
+                              <div className="text-sm text-gray-500">
+                                {flight.duration}
+                              </div>
+                              <div>
+                                <p className="text-2xl font-bold">
+                                  {format(
+                                    new Date(flight.arrival_time),
+                                    'HH:mm'
+                                  )}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  {flight.destination}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex space-x-4">
+                              <div className="text-center">
+                                <p className="text-sm text-gray-500">Economy</p>
+                                <p className="text-lg font-bold">
+                                  USD {economySeat ? economySeat.price : 'N/A'}
+                                </p>
+                                <Button
+                                  variant="outline"
+                                  onClick={() =>
+                                    handleSelectFare(flight, 'economy')
+                                  }
+                                >
+                                  Select fare
+                                </Button>
+                              </div>
+                              <div className="text-center">
+                                <p className="text-sm text-gray-500">First</p>
+                                <p className="text-lg font-bold">
+                                  USD {premiumSeat ? premiumSeat.price : 'N/A'}
+                                </p>
+                                <Button
+                                  variant="outline"
+                                  onClick={() =>
+                                    handleSelectFare(flight, 'premium')
+                                  }
+                                >
+                                  Select fare
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+              </TabsContent>
+            </Tabs>
+          )}
         </div>
+
+        {/* Fare Details Dialog */}
         <Dialog open={showFareDetails} onOpenChange={setShowFareDetails}>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
@@ -200,16 +257,35 @@ function BookingPage() {
                 Review your selected fare details before proceeding
               </DialogDescription>
             </DialogHeader>
-            {selectedFlight && (
+            {(selectedOutgoingFlight || selectedReturnFlight) && (
               <div className="space-y-4">
                 <div className="space-y-2">
                   <p className="font-medium">Flight Details</p>
                   <p>
-                    {selectedFlight.origin} → {selectedFlight.destination}
+                    {isSelectingReturnFlight && selectedReturnFlight
+                      ? `${selectedReturnFlight.origin} → ${selectedReturnFlight.destination}`
+                      : selectedOutgoingFlight
+                        ? `${selectedOutgoingFlight.origin} → ${selectedOutgoingFlight.destination}`
+                        : ''}
                   </p>
                   <p>
-                    {selectedFlight.departureTime} -{' '}
-                    {selectedFlight.arrivalTime}
+                    {format(
+                      new Date(
+                        isSelectingReturnFlight && selectedReturnFlight
+                          ? selectedReturnFlight.departure_time
+                          : selectedOutgoingFlight.departure_time
+                      ),
+                      'HH:mm'
+                    )}{' '}
+                    -{' '}
+                    {format(
+                      new Date(
+                        isSelectingReturnFlight && selectedReturnFlight
+                          ? selectedReturnFlight.arrival_time
+                          : selectedOutgoingFlight.arrival_time
+                      ),
+                      'HH:mm'
+                    )}
                   </p>
                 </div>
                 <div className="space-y-2">
@@ -228,7 +304,7 @@ function BookingPage() {
             )}
           </DialogContent>
         </Dialog>
-
+        {/* Footer */}
         <div className="container mx-auto mt-24 px-4 py-6">
           <div className="flex justify-between text-sm text-gray-500">
             <p>© 2024 Airline Booking. All rights reserved.</p>

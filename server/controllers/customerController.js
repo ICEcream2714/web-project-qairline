@@ -101,6 +101,7 @@ exports.viewProfile = async (req, res) => {
 //   }
 // };
 
+// Tìm chuyến bay
 exports.searchFlights = async (req, res) => {
   try {
     // Lấy các thông số tìm kiếm từ query params
@@ -157,7 +158,7 @@ exports.searchFlights = async (req, res) => {
       include: [
         {
           model: Seat,
-          attributes: ["seat_type", "seat_number", "is_available"],
+          attributes: ["seat_type", "seat_number", "is_available", "price"],
         },
         {
           model: Airplane,
@@ -172,7 +173,7 @@ exports.searchFlights = async (req, res) => {
       include: [
         {
           model: Seat,
-          attributes: ["seat_type", "seat_number", "is_available"],
+          attributes: ["seat_type", "seat_number", "is_available", "price"],
         },
         {
           model: Airplane,

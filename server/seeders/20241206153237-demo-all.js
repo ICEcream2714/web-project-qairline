@@ -282,12 +282,24 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        flight_number: "VN124",
+        origin: "Ha Noi",
+        destination: "Ho Chi Minh",
+        departure_time: new Date("2024-12-10T12:00:00"),
+        arrival_time: new Date("2024-12-10T14:00:00"),
+        duration: "02:00:00",
+        airplane_id: 1, // Boeing 787
+        status: "Scheduled",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
 
     // Thêm dữ liệu vào bảng Seats
     await queryInterface.bulkInsert("Seats", [
       {
-        seat_type: "Economy",
+        seat_type: "economy",
         seat_number: "1A",
         flight_id: 1, // VN123
         is_available: true,
@@ -296,7 +308,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        seat_type: "Economy",
+        seat_type: "economy",
         seat_number: "1B",
         flight_id: 1, // VN123
         is_available: true,
@@ -305,7 +317,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        seat_type: "Economy",
+        seat_type: "economy",
         seat_number: "1C",
         flight_id: 2, // VJ456
         is_available: true,
@@ -314,16 +326,16 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        seat_type: "Premium",
+        seat_type: "premium",
         seat_number: "1A",
-        flight_id: 1, // VN123
+        flight_id: 7, // VN123
         is_available: true,
         price: 2000,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        seat_type: "Premium",
+        seat_type: "premium",
         seat_number: "1B",
         flight_id: 1, // VN123
         is_available: true,
@@ -332,7 +344,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        seat_type: "Premium",
+        seat_type: "premium",
         seat_number: "1C",
         flight_id: 2, // VJ456
         is_available: true,
@@ -341,7 +353,7 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        seat_type: "Economy",
+        seat_type: "economy",
         seat_number: "2A",
         flight_id: 3, // BB789
         is_available: true,
@@ -350,20 +362,155 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        seat_type: "Premium",
+        seat_type: "economy",
         seat_number: "2B",
-        flight_id: 4, // VN987
+        flight_id: 7, // BB789
+        is_available: true,
+        price: 1500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "2C",
+        flight_id: 3, // BB789
+        is_available: true,
+        price: 1500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "2D",
+        flight_id: 3, // BB789
+        is_available: true,
+        price: 1500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "premium",
+        seat_number: "2B",
+        flight_id: 7, // VN987
         is_available: false,
         price: 2500,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
       {
-        seat_type: "Premium",
+        seat_type: "premium",
+        seat_number: "2D",
+        flight_id: 4, // VN987
+        is_available: true,
+        price: 2500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "premium",
+        seat_number: "2E",
+        flight_id: 4, // VN987
+        is_available: true,
+        price: 2500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "premium",
+        seat_number: "2F",
+        flight_id: 4, // VN987
+        is_available: true,
+        price: 2500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "premium",
         seat_number: "2C",
         flight_id: 5, // VJ654
         is_available: true,
         price: 3500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "3A",
+        flight_id: 5, // VJ654
+        is_available: true,
+        price: 3500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "3B",
+        flight_id: 5, // VJ654
+        is_available: true,
+        price: 3500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "3C",
+        flight_id: 5, // VJ654
+        is_available: true,
+        price: 3500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "3D",
+        flight_id: 5, // VJ654
+        is_available: true,
+        price: 3500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "4A",
+        flight_id: 6, // Flight ID 6
+        is_available: true,
+        price: 4000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "4B",
+        flight_id: 6, // Flight ID 6
+        is_available: true,
+        price: 4000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "economy",
+        seat_number: "4C",
+        flight_id: 7,
+        is_available: true,
+        price: 4000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "premium",
+        seat_number: "1A",
+        flight_id: 6, // Flight ID 6
+        is_available: true,
+        price: 6000,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        seat_type: "premium",
+        seat_number: "1B",
+        flight_id: 6, // Flight ID 6
+        is_available: true,
+        price: 6000,
         createdAt: new Date(),
         updatedAt: new Date(),
       },

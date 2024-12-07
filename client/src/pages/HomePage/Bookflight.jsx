@@ -3,16 +3,23 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { useNavigate } from 'react-router-dom';
 
 export default function BookAFlight() {
-  const [tripType, setTripType] = useState('return');
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
+
+  const [tripType, setTripType] = useState('return');
   const [passengers, setPassengers] = useState({
     adults: 1,
     children: 0,
     infants: 0,
     class: 'economy',
   });
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const [departure, setDeparture] = useState('');
+  const [returnDate, setReturnDate] = useState('');
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -26,6 +33,46 @@ export default function BookAFlight() {
 
   const handleClassChange = (value) => {
     setPassengers((prev) => ({ ...prev, class: value }));
+  };
+
+  const handleSearchFlights = async () => {
+    const encodedFrom = encodeURIComponent(from);
+    const encodedTo = encodeURIComponent(to);
+
+    // Tạo URL API dựa trên thông tin người dùng nhập
+    let apiUrl = `http://localhost:5000/api/customer/search-flights?origin=${encodedFrom}&destination=${encodedTo}`;
+
+    if (departure) {
+      apiUrl += `&departure_date=${departure}`;
+    }
+
+    if (tripType === 'return' && returnDate) {
+      apiUrl += `&return_date=${returnDate}`;
+    }
+
+    // if (passengers.class) {
+    //   apiUrl += `&seat_type=${passengers.class}`;
+    // }
+
+    console.log('API URL:', apiUrl);
+
+    // Gọi API để tìm kiếm chuyến bay
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+
+      if (response.ok) {
+        // Truyền data về flights qua navigate
+        navigate('/booking', {
+          state: { flights: data, origin: from, destination: to },
+        });
+        console.log('Flights:', data);
+      } else {
+        console.error('Error fetching flights:', data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -63,7 +110,13 @@ export default function BookAFlight() {
           <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
             From
           </Label>
-          <Input id="from" type="text" placeholder="From" className="pl-10" />
+          <Input
+            id="from"
+            type="text"
+            placeholder="From"
+            className="pl-10"
+            onChange={(e) => setFrom(e.target.value)}
+          />
           <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400">
             ⇄
           </span>
@@ -72,7 +125,12 @@ export default function BookAFlight() {
           <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
             To
           </Label>
-          <Input id="to" type="text" placeholder="To" />
+          <Input
+            id="to"
+            type="text"
+            placeholder="To"
+            onChange={(e) => setTo(e.target.value)}
+          />
         </div>
         <div>
           <Label
@@ -85,6 +143,7 @@ export default function BookAFlight() {
             id="departure"
             type="date"
             className="rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+            onChange={(e) => setDeparture(e.target.value)}
           />
         </div>
         {tripType === 'return' && (
@@ -99,6 +158,7 @@ export default function BookAFlight() {
               id="return"
               type="date"
               className="rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              onChange={(e) => setReturnDate(e.target.value)}
             />
           </div>
         )}
@@ -190,7 +250,10 @@ export default function BookAFlight() {
             </div>
           )}
         </div>
-        <Button className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700">
+        <Button
+          className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
+          onClick={handleSearchFlights}
+        >
           Search flights
         </Button>
       </div>
