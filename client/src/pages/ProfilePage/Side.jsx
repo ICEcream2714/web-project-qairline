@@ -11,7 +11,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 const Side = () => {
   return (
     <aside className="w-full px-3 md:w-64 md:max-w-sm md:px-0">
-      <Card className="rounded-md border-none bg-purple-700 pb-5 text-center text-white">
+      <Card className="rounded-md border-none bg-muted-foreground pb-5 text-center text-white">
         <CardHeader>
           <Avatar className="mx-auto h-24 w-24">
             <AvatarImage
