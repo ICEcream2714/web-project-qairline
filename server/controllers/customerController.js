@@ -1,5 +1,8 @@
 const { Op } = require("sequelize");
-const { Flight, Seat, Booking, Airplane } = require("../models");
+const { Flight, Seat, Booking, Passenger, Airplane } = require("../models");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const { User } = require("../models");
 
 // controllers/customerController.js
 const customerService = require("../services/customerService");
@@ -9,97 +12,15 @@ exports.viewProfile = async (req, res) => {
   try {
     const customer = await customerService.getCustomerByUserId(req.userId);
     if (!customer)
-      return res.status(404).send("Không tìm thấy thông tin khách hàng.");
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy thông tin khách hàng." });
     res.status(200).json(customer);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Lỗi hệ thống");
+    res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
-
-// // Tìm chuyến bay
-// exports.searchFlights = async (req, res) => {
-//   try {
-//     // Lấy các thông số tìm kiếm từ query params
-//     const { origin, destination, departure_date, return_date, seat_type } =
-//       req.query;
-
-//     const whereConditions = {};
-
-//     // Tìm kiếm theo địa điểm khởi hành và đích đến
-//     if (origin) {
-//       whereConditions.origin = origin;
-//     }
-//     if (destination) {
-//       whereConditions.destination = destination;
-//     }
-
-//     // Tìm kiếm theo ngày khởi hành
-//     if (departure_date) {
-//       whereConditions.departure_time = {
-//         [Op.gte]: new Date(departure_date), // Lớn hơn hoặc bằng ngày khởi hành
-//       };
-//     }
-
-//     // Tìm kiếm theo ngày khứ hồi
-//     if (return_date) {
-//       whereConditions.arrival_time = {
-//         [Op.lte]: new Date(return_date), // Nhỏ hơn hoặc bằng ngày khứ hồi
-//       };
-//     }
-
-//     // Tìm kiếm theo loại ghế
-//     if (seat_type) {
-//       // Kiểm tra trong bảng Seats xem loại ghế có tồn tại
-//       const seats = await Seat.findAll({
-//         where: { seat_type },
-//       });
-
-//       const availableFlightIds = seats.map((seat) => seat.flight_id);
-
-//       // Cập nhật điều kiện tìm kiếm theo các chuyến bay có loại ghế yêu cầu
-//       whereConditions.id = { [Op.in]: availableFlightIds };
-//     }
-
-//     // Tìm kiếm các chuyến bay thỏa mãn điều kiện
-//     const flights = await Flight.findAll({
-//       where: whereConditions,
-//       include: [
-//         {
-//           model: Seat,
-//           attributes: ["seat_type", "seat_number", "is_available"],
-//         },
-//         {
-//           model: Airplane,
-//           attributes: ["model", "manufacturer"],
-//         },
-//       ],
-//     });
-
-//     if (flights.length === 0) {
-//       return res.status(404).json({
-//         message: "No flights found",
-//       });
-//     } else {
-//       // Lọc ra các chuyến bay có ghế trống
-//       flights.forEach((flight) => {
-//         flight.Seats = flight.Seats.filter((seat) => seat.is_available);
-//       });
-//     }
-
-//     // Trả về kết quả tìm kiếm
-//     res.status(200).json({
-//       message: "Flights found",
-//       flights,
-//     });
-//   } catch (error) {
-//     console.error("Error searching flights:", error);
-//     res.status(500).json({
-//       message: "Internal server error",
-//       error: error.message,
-//     });
-//   }
-// };
 
 // Tìm chuyến bay
 exports.searchFlights = async (req, res) => {
@@ -158,7 +79,13 @@ exports.searchFlights = async (req, res) => {
       include: [
         {
           model: Seat,
-          attributes: ["seat_type", "seat_number", "is_available", "price"],
+          attributes: [
+            "id",
+            "seat_type",
+            "seat_number",
+            "is_available",
+            "price",
+          ],
         },
         {
           model: Airplane,
@@ -173,7 +100,13 @@ exports.searchFlights = async (req, res) => {
       include: [
         {
           model: Seat,
-          attributes: ["seat_type", "seat_number", "is_available", "price"],
+          attributes: [
+            "id",
+            "seat_type",
+            "seat_number",
+            "is_available",
+            "price",
+          ],
         },
         {
           model: Airplane,
@@ -217,19 +150,53 @@ exports.searchFlights = async (req, res) => {
 
 // Đặt vé
 exports.bookFlight = async (req, res) => {
-  const { flightId, seatId } = req.body;
+  const {
+    totalPrice,
+    outboundFlight,
+    returnFlight,
+    passengerDetails,
+    paymentDetails,
+  } = req.body;
   const customerId = req.userId; // Lấy customerId từ user đã đăng nhập
 
+  // Validate inputs
+  if (!totalPrice || !outboundFlight || !passengerDetails || !paymentDetails) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
   try {
-    const booking = await customerService.bookFlight(
-      customerId,
-      flightId,
-      seatId
-    );
+    const booking = await Booking.create({
+      customer_id: customerId,
+      outbound_flight_id: outboundFlight.id,
+      return_flight_id: returnFlight ? returnFlight.id : null,
+      departure_time: outboundFlight.departure_time,
+      return_time: returnFlight ? returnFlight.departure_time : null,
+      booking_date: new Date(),
+      status: "Confirmed",
+      passengers: 1, // Assuming 1 passenger for simplicity
+      total_price: totalPrice,
+      payment_status: "Paid",
+      payment_method: paymentDetails.paymentMethod,
+      cardholder_name: paymentDetails.cardholderName,
+      card_number: paymentDetails.cardNumber,
+      expiry_date: paymentDetails.expiryDate,
+      cvv: paymentDetails.cvv,
+      outbound_seat_id: outboundFlight.seat_id,
+      return_seat_id: returnFlight ? returnFlight.seat_id : null,
+    });
+
+    await Passenger.create({
+      booking_id: booking.id,
+      first_name: passengerDetails.firstName,
+      last_name: passengerDetails.lastName,
+      email: passengerDetails.email,
+      phone: passengerDetails.phone,
+    });
+
     res.status(201).json(booking);
   } catch (error) {
-    console.error(error);
-    res.status(500).send("Lỗi hệ thống");
+    console.error("Error creating booking:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
   }
 };
 
@@ -239,11 +206,12 @@ exports.cancelBooking = async (req, res) => {
 
   try {
     const cancelResult = await customerService.cancelBooking(bookingId);
-    if (!cancelResult) return res.status(400).send("Không thể hủy vé");
-    res.status(200).send("Hủy vé thành công");
+    if (!cancelResult)
+      return res.status(400).json({ message: "Không thể hủy vé" });
+    res.status(200).json({ message: "Hủy vé thành công" });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Lỗi hệ thống");
+    res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
 
@@ -253,10 +221,97 @@ exports.trackBooking = async (req, res) => {
 
   try {
     const booking = await customerService.trackBooking(bookingId);
-    if (!booking) return res.status(404).send("Không tìm thấy thông tin vé");
+    if (!booking)
+      return res.status(404).json({ message: "Không tìm thấy thông tin vé" });
     res.status(200).json(booking);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Lỗi hệ thống");
+    res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
+
+// Lấy thông tin đặt vé
+exports.getBookingDetails = async (req, res) => {
+  const { bookingId } = req.params;
+
+  try {
+    const booking = await Booking.findOne({
+      where: { id: bookingId },
+      include: [
+        {
+          model: Passenger,
+          attributes: ["first_name", "last_name", "email", "phone"],
+        },
+        {
+          model: Flight,
+          as: "outboundFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+          ],
+        },
+        {
+          model: Flight,
+          as: "returnFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+          ],
+        },
+        {
+          model: Seat,
+          as: "outboundSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+        {
+          model: Seat,
+          as: "returnSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+      ],
+    });
+
+    if (!booking) {
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy thông tin đặt vé" });
+    }
+
+    res.status(200).json(booking);
+  } catch (error) {
+    console.error("Error fetching booking details:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
+  }
+};
+
+// Đăng nhập
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Tìm user theo email
+    const user = await User.findOne({ where: { email } });
+    if (!user) throw new Error("Người dùng không tồn tại.");
+
+    // Kiểm tra mật khẩu
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new Error("Mật khẩu sai.");
+
+    // Tạo token JWT
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "12h",
+      }
+    );
+
+    res.status(200).json({ token });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };

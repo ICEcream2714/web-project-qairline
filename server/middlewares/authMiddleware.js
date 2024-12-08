@@ -3,7 +3,8 @@ const jwt = require("jsonwebtoken");
 
 // Middleware xác thực token JWT
 exports.verifyToken = (req, res, next) => {
-  const token = req.headers["authorization"];
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // Extract token from "Bearer <token>"
 
   if (!token) return res.status(403).json({ message: "Không có token." });
 

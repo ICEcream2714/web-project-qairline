@@ -9,23 +9,68 @@ import { format } from 'date-fns';
 export default function PaymentPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { totalPrice, outboundFlight, returnFlight } = location.state || {
-    totalPrice: 0,
-    outboundFlight: null,
-    returnFlight: null,
-  }; // Retrieve total price and flight details from location.state
+  const { totalPrice, outboundFlight, returnFlight, passengerDetails } =
+    location.state || {
+      totalPrice: 0,
+      outboundFlight: null,
+      returnFlight: null,
+      passengerDetails: {},
+    }; // Retrieve total price, flight details, and passenger details from location.state
   const [paymentData, setPaymentData] = useState({
     cardNumber: '',
     expiryDate: '',
     cvv: '',
     cardholderName: '',
+    paymentMethod: 'Credit Card', // Default payment method
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle payment processing here
-    alert('Booking confirmed! Thank you for your purchase.');
-    navigate('/');
+    const bookingData = {
+      totalPrice,
+      outboundFlight: {
+        ...outboundFlight,
+        seat_id: outboundFlight.seatId, // Use the seat ID from state
+      },
+      returnFlight: returnFlight
+        ? {
+            ...returnFlight,
+            seat_id: returnFlight.seatId, // Use the seat ID from state
+          }
+        : null,
+      passengerDetails,
+      paymentDetails: paymentData,
+    };
+
+    try {
+      const token = localStorage.getItem('token'); // Retrieve token from localStorage
+      console.log('token: ', token);
+      const response = await fetch('http://localhost:5000/api/customer/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: token ? `Bearer ${token}` : '', // Include token in headers
+        },
+        body: JSON.stringify(bookingData),
+      });
+      console.log('Response:', response);
+
+      if (response.ok) {
+        alert('Booking confirmed! Thank you for your purchase.');
+        navigate('/');
+      } else {
+        const errorText = await response.text(); // Read response as text
+        try {
+          const errorData = JSON.parse(errorText); // Try to parse as JSON
+          alert(`Error: ${errorData.message}`);
+        } catch {
+          alert(`Error: ${errorText}`); // Fallback to plain text
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while processing your booking.');
+    }
   };
 
   return (

@@ -74,9 +74,17 @@ function BookingPage() {
     const selectedSeat = flight.Seats.find((seat) => seat.seat_type === fare);
     if (selectedSeat) {
       if (isSelectingReturnFlight) {
-        setSelectedReturnFlight({ ...flight, fare });
+        setSelectedReturnFlight({
+          ...flight,
+          fare,
+          seatId: selectedSeat.id, // Store the seat ID
+        });
       } else {
-        setSelectedOutgoingFlight({ ...flight, fare });
+        setSelectedOutgoingFlight({
+          ...flight,
+          fare,
+          seatId: selectedSeat.id, // Store the seat ID
+        });
       }
       setTotalPrice((prevPrice) => prevPrice + selectedSeat.price);
       setShowFareDetails(true);
@@ -92,8 +100,16 @@ function BookingPage() {
       navigate('/booking/passenger-details', {
         state: {
           totalPrice,
-          outboundFlight: selectedOutgoingFlight,
-          returnFlight: selectedReturnFlight,
+          outboundFlight: {
+            ...selectedOutgoingFlight,
+            seatId: selectedOutgoingFlight.seatId, // Pass the seat ID
+          },
+          returnFlight: selectedReturnFlight
+            ? {
+                ...selectedReturnFlight,
+                seatId: selectedReturnFlight.seatId, // Pass the seat ID if return flight exists
+              }
+            : null,
         },
       });
     }

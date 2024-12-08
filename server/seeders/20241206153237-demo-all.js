@@ -9,7 +9,7 @@ module.exports = {
       [
         {
           email: "customer1@example.com",
-          password: await bcrypt.hash("password123", 10),
+          password: await bcrypt.hash("Pass123@", 10),
           phone: "123456789",
           role: "customer",
           createdAt: new Date(),
@@ -17,7 +17,7 @@ module.exports = {
         },
         {
           email: "customer2@example.com",
-          password: await bcrypt.hash("password123", 10),
+          password: await bcrypt.hash("Pass123@", 10),
           phone: "123456790",
           role: "customer",
           createdAt: new Date(),
@@ -25,7 +25,7 @@ module.exports = {
         },
         {
           email: "customer3@example.com",
-          password: await bcrypt.hash("password123", 10),
+          password: await bcrypt.hash("Pass123@", 10),
           phone: "123456791",
           role: "customer",
           createdAt: new Date(),
@@ -33,7 +33,7 @@ module.exports = {
         },
         {
           email: "customer4@example.com",
-          password: await bcrypt.hash("password123", 10),
+          password: await bcrypt.hash("Pass123@", 10),
           phone: "123456792",
           role: "customer",
           createdAt: new Date(),
@@ -41,7 +41,7 @@ module.exports = {
         },
         {
           email: "customer5@example.com",
-          password: await bcrypt.hash("password123", 10),
+          password: await bcrypt.hash("Pass123@", 10),
           phone: "123456793",
           role: "customer",
           createdAt: new Date(),
@@ -515,6 +515,31 @@ module.exports = {
         updatedAt: new Date(),
       },
     ]);
+
+    // Thêm dữ liệu vào bảng Bookings
+    await queryInterface.bulkInsert("Bookings", [
+      {
+        customer_id: 1,
+        outbound_flight_id: 1,
+        return_flight_id: 2,
+        departure_time: new Date("2024-12-10T10:00:00Z"),
+        return_time: new Date("2024-12-20T10:00:00Z"),
+        booking_date: new Date(),
+        status: "Confirmed",
+        passengers: 1,
+        total_price: 5000,
+        payment_status: "Paid",
+        payment_method: "Credit Card",
+        cardholder_name: "John Doe",
+        card_number: "4111111111111111",
+        expiry_date: "12/25",
+        cvv: "123",
+        outbound_seat_id: 1,
+        return_seat_id: 2,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
   },
 
   down: async (queryInterface, Sequelize) => {
@@ -533,5 +558,8 @@ module.exports = {
 
     // Xóa dữ liệu trong bảng Airlines
     await queryInterface.bulkDelete("Airlines", null, {});
+
+    // Xóa dữ liệu trong bảng Bookings
+    await queryInterface.bulkDelete("Bookings", null, {});
   },
 };

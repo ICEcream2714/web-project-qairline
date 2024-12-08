@@ -21,6 +21,10 @@ const Airline = require("./airlines")(
   sequelize,
   require("sequelize").DataTypes
 );
+const Passenger = require("./passengers")(
+  sequelize,
+  require("sequelize").DataTypes
+);
 
 // Định nghĩa mối quan hệ
 User.associate({ Customer, Admin });
@@ -28,10 +32,11 @@ Customer.associate({ User, Booking });
 Admin.associate({ User, Post });
 Post.associate({ Admin });
 Flight.associate({ Airplane, Booking, Seat });
-Booking.associate({ Customer, Flight, Seat });
+Booking.associate({ Customer, Flight, Seat, Passenger });
 Seat.associate({ Flight, Booking });
 Airplane.associate({ Airline, Flight });
 Airline.associate({ Airplane });
+Passenger.associate({ Booking });
 
 module.exports = {
   User,
@@ -43,5 +48,6 @@ module.exports = {
   Seat,
   Airplane,
   Airline,
+  Passenger,
   sequelize,
 };

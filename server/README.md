@@ -1,8 +1,9 @@
-## Note
+# Note
 
 - Đang dùng DB browser cho SQlite để xem database
 - TK test login sau khi chạy seed: customer1@example.com | Pass123@
 - Có thể tạo tk mới thử cx đc
+- Test Booking: nên chọn Ha Noi đến Ho Chi Minh, ngày 10/12/2024 -> 15/12/2024
 
 Trong trường hợp bị lỗi cổng 5000 đang chạy:
 Trên Linux/macOS:

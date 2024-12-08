@@ -14,6 +14,10 @@ export default function PassengerDetailsPage() {
     outboundFlight: null,
     returnFlight: null,
   }; // Retrieve total price from location.state
+
+  console.log('Outbound Seat ID:', outboundFlight?.seatId);
+  console.log('Return Seat ID:', returnFlight?.seatId);
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -26,8 +30,17 @@ export default function PassengerDetailsPage() {
     navigate('/booking/payment', {
       state: {
         totalPrice,
-        outboundFlight,
-        returnFlight,
+        outboundFlight: {
+          ...outboundFlight,
+          seatId: outboundFlight.seatId,
+        },
+        returnFlight: returnFlight
+          ? {
+              ...returnFlight,
+              seatId: returnFlight.seatId,
+            }
+          : null,
+        passengerDetails: formData,
       },
     });
   };
