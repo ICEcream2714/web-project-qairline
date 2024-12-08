@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import {
   Popover,
   PopoverContent,
@@ -15,6 +16,7 @@ const UserProfile = ({
   onLogout,
   isScrolled = false,
 }) => {
+  const navigate = useNavigate();
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -58,6 +60,7 @@ const UserProfile = ({
           </Button>
           <Button
             variant="link"
+            onClick={() => navigate('/profile')}
             className="text-gray-700 hover:text-purple-600"
           >
             Edit profile
