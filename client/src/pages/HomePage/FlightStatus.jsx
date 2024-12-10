@@ -5,6 +5,8 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 
 const FlightStatus = () => {
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
   const [activeTab, setActiveTab] = useState('route');
   const [route, setRoute] = useState({ from: '', to: '' });
   const [flightNumber, setFlightNumber] = useState('');
@@ -57,27 +59,45 @@ const FlightStatus = () => {
       {/* Content */}
       <CardContent>
         {activeTab === 'route' ? (
-          <form className="flex flex-col gap-4 md:flex-row">
+          <form className="flex flex-col gap-3 md:flex-row">
             {/* From */}
-            <div className="flex-1">
-              <Label htmlFor="from">From</Label>
-              <Input
-                id="from"
-                placeholder="Enter departure city"
-                value={route.from}
-                onChange={(e) => setRoute({ ...route, from: e.target.value })}
-              />
-            </div>
-            {/* To */}
-            <div className="flex-1">
-              <Label htmlFor="to">To</Label>
-              <Input
-                id="to"
-                placeholder="Enter destination city"
-                value={route.to}
-                onChange={(e) => setRoute({ ...route, to: e.target.value })}
-              />
-            </div>
+              <div className="flex-1">
+                <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
+                  From
+                </Label>
+                <Input
+                  id="from"
+                  placeholder="Enter departure city"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
+                />
+              </div>
+
+              {/* Switch Arrow */}
+                <span
+                  className="mx-2 pt-7 cursor-pointer text-gray-400 hover:text-gray-600"
+                  onClick={() => {
+                  // Swap From and To values
+                  setFrom(to);
+                  setTo(from);
+                  }}
+                >
+                  ⇄
+                </span>
+
+                {/* To */}
+              <div className="flex-1">
+                <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
+                  To
+                </Label>
+                <Input
+                  id="to"
+                  placeholder="Enter destination city"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                />
+              </div>
+        
             {/* Date */}
             <div className="flex-1">
               <Label htmlFor="date">Date</Label>

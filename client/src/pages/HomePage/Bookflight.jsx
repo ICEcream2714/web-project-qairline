@@ -106,63 +106,75 @@ export default function BookAFlight() {
 
       {/* Input Fields */}
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="relative">
-          <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
-            From
-          </Label>
-          <Input
-            id="from"
-            type="text"
-            placeholder="From"
-            className="pl-10"
-            onChange={(e) => setFrom(e.target.value)}
-          />
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400">
+        {/* From and To with switch arrow */}
+        <div className="col-span-2 flex items-center">
+          <div className="relative w-full">
+            <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
+              From
+            </Label>
+            <Input
+              id="from"
+              type="text"
+              placeholder="From"
+              value={from}
+              className=" w-full"
+              onChange={(e) => setFrom(e.target.value)}
+            />
+          </div>
+          <span
+            className="mx-4 pt-4 cursor-pointer text-gray-400 hover:text-gray-600"
+            onClick={() => {
+            // Hoán đổi giá trị from và to
+            setFrom(to);
+            setTo(from);
+            }}
+          >
             ⇄
           </span>
+          <div className="relative w-full">
+            <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
+              To
+            </Label>
+            <Input
+              id="to"
+              type="text"
+              placeholder="To"
+              value={to}
+              className="w-full"
+              onChange={(e) => setTo(e.target.value)}
+            />
+          </div>
         </div>
+
+        {/* Departure */}
         <div>
-          <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
-            To
-          </Label>
-          <Input
-            id="to"
-            type="text"
-            placeholder="To"
-            onChange={(e) => setTo(e.target.value)}
-          />
-        </div>
-        <div>
-          <Label
-            htmlFor="departure"
-            className="mb-1 block text-sm text-gray-600"
-          >
+          <Label htmlFor="departure" className="mb-1 block text-sm text-gray-600">
             Departure
           </Label>
           <Input
             id="departure"
             type="date"
-            className="rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+            className="w-full rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
             onChange={(e) => setDeparture(e.target.value)}
           />
-        </div>
-        {tripType === 'return' && (
-          <div>
-            <Label
-              htmlFor="return"
-              className="mb-1 block text-sm text-gray-600"
-            >
-              Return
-            </Label>
-            <Input
-              id="return"
-              type="date"
-              className="rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              onChange={(e) => setReturnDate(e.target.value)}
-            />
-          </div>
-        )}
       </div>
+
+      {/* Return (only for "return" trip type) */}
+      {tripType === 'return' && (
+        <div>
+          <Label htmlFor="return" className="mb-1 block text-sm text-gray-600">
+            Return
+          </Label>
+          <Input
+            id="return"
+            type="date"
+            className="w-full rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
+            onChange={(e) => setReturnDate(e.target.value)}
+          />
+        </div>
+       )}
+    </div>
+
 
       {/* Passenger Selector */}
       <div className="mt-6 flex items-center justify-between">
