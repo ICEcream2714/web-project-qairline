@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from '@/components/DatePicker';
 
 export default function BookAFlight() {
   const navigate = useNavigate();
@@ -151,12 +152,8 @@ export default function BookAFlight() {
           <Label htmlFor="departure" className="mb-1 block text-sm text-gray-600">
             Departure
           </Label>
-          <Input
-            id="departure"
-            type="date"
-            className="w-full rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
-            onChange={(e) => setDeparture(e.target.value)}
-          />
+          <DatePicker id = "departure" date={departure} setDate={setDeparture} />
+              {departure && <p className="mt-4 text-gray-600">Selected Date: {departure}</p>}
       </div>
 
       {/* Return (only for "return" trip type) */}
@@ -165,12 +162,8 @@ export default function BookAFlight() {
           <Label htmlFor="return" className="mb-1 block text-sm text-gray-600">
             Return
           </Label>
-          <Input
-            id="return"
-            type="date"
-            className="w-full rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
-            onChange={(e) => setReturnDate(e.target.value)}
-          />
+          <DatePicker id = "return" date={returnDate} setDate={setReturnDate} />
+              {returnDate && <p className="mt-4 text-gray-600">Selected Date: {returnDate}</p>}
         </div>
        )}
     </div>

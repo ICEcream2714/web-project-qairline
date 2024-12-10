@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import DatePicker from '@/components/DatePicker';
 
 const FlightStatus = () => {
   const [from, setFrom] = useState('');
@@ -101,12 +102,8 @@ const FlightStatus = () => {
             {/* Date */}
             <div className="flex-1">
               <Label htmlFor="date">Date</Label>
-              <Input
-                id="date"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
+              <DatePicker date={date} setDate={setDate} />
+              {date && <p className="mt-4 text-gray-600">Selected Date: {date}</p>}
             </div>
             {/* Search Button */}
             <div className="mt-6 flex justify-center">
@@ -133,12 +130,8 @@ const FlightStatus = () => {
             {/* Date */}
             <div className="flex-1">
               <Label htmlFor="flightDate">Date</Label>
-              <Input
-                id="flightDate"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
+              <DatePicker date={date} setDate={setDate} />
+              {date && <p className="mt-4 text-gray-600">Selected Date: {date}</p>}
             </div>
             {/* Search Button */}
             <div className="mt-6 flex justify-center">

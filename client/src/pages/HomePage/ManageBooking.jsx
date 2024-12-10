@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import DatePicker from '@/components/DatePicker';
 
 const ManageBooking = () => {
   const [activeTab, setActiveTab] = useState('manage_booking');
@@ -92,13 +93,8 @@ const ManageBooking = () => {
           {/* Date of Birth */}
           <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="birthDate">Date of Birth</Label>
-            <Input
-              id="birthDate"
-              type="date"
-              value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
-              className="w-full"
-            />
+            <DatePicker id = "birthDate" date = {birthDate} setDate={setBirthDate}/>
+              {birthDate && <p className="mt-4 text-gray-600">Selected Date: {birthDate}</p>}
           </div>
 
           {/* Submit Button */}

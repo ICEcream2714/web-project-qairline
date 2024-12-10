@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import DatePicker from '@/components/DatePicker';
 
 const Stopover = () => {
   const [from, setFrom] = useState('');
@@ -146,11 +147,11 @@ const Stopover = () => {
             </div>
               <div>
                 <Label htmlFor="departure">Departure</Label>
-                <Input id="departure" type="date" />
+                <DatePicker id = "departure"/>
               </div>
               <div>
                 <Label htmlFor="return">Return</Label>
-                <Input id="return" type="date" />
+                <DatePicker id = "return"/>
               </div>
             </div>
 
@@ -359,11 +360,11 @@ const Stopover = () => {
             </div>
               <div>
                 <Label htmlFor="departure">Departure</Label>
-                <Input id="departure" type="date" />
+                <DatePicker id = "departure"/>
               </div>
               <div>
                 <Label htmlFor="return">Return</Label>
-                <Input id="return" type="date" />
+                <DatePicker id = "return"/>
               </div>
             </div>
 
