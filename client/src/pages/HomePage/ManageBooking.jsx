@@ -36,7 +36,7 @@ const ManageBooking = () => {
   };
 
   return (
-    <Card className="rounded-lg bg-white p-6 shadow-md">
+    <Card className="rounded-lg bg-white p-0 shadow-md">
       <CardHeader className="border-b">
         <div className="flex">
           <Button

@@ -28,7 +28,7 @@ const FlightStatus = () => {
   };
 
   return (
-    <Card className="rounded-lg bg-white p-6 shadow-md">
+    <Card className="rounded-lg bg-white p-0 shadow-md">
       {/* Header Tabs */}
       <CardHeader className="mb-4 border-b">
         <div className="flex justify-center space-x-4">
