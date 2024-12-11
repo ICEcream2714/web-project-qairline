@@ -6,7 +6,20 @@ import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from '@/components/DatePicker';
 
+const cities = ["Hà Nội", "Tokyo", "New York", "Paris", "London", "Bangkok"];
+
 export default function BookAFlight() {
+
+  const [activeDropdown, setActiveDropdown] = useState(null); // null | "from" | "to"
+
+  const handleCitySelect = (city, field) => {
+    if (field === "from") setFrom(city);
+    if (field === "to") setTo(city);
+    setActiveDropdown(null); // Đóng dropdown
+  };
+
+  const handleOutsideClick = () => setActiveDropdown(null);
+  
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,6 +48,7 @@ export default function BookAFlight() {
   const handleClassChange = (value) => {
     setPassengers((prev) => ({ ...prev, class: value }));
   };
+  
 
   const handleSearchFlights = async () => {
     const encodedFrom = encodeURIComponent(from);
@@ -108,43 +122,79 @@ export default function BookAFlight() {
       {/* Input Fields */}
       <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* From and To with switch arrow */}
-        <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center">
-          <div className="relative w-full">
-            <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
-              From
-            </Label>
-            <Input
-              id="from"
-              type="text"
-              placeholder="From"
-              value={from}
-              className="w-full"
-              onChange={(e) => setFrom(e.target.value)}
-            />
+        <div
+      className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center relative"
+      onClick={(e) => e.stopPropagation()} // Chặn click event không lan ra ngoài
+    >
+      {/* From Field */}
+      <div className="relative w-full">
+        <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
+          From
+        </Label>
+        <Input
+          id="from"
+          type="text"
+          placeholder="From"
+          value={from}
+          className="w-full"
+          onClick={() => setActiveDropdown("from")} // Hiển thị dropdown "from"
+          onChange={(e) => setFrom(e.target.value)}
+        />
+        {activeDropdown === "from" && (
+          <div className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
+            {cities.map((city) => (
+              <div
+                key={city}
+                className="cursor-pointer p-2 hover:bg-gray-100"
+                onClick={() => handleCitySelect(city, "from")}
+              >
+                {city}
+              </div>
+            ))}
           </div>
-          <span
-            className="mx-0 md:mx-4 mt-3 md:mt-4 cursor-pointer text-gray-400 hover:text-gray-600"
-            onClick={() => {
-              setFrom(to);
-              setTo(from);
-            }}
-          >
-            ⇄
-          </span>
-          <div className="relative w-full">
-            <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
-              To
-            </Label>
-            <Input
-              id="to"
-              type="text"
-              placeholder="To"
-              value={to}
-              className="w-full"
-              onChange={(e) => setTo(e.target.value)}
-            />
+        )}
+      </div>
+
+      {/* Switch Arrow */}
+      <span
+        className="mx-0 md:mx-4 mt-3 md:mt-4 cursor-pointer text-gray-400 hover:text-gray-600"
+        onClick={() => {
+          setFrom(to);
+          setTo(from);
+        }}
+      >
+        ⇄
+      </span>
+
+      {/* To Field */}
+      <div className="relative w-full">
+        <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
+          To
+        </Label>
+        <Input
+          id="to"
+          type="text"
+          placeholder="To"
+          value={to}
+          className="w-full"
+          onClick={() => setActiveDropdown("to")} // Hiển thị dropdown "to"
+          onChange={(e) => setTo(e.target.value)}
+        />
+        {activeDropdown === "to" && (
+          <div className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
+            {cities.map((city) => (
+              <div
+                key={city}
+                className="cursor-pointer p-2 hover:bg-gray-100"
+                onClick={() => handleCitySelect(city, "to")}
+              >
+                {city}
+              </div>
+            ))}
           </div>
-        </div>
+        )}
+      </div>
+    </div>
   
         {/* Departure */}
         <div>
@@ -258,6 +308,9 @@ export default function BookAFlight() {
           Search flights
         </Button>
       </div>
+      {document.addEventListener("click", handleOutsideClick)}
     </div>
   );
 }
+
+
