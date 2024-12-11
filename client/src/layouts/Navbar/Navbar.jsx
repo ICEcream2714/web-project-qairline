@@ -161,15 +161,22 @@ function Navbar() {
                 Login / Sign Up
               </Button>
             ) : (
-              <UserProfile
-                name="Hoang Nguyen"
-                id="681897319"
-                tier="Burgundy"
-                avios={0}
-                qpoints={0}
-                isScrolled={isScrolled}
-                onLogout={handleLogout}
-              />
+              <div className="flex items-center space-x-4">
+        <img
+          src="https://via.placeholder.com/40"
+          alt="Avatar"
+          className="h-10 w-10 rounded-full"
+        />
+        <UserProfile
+          name="Hoang Nguyen"
+          id="681897319"
+          tier="Burgundy"
+          avios={0}
+          qpoints={0}
+          isScrolled={isScrolled}
+          onLogout={handleLogout}
+        />
+      </div>
               // <Popover>
               //   <PopoverTrigger>
               //     <Button
