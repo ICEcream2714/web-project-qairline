@@ -82,7 +82,7 @@ export default function BookAFlight() {
       <RadioGroup
         value={tripType}
         onValueChange={(value) => setTripType(value)}
-        className="flex items-center space-x-8"
+        className="flex flex-col md:flex-row items-start sm:items-center space-y-4 md:space-y-0 md:space-x-8"
       >
         {['return', 'one-way', 'multi-city'].map((type) => (
           <div key={type} className="flex items-center space-x-2">
@@ -98,17 +98,17 @@ export default function BookAFlight() {
               {type === 'return'
                 ? 'Return'
                 : type === 'one-way'
-                  ? 'One way'
-                  : 'Multi-city'}
+                ? 'One way'
+                : 'Multi-city'}
             </Label>
           </div>
         ))}
       </RadioGroup>
-
+  
       {/* Input Fields */}
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* From and To with switch arrow */}
-        <div className="col-span-2 flex items-center">
+        <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center">
           <div className="relative w-full">
             <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
               From
@@ -118,16 +118,15 @@ export default function BookAFlight() {
               type="text"
               placeholder="From"
               value={from}
-              className=" w-full"
+              className="w-full"
               onChange={(e) => setFrom(e.target.value)}
             />
           </div>
           <span
-            className="mx-4 pt-4 cursor-pointer text-gray-400 hover:text-gray-600"
+            className="mx-0 md:mx-4 mt-3 md:my-0 cursor-pointer text-gray-400 hover:text-gray-600"
             onClick={() => {
-            // Hoán đổi giá trị from và to
-            setFrom(to);
-            setTo(from);
+              setFrom(to);
+              setTo(from);
             }}
           >
             ⇄
@@ -146,32 +145,35 @@ export default function BookAFlight() {
             />
           </div>
         </div>
-
+  
         {/* Departure */}
         <div>
           <Label htmlFor="departure" className="mb-1 block text-sm text-gray-600">
             Departure
           </Label>
-          <DatePicker id = "departure" date={departure} setDate={setDeparture} />
-              {departure && <p className="mt-4 text-gray-600">Selected Date: {departure}</p>}
-      </div>
-
-      {/* Return (only for "return" trip type) */}
-      {tripType === 'return' && (
-        <div>
-          <Label htmlFor="return" className="mb-1 block text-sm text-gray-600">
-            Return
-          </Label>
-          <DatePicker id = "return" date={returnDate} setDate={setReturnDate} />
-              {returnDate && <p className="mt-4 text-gray-600">Selected Date: {returnDate}</p>}
+          <DatePicker id="departure" date={departure} setDate={setDeparture} />
+          {departure && (
+            <p className="mt-4 text-gray-600">Selected Date: {departure}</p>
+          )}
         </div>
-       )}
-    </div>
-
-
+  
+        {/* Return (only for "return" trip type) */}
+        {tripType === 'return' && (
+          <div>
+            <Label htmlFor="return" className="mb-1 block text-sm text-gray-600">
+              Return
+            </Label>
+            <DatePicker id="return" date={returnDate} setDate={setReturnDate} />
+            {returnDate && (
+              <p className="mt-4 text-gray-600">Selected Date: {returnDate}</p>
+            )}
+          </div>
+        )}
+      </div>
+  
       {/* Passenger Selector */}
-      <div className="mt-6 flex items-center justify-between">
-        <div className="relative w-full max-w-xs">
+      <div className="mt-6 flex flex-col space-y-4 md:space-y-0 sm:flex-row md:items-center md:justify-between">
+        <div className="relative w-full md:max-w-xs pr-0 md:pr-4">
           <Button
             onClick={toggleDropdown}
             className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700"
@@ -182,13 +184,13 @@ export default function BookAFlight() {
                 : ''
             } ${passengers.class === 'economy' ? 'Economy' : 'Premium'}`}
           </Button>
-
+  
           {isOpen && (
             <div className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
               {/* Passengers Section */}
               <div className="space-y-4 p-4">
                 <Label className="text-sm font-medium">Passengers</Label>
-
+  
                 {[
                   { label: 'Adults', type: 'adults', age: '12+ years' },
                   { label: 'Child', type: 'children', age: '2-11 years' },
@@ -219,7 +221,7 @@ export default function BookAFlight() {
                   </div>
                 ))}
               </div>
-
+  
               {/* Class Section */}
               <div className="space-y-4 border-t p-4">
                 <Label className="text-sm font-medium">Class</Label>
@@ -242,7 +244,7 @@ export default function BookAFlight() {
                   </div>
                 </RadioGroup>
               </div>
-
+  
               {/* Confirm Button */}
               <div className="border-t p-4">
                 <Button

@@ -42,7 +42,7 @@ const ManageBooking = () => {
           <Button
             variant="ghost"
             onClick={() => setActiveTab('manage_booking')}
-            className={`flex-1 py-2 text-center text-lg font-medium ${
+            className={`flex-1 py-1 text-center text-lg font-medium ${
               activeTab === 'manage_booking'
                 ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
@@ -65,7 +65,7 @@ const ManageBooking = () => {
       </CardHeader>
 
       <CardContent>
-        <form className="flex flex-col gap-4 md:flex-row md:gap-6">
+        <form className="flex pt-4 flex-col gap-4 md:flex-row md:gap-6">
           {/* Booking Reference */}
           <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="bookingCode">Booking Reference</Label>

@@ -35,7 +35,7 @@ const FlightStatus = () => {
           <Button
             variant="ghost"
             onClick={() => setActiveTab('route')}
-            className={`flex-1 py-2 text-center text-lg font-medium ${
+            className={`flex-1 py-1 text-center text-lg font-medium ${
               activeTab === 'route'
                 ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
@@ -60,9 +60,9 @@ const FlightStatus = () => {
       {/* Content */}
       <CardContent>
         {activeTab === 'route' ? (
-          <form className="flex flex-col gap-3 md:flex-row">
+          <form className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center">
             {/* From */}
-              <div className="flex-1">
+              <div className="relative w-full">
                 <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
                   From
                 </Label>
@@ -75,19 +75,18 @@ const FlightStatus = () => {
               </div>
 
               {/* Switch Arrow */}
-                <span
-                  className="mx-2 pt-7 cursor-pointer text-gray-400 hover:text-gray-600"
-                  onClick={() => {
-                  // Swap From and To values
+              <span
+                className="mx-0 md:mx-4 mt-3 md:my-0 cursor-pointer text-gray-400 hover:text-gray-600"
+                onClick={() => {
                   setFrom(to);
                   setTo(from);
-                  }}
+                 }}
                 >
                   ⇄
-                </span>
+              </span>
 
                 {/* To */}
-              <div className="flex-1">
+              <div className="relative w-full">
                 <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
                   To
                 </Label>
@@ -100,7 +99,7 @@ const FlightStatus = () => {
               </div>
         
             {/* Date */}
-            <div className="flex-1">
+            <div className="relative w-full">
               <Label htmlFor="date">Date</Label>
               <DatePicker date={date} setDate={setDate} />
               {date && <p className="mt-4 text-gray-600">Selected Date: {date}</p>}
