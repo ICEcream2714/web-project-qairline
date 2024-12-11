@@ -123,7 +123,7 @@ export default function BookAFlight() {
             />
           </div>
           <span
-            className="mx-0 md:mx-4 mt-3 md:my-0 cursor-pointer text-gray-400 hover:text-gray-600"
+            className="mx-0 md:mx-4 mt-3 md:mt-4 cursor-pointer text-gray-400 hover:text-gray-600"
             onClick={() => {
               setFrom(to);
               setTo(from);
@@ -152,9 +152,6 @@ export default function BookAFlight() {
             Departure
           </Label>
           <DatePicker id="departure" date={departure} setDate={setDeparture} />
-          {departure && (
-            <p className="mt-4 text-gray-600">Selected Date: {departure}</p>
-          )}
         </div>
   
         {/* Return (only for "return" trip type) */}
@@ -164,9 +161,6 @@ export default function BookAFlight() {
               Return
             </Label>
             <DatePicker id="return" date={returnDate} setDate={setReturnDate} />
-            {returnDate && (
-              <p className="mt-4 text-gray-600">Selected Date: {returnDate}</p>
-            )}
           </div>
         )}
       </div>

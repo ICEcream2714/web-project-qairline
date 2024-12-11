@@ -94,7 +94,6 @@ const ManageBooking = () => {
           <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="birthDate">Date of Birth</Label>
             <DatePicker id = "birthDate" date = {birthDate} setDate={setBirthDate}/>
-              {birthDate && <p className="mt-4 text-gray-600">Selected Date: {birthDate}</p>}
           </div>
 
           {/* Submit Button */}

@@ -12,6 +12,8 @@ const Stopover = () => {
   const [activeTab, setActiveTab] = useState('stopover');
   const [tripType, setTripType] = useState('round-trip');
   const [isOpen, setIsOpen] = useState(false);
+  const [returnDate, setReturnDate] = useState('');
+  const [departure, setDeparture] = useState('');
   const [passengers, setPassengers] = useState({
     adults: 1,
     children: 0,
@@ -105,9 +107,7 @@ const Stopover = () => {
           </RadioGroup>
         
           {/* From, To, Departure Date, Return Date */}
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex flex-col md:flex-row items-center">
-              {/* From */}
+          <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center">
               <div className="relative w-full">
                 <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
                   From
@@ -122,7 +122,7 @@ const Stopover = () => {
         
               {/* Switch Arrow */}
               <span
-                className="mx-0 md:mx-4 my-4 md:my-0 cursor-pointer text-gray-400 hover:text-gray-600"
+                className="mx-0 md:mx-4 mt-2 md:mt-6 cursor-pointer text-gray-400 hover:text-gray-600"
                 onClick={() => {
                   // Swap From and To values
                   setFrom(to);
@@ -144,15 +144,14 @@ const Stopover = () => {
                   onChange={(e) => setTo(e.target.value)}
                 />
               </div>
-            </div>
-            <div>
+            <div className="relative w-full md:px-4">
               <Label htmlFor="departure">Departure</Label>
-              <DatePicker id="departure" />
+              <DatePicker id="departure" date={departure} setDate={setDeparture}/>
             </div>
             {tripType === "round-trip" && (
-              <div>
+              <div className="relative w-full">
                 <Label htmlFor="return">Return</Label>
-                <DatePicker id="return" />
+                <DatePicker id="return" date={returnDate} setDate={setReturnDate}/>
               </div>
             )}
           </div>
@@ -282,11 +281,11 @@ const Stopover = () => {
               )}
             </div>
         
-            <div className="w-full flex justify-center">
+            
               <Button className="rounded-lg bg-purple-600 py-3 text-white hover:bg-purple-700">
                  Search flights
               </Button>
-            </div>
+          
           </div>
         </div>
         
@@ -323,9 +322,7 @@ const Stopover = () => {
           </RadioGroup>
         
           {/* From, To, Departure Date, Return Date */}
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex flex-col md:flex-row items-center">
-              {/* From */}
+          <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center">
               <div className="relative w-full">
                 <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
                   From
@@ -340,7 +337,7 @@ const Stopover = () => {
         
               {/* Switch Arrow */}
               <span
-                className="mx-0 md:mx-4 my-4 md:my-0 cursor-pointer text-gray-400 hover:text-gray-600"
+                className="mx-0 md:mx-4 mt-2 md:mt-6 cursor-pointer text-gray-400 hover:text-gray-600"
                 onClick={() => {
                   // Swap From and To values
                   setFrom(to);
@@ -362,22 +359,21 @@ const Stopover = () => {
                   onChange={(e) => setTo(e.target.value)}
                 />
               </div>
-            </div>
-            <div>
+            <div className="relative w-full md:px-4">
               <Label htmlFor="departure">Departure</Label>
-              <DatePicker id="departure" />
+              <DatePicker id="departure" date={departure} setDate={setDeparture}/>
             </div>
             {tripType === "round-trip" && (
-              <div>
+              <div className="relative w-full">
                 <Label htmlFor="return">Return</Label>
-                <DatePicker id="return" />
+                <DatePicker id="return" date={returnDate} setDate={setReturnDate}/>
               </div>
             )}
           </div>
         
           {/* Passengers and Class */}
-          <div className="mt-4 flex flex-col items-start justify-between space-y-4 md:space-y-0 md:flex-row md:items-center">
-            <div className="relative w-full max-w-xs">
+          <div className="mt-6 flex flex-col space-y-4 md:space-y-0 sm:flex-row md:items-center md:justify-between">
+            <div className="relative w-full md:max-w-xs pr-0 md:pr-4">
               <Button
                 onClick={toggleDropdown}
                 className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700"
@@ -500,11 +496,11 @@ const Stopover = () => {
               )}
             </div>
         
-            <div className="w-full flex justify-center">
-              <Button className="rounded-lg bg-purple-600 py-3 text-white hover:bg-purple-700">
+            
+              <Button className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700">
                  Search flights & Hotels
               </Button>
-            </div>
+            
           </div>
         </div>
         )}

@@ -76,7 +76,7 @@ const FlightStatus = () => {
 
               {/* Switch Arrow */}
               <span
-                className="mx-0 md:mx-4 mt-3 md:my-0 cursor-pointer text-gray-400 hover:text-gray-600"
+                className="mx-0 md:mx-4 mt-3 md:mt-4 cursor-pointer text-gray-400 hover:text-gray-600"
                 onClick={() => {
                   setFrom(to);
                   setTo(from);
@@ -99,10 +99,9 @@ const FlightStatus = () => {
               </div>
         
             {/* Date */}
-            <div className="relative w-full">
+            <div className="relative w-full md:px-4">
               <Label htmlFor="date">Date</Label>
               <DatePicker date={date} setDate={setDate} />
-              {date && <p className="mt-4 text-gray-600">Selected Date: {date}</p>}
             </div>
             {/* Search Button */}
             <div className="mt-6 flex justify-center">
@@ -130,7 +129,6 @@ const FlightStatus = () => {
             <div className="flex-1">
               <Label htmlFor="flightDate">Date</Label>
               <DatePicker date={date} setDate={setDate} />
-              {date && <p className="mt-4 text-gray-600">Selected Date: {date}</p>}
             </div>
             {/* Search Button */}
             <div className="mt-6 flex justify-center">

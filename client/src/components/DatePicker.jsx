@@ -20,9 +20,16 @@ const DatePicker = ({ date, setDate }) => {
         <Calendar
           mode="single"
           selected={date ? new Date(date) : undefined}
-          onSelect={(selectedDate) =>
-            setDate(selectedDate ? selectedDate.toISOString().split("T")[0] : "")
-          }
+          onSelect={(selectedDate) => {
+            if (selectedDate) {
+              const year = selectedDate.getFullYear();
+              const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+              const day = String(selectedDate.getDate()).padStart(2, "0");
+              setDate(`${year}-${month}-${day}`);
+            } else {
+              setDate("");
+            }
+          }}
           initialFocus
         />
       </PopoverContent>
