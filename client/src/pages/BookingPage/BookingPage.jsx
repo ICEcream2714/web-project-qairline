@@ -1,4 +1,3 @@
-import Navbar from '@/layouts/Navbar/Navbar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { format } from 'date-fns';
+import { NavbarBooking } from '../../layouts/Navbar/NavbarBooking';
 
 function BookingPage() {
   const navigate = useNavigate();
@@ -116,9 +116,9 @@ function BookingPage() {
   };
 
   return (
-    <div className="h-screen min-h-screen bg-slate-50">
-      <Navbar />
-      <main className="h-full bg-slate-200 pt-28 md:px-10">
+    <div className="h-screen min-h-screen">
+      <NavbarBooking />
+      <main className="h-full bg-gradient-to-t from-slate-700 to-slate-300 pt-28 md:px-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium">
             {isSelectingReturnFlight
@@ -196,7 +196,7 @@ function BookingPage() {
                     return (
                       <Card key={flight.id} className="mb-3">
                         <CardContent className="p-6">
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col items-center justify-between md:flex-row">
                             <div className="flex items-center space-x-8">
                               <div>
                                 <p className="text-2xl font-bold">
@@ -224,11 +224,13 @@ function BookingPage() {
                                 </p>
                               </div>
                             </div>
-                            <div className="flex space-x-4">
+                            <div className="mt-4 flex space-x-4 md:mt-0">
                               <div className="text-center">
                                 <p className="text-sm text-gray-500">Economy</p>
                                 <p className="text-lg font-bold">
-                                  USD {economySeat ? economySeat.price : 'N/A'}
+                                  {economySeat
+                                    ? `$${economySeat.price}`
+                                    : 'N/A'}
                                 </p>
                                 <Button
                                   variant="outline"
@@ -242,7 +244,9 @@ function BookingPage() {
                               <div className="text-center">
                                 <p className="text-sm text-gray-500">First</p>
                                 <p className="text-lg font-bold">
-                                  USD {premiumSeat ? premiumSeat.price : 'N/A'}
+                                  {premiumSeat
+                                    ? `$${premiumSeat.price}`
+                                    : 'N/A'}
                                 </p>
                                 <Button
                                   variant="outline"
@@ -320,24 +324,24 @@ function BookingPage() {
             )}
           </DialogContent>
         </Dialog>
-        {/* Footer */}
-        <div className="container mx-auto mt-24 px-4 py-6">
-          <div className="flex justify-between text-sm text-gray-500">
-            <p>© 2024 Airline Booking. All rights reserved.</p>
-            <div className="space-x-4">
-              <a href="#" className="hover:text-gray-900">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-gray-900">
-                Terms of Service
-              </a>
-              <a href="#" className="hover:text-gray-900">
-                Contact
-              </a>
-            </div>
+      </main>
+      {/* Footer */}
+      <footer className="w-full bg-slate-700 bg-transparent px-36 pb-5 pt-3">
+        <div className="flex justify-between text-sm text-black">
+          <p>© 2024 Airline Booking. All rights reserved.</p>
+          <div className="space-x-4">
+            <a href="#" className="hover:text-gray-700">
+              Privacy Policy
+            </a>
+            <a href="#" className="hover:text-gray-700">
+              Terms of Service
+            </a>
+            <a href="#" className="hover:text-gray-700">
+              Contact
+            </a>
           </div>
         </div>
-      </main>
+      </footer>
     </div>
   );
 }
