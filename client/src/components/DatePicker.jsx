@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
 
-const DatePicker = ({ date, setDate }) => {
+const DatePicker = ({ date, setDate, title = "Pick a date" }) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -12,7 +12,7 @@ const DatePicker = ({ date, setDate }) => {
           variant="outline"
           className="w-full justify-start text-left font-normal"
         >
-          {date ? format(new Date(date), "PPP") : "Pick a date"}
+          {date ? format(new Date(date), "PPP") : title}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
