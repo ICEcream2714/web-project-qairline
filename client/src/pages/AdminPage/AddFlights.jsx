@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Pencil, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import DatePicker from "@/components/DatePicker";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
 const FlightsPage = () => {
   const [flights, setFlights] = useState([
@@ -33,6 +35,9 @@ const FlightsPage = () => {
     seat_number: "",
   });
 
+  const [selectedFlight, setSelectedFlight] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const handleAddFlight = () => {
     const newFlightData = {
       ...newFlight,
@@ -45,6 +50,18 @@ const FlightsPage = () => {
   const handleDeleteFlight = (id) => {
     const updatedFlights = flights.filter((flight) => flight.id !== id);
     setFlights(updatedFlights);
+  };
+
+  const handleEditFlight = (flight) => {
+    setSelectedFlight(flight);
+    setIsEditOpen(true);
+  };
+
+  const handleSaveEdit = () => {
+    setFlights(
+      flights.map((flight) => (flight.id === selectedFlight.id ? selectedFlight : flight))
+    );
+    setIsEditOpen(false);
   };
 
   const resetForm = () => {
@@ -86,24 +103,21 @@ const FlightsPage = () => {
                 onChange={(e) => setNewFlight({ ...newFlight, destination: e.target.value })}
                 placeholder="Destination"
               />
-              {/* DatePicker for Departure Time */}
               <DatePicker
                 date={newFlight.departure_time}
                 setDate={(date) => setNewFlight({ ...newFlight, departure_time: date })}
                 title="Departure Time"
               />
-              {/* DatePicker for Arrival Time */}
               <DatePicker
                 date={newFlight.arrival_time}
                 setDate={(date) => setNewFlight({ ...newFlight, arrival_time: date })}
-                title = "Arrival Time"
+                title="Arrival Time"
               />
               <Input
                 value={newFlight.duration}
                 onChange={(e) => setNewFlight({ ...newFlight, duration: e.target.value })}
                 placeholder="Duration (e.g., 2:30)"
               />
-              {/* Chọn trạng thái chuyến bay */}
               <select
                 value={newFlight.status}
                 onChange={(e) => setNewFlight({ ...newFlight, status: e.target.value })}
@@ -113,7 +127,6 @@ const FlightsPage = () => {
                 <option value="Delayed">Delayed</option>
                 <option value="Cancelled">Cancelled</option>
               </select>
-              {/* Dropdown chọn loại máy bay */}
               <select
                 value={newFlight.aircraft_type}
                 onChange={(e) => setNewFlight({ ...newFlight, aircraft_type: e.target.value })}
@@ -124,7 +137,6 @@ const FlightsPage = () => {
                 <option value="Boeing 737">Boeing 737</option>
                 <option value="Airbus A321">Airbus A321</option>
               </select>
-              {/* Input chọn số ghế */}
               <Input
                 type="number"
                 value={newFlight.seat_number}
@@ -149,7 +161,6 @@ const FlightsPage = () => {
                   <TableHead>Destination</TableHead>
                   <TableHead>Departure</TableHead>
                   <TableHead>Arrival</TableHead>
-                  <TableHead>Duration</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Aircraft</TableHead>
                   <TableHead>Seats</TableHead>
@@ -158,22 +169,29 @@ const FlightsPage = () => {
               </TableHeader>
               <TableBody>
                 {flights.map((flight) => (
-                  <TableRow key={flight.id} className="hover:bg-gray-50">
+                  <TableRow key={flight.id}>
                     <TableCell>{flight.flight_number}</TableCell>
                     <TableCell>{flight.origin}</TableCell>
                     <TableCell>{flight.destination}</TableCell>
                     <TableCell>{flight.departure_time}</TableCell>
                     <TableCell>{flight.arrival_time}</TableCell>
-                    <TableCell>{flight.duration}</TableCell>
                     <TableCell>{flight.status}</TableCell>
                     <TableCell>{flight.aircraft_type}</TableCell>
                     <TableCell>{flight.seat_number}</TableCell>
-                    <TableCell>
+                    <TableCell className="flex space-x-2">
+                      <Button
+                        onClick={() => handleEditFlight(flight)}
+                        className="bg-yellow-500 hover:bg-yellow-600 p-2 rounded-md"
+                        size="icon"
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
                       <Button
                         onClick={() => handleDeleteFlight(flight.id)}
-                        className="bg-red-500 hover:bg-red-600 text-white"
+                        className="bg-red-500 hover:bg-red-600 p-2 rounded-md"
+                        size="icon"
                       >
-                        Delete
+                        <Trash className="h-4 w-4" />
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -183,6 +201,79 @@ const FlightsPage = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Modal chỉnh sửa chuyến bay */}
+      {selectedFlight && (
+        <Dialog open={isEditOpen} onOpenChange={() => setIsEditOpen(false)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Flight Information</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-1 gap-4">
+              <Input
+                value={selectedFlight.flight_number}
+                onChange={(e) => setSelectedFlight({ ...selectedFlight, flight_number: e.target.value })}
+                placeholder="Flight Number"
+              />
+              <Input
+                value={selectedFlight.origin}
+                onChange={(e) => setSelectedFlight({ ...selectedFlight, origin: e.target.value })}
+                placeholder="Origin"
+              />
+              <Input
+                value={selectedFlight.destination}
+                onChange={(e) => setSelectedFlight({ ...selectedFlight, destination: e.target.value })}
+                placeholder="Destination"
+              />
+              <DatePicker
+                date={selectedFlight.departure_time}
+                setDate={(date) => setSelectedFlight({ ...selectedFlight, departure_time: date })}
+                title="Departure Time"
+              />
+              <DatePicker
+                date={selectedFlight.arrival_time}
+                setDate={(date) => setSelectedFlight({ ...selectedFlight, arrival_time: date })}
+                title="Arrival Time"
+              />
+              <Input
+                value={selectedFlight.duration}
+                onChange={(e) => setSelectedFlight({ ...selectedFlight, duration: e.target.value })}
+                placeholder="Duration (e.g., 2:30)"
+              />
+              <select
+                value={selectedFlight.status}
+                onChange={(e) => setSelectedFlight({ ...selectedFlight, status: e.target.value })}
+                className="border rounded-md p-2 w-full"
+              >
+                <option value="Scheduled">Scheduled</option>
+                <option value="Delayed">Delayed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+              <select
+                value={selectedFlight.aircraft_type}
+                onChange={(e) => setSelectedFlight({ ...selectedFlight, aircraft_type: e.target.value })}
+                className="border rounded-md p-2 w-full"
+              >
+                <option value="">Select Aircraft Type</option>
+                <option value="Airbus A320">Airbus A320</option>
+                <option value="Boeing 737">Boeing 737</option>
+                <option value="Airbus A321">Airbus A321</option>
+              </select>
+              <Input
+                type="number"
+                value={selectedFlight.seat_number}
+                onChange={(e) => setSelectedFlight({ ...selectedFlight, seat_number: e.target.value })}
+                placeholder="Number of Seats"
+              />
+            </div>
+            <DialogFooter>
+              <Button onClick={handleSaveEdit} className="bg-blue-600 text-white">
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };

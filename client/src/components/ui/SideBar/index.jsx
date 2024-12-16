@@ -78,17 +78,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               View and Analyze Bookings
             </NavLink>
           </li>
-          <li>
-            <NavLink
-              to="/edit-flights"
-              className={`flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition hover:bg-gray-700 ${
-                pathname.includes("edit-flights") ? "bg-gray-700" : ""
-              }`}
-            >
-              <span>📝</span>
-              Edit Flight Information
-            </NavLink>
-          </li>
         </ul>
       </nav>
     </aside>

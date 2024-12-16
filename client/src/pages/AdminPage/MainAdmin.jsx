@@ -1,7 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
 import DefaultLayout from './DefaultLayout';
-
-import EditFlights from './EditFlights';
 import PostInfor from './PostInfor';
 import ViewStatistics from './ViewStatistics';
 import AddFlights from './AddFlights';
@@ -44,15 +42,6 @@ function MainAdmin() {
             <>
 
               <ViewStatistics/>
-            </>
-          }
-        />
-        <Route
-          path="/edit-flights"
-          element={
-            <>
-
-              <EditFlights />
             </>
           }
         />
