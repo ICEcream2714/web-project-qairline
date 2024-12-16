@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
+    duration: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.ENUM("Scheduled", "Delayed", "Cancelled"),
       allowNull: true,
@@ -29,9 +33,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Flight.associate = function (models) {
-    Flight.belongsTo(models.Airplane, { foreignKey: "airplane_id" });
-    Flight.hasMany(models.Booking, { foreignKey: "flight_id" });
-    Flight.hasMany(models.Seat, { foreignKey: "flight_id" });
+    // Mối quan hệ (associations)
+    Flight.belongsTo(models.Airplane, { foreignKey: "airplane_id" }); // Liên kết với bảng Airplane
+    Flight.hasMany(models.Booking, { foreignKey: "flight_id" }); // Một flight có nhiều booking
+    Flight.hasMany(models.Seat, { foreignKey: "flight_id" }); // Một flight có nhiều seat
   };
 
   return Flight;

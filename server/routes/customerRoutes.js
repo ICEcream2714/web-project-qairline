@@ -19,4 +19,11 @@ router.put("/cancel/:bookingId", verifyToken, customerController.cancelBooking);
 // Theo dõi thông tin vé đã đặt
 router.get("/booking/:bookingId", verifyToken, customerController.trackBooking);
 
+// Lấy thông tin đặt vé
+router.get(
+  "/booking-details/:bookingId",
+  verifyToken,
+  customerController.getBookingDetails
+);
+
 module.exports = router;
