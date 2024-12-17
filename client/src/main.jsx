@@ -9,12 +9,14 @@ import ProfilePage from './pages/ProfilePage/ProfilePage';
 import BookingPage from './pages/BookingPage/BookingPage';
 import PassengerDetailsPage from './pages/BookingPage/PassengerDetails';
 import PaymentPage from './pages/BookingPage/Payment';
+import MyBookingPage from './pages/MyBookingPage/MyBookingPage';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/mybooking" element={<MyBookingPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />

@@ -48,21 +48,18 @@ exports.getCustomerByUserId = async (userId) => {
 
 // Hủy vé
 exports.cancelBooking = async (bookingId) => {
-  const booking = await Booking.findByPk(bookingId);
-  if (!booking) throw new Error("Không tìm thấy vé để hủy.");
-
-  // Chỉ cho phép hủy nếu vé còn trong trạng thái 'Confirmed'
-  if (booking.status !== "Confirmed") throw new Error("Vé không thể hủy.");
-
-  booking.status = "Cancelled";
-  await booking.save();
-
-  // Đánh dấu ghế là có sẵn lại
-  const seat = await Seat.findByPk(booking.seatId);
-  seat.isAvailable = true;
-  await seat.save();
-
-  return booking;
+  try {
+    const booking = await Booking.findByPk(bookingId);
+    if (!booking) {
+      return false;
+    }
+    booking.status = "Cancelled";
+    await booking.save();
+    return true;
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    return false;
+  }
 };
 
 // Theo dõi thông tin vé đã đặt

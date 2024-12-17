@@ -26,4 +26,7 @@ router.get(
   customerController.getBookingDetails
 );
 
+// Lấy tất cả thông tin đặt vé
+router.get("/bookings", verifyToken, customerController.getAllBookings);
+
 module.exports = router;

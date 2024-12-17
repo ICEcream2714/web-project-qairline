@@ -250,6 +250,7 @@ exports.getBookingDetails = async (req, res) => {
             "destination",
             "departure_time",
             "arrival_time",
+            "status",
           ],
         },
         {
@@ -260,6 +261,7 @@ exports.getBookingDetails = async (req, res) => {
             "destination",
             "departure_time",
             "arrival_time",
+            "status",
           ],
         },
         {
@@ -284,6 +286,63 @@ exports.getBookingDetails = async (req, res) => {
     res.status(200).json(booking);
   } catch (error) {
     console.error("Error fetching booking details:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
+  }
+};
+
+// Lấy tất cả thông tin đặt vé
+exports.getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.findAll({
+      include: [
+        {
+          model: Passenger,
+          attributes: ["first_name", "last_name", "email", "phone"],
+        },
+        {
+          model: Flight,
+          as: "outboundFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+          ],
+        },
+        {
+          model: Flight,
+          as: "returnFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+          ],
+        },
+        {
+          model: Seat,
+          as: "outboundSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+        {
+          model: Seat,
+          as: "returnSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+      ],
+    });
+
+    if (!bookings.length) {
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy thông tin đặt vé" });
+    }
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching all booking details:", error);
     res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
   }
 };
