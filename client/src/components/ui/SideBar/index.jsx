@@ -36,7 +36,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <ul className="space-y-2">
           <li>
             <NavLink
-              to="/post-information"
+              to="/admin/post-information"
               className={`flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition hover:bg-gray-700 ${
                 pathname.includes("post-information") ? "bg-gray-700" : ""
               }`}
@@ -47,7 +47,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </li>
           <li>
             <NavLink
-              to="/add-airplanes"
+              to="/admin/add-airplanes"
               className={`flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition hover:bg-gray-700 ${
                 pathname.includes("add-airplanes") ? "bg-gray-700" : ""
               }`}
@@ -58,7 +58,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </li>
           <li>
             <NavLink
-              to="/add-flights"
+              to="/admin/add-flights"
               className={`flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition hover:bg-gray-700 ${
                 pathname.includes("add-flights") ? "bg-gray-700" : ""
               }`}
@@ -69,7 +69,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           </li>
           <li>
             <NavLink
-              to="/view-statistics"
+              to="/admin/view-statistics"
               className={`flex items-center gap-3 rounded-lg p-3 text-sm font-medium transition hover:bg-gray-700 ${
                 pathname.includes("view-statistics") ? "bg-gray-700" : ""
               }`}
