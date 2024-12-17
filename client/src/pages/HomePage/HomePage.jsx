@@ -22,7 +22,7 @@ function HomePage() {
       </div>
 
       <PlanningCard />
-      <Fares />
+      {/* <Fares /> */}
       <SuggestionHome />
       <SubscribeForm />
       <Footer />

@@ -1,21 +1,28 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const StartPlanningCard = ({ image, title, cta }) => {
   return (
-    <Card className="hover:shadow-lg transition-shadow duration-300 flex flex-col">
+    <Card className="flex flex-col transition-shadow duration-300 hover:shadow-lg">
       {/* Hình ảnh */}
       <div className="relative">
         <img
           src={image}
           alt={title}
-          className="w-full h-40 object-cover rounded-t-lg"
+          className="h-40 w-full rounded-t-lg object-cover"
         />
       </div>
       {/* Nội dung */}
-      <CardContent className="p-4 flex-1 flex flex-col">
-        <CardHeader className="p-0 flex-1">
+      <CardContent className="flex flex-1 flex-col p-4">
+        <CardHeader className="flex-1 p-0">
           <CardTitle className="text-lg font-semibold text-gray-800">
             {title}
           </CardTitle>
@@ -26,20 +33,24 @@ const StartPlanningCard = ({ image, title, cta }) => {
         <Button
           variant="ghost"
           className={cn(
-            "flex w-full items-center justify-between border-t px-4 py-3 bg-gray-50 hover:bg-gray-100"
+            'flex w-full items-center justify-between border-t bg-gray-50 px-4 py-3 hover:bg-gray-100'
           )}
           onClick={() => alert(`Clicked on ${title}`)}
         >
-          <span className="text-blue-600 text-sm font-medium">{cta}</span>
+          <span className="text-sm font-medium text-blue-600">{cta}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth="2"
             stroke="currentColor"
-            className="w-5 h-5 text-blue-600"
+            className="h-5 w-5 text-blue-600"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </Button>
       </CardFooter>
@@ -48,35 +59,28 @@ const StartPlanningCard = ({ image, title, cta }) => {
 };
 
 const StartPlanning = () => {
-  const cards = [
-    {
-      image: "https://www.qatarairways.com/content/dam/images/enl/assets/campaigns/global/destination-push/e-ss-collage-cpt-mle-cmb.jpg",
-      title: "Explore our offers",
-      cta: "Find great fares",
-    },
-    {
-      image: "https://www.qatarairways.com/content/dam/images/renditions/horizontal-3/campaigns/global/destinations-promo/h3-doha.jpg",
-      title: "Stopover in Qatar",
-      cta: "Discover more",
-    },
-    {
-      image: "https://www.qatarairways.com/content/dam/images/renditions/horizontal-2/privilege-club/partner-images/h2-cardless-Aug-2024-tactical2.jpg",
-      title: "Get your Privilege Club Credit Card",
-      cta: "Learn more",
-    },
-    {
-      image: "https://www.qatarairways.com/content/dam/images/renditions/horizontal-2/miscellaneous/sponsorships/h2-fifa-intercontinental-cup-2024.jpg",
-      title: "FIFA Intercontinental Cup 2024™ packages",
-      cta: "Book now",
-    },
-  ];
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/posts/');
+        const data = await response.json();
+        setCards(data);
+      } catch (error) {
+        console.error('Failed to fetch posts', error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
-    <div className="bg-gray-50 py-12 px-6 md:px-16">
-      <h2 className="text-3xl font-bold text-center mb-8">
+    <div className="bg-gray-50 px-6 py-12 md:px-16">
+      <h2 className="mb-8 text-center text-3xl font-bold">
         Start planning your next trip
       </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
         {cards.map((card, index) => (
           <StartPlanningCard key={index} {...card} />
         ))}

@@ -3,19 +3,23 @@ const { Post, Airplane, Flight, Booking } = require("../models");
 
 // Tạo bài đăng (Giới thiệu, khuyến mãi, thông báo, tin tức)
 exports.createPost = async (
+  image,
   title,
   content,
+  cta,
   postType,
   startDate,
   endDate,
   adminId
 ) => {
   return await Post.create({
+    image,
     title,
     content,
+    cta,
     postType,
-    startDate,
-    endDate,
+    startDate: startDate || null,
+    endDate: endDate || null,
     adminId,
   });
 };
@@ -65,4 +69,14 @@ exports.updateFlightStatus = async (flightId, newStatus) => {
   flight.status = newStatus;
   await flight.save();
   return flight;
+};
+
+// Lấy danh sách các bài đăng
+exports.getPosts = async () => {
+  try {
+    const posts = await Post.findAll();
+    return posts;
+  } catch (error) {
+    throw new Error("Lỗi khi lấy danh sách các bài đăng");
+  }
 };

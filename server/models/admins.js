@@ -6,6 +6,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false, // Khóa ngoại không được null
     },
     permissions: DataTypes.TEXT,
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
 
   Admin.associate = function (models) {

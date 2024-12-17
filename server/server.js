@@ -20,10 +20,22 @@ app.get("/", (req, res) => {
   res.send("Hello from QAirline Backend");
 });
 
+// Test API link to fetch posts
+app.get("/api/test/posts", async (req, res) => {
+  try {
+    const posts = await require("./models").Post.findAll();
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Lỗi hệ thống");
+  }
+});
+
 // Import các route
 const authRoutes = require("./routes/authRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const postRoutes = require("./routes/postRoutes"); // Import postRoutes
 
 // Middleware
 app.use(cors()); // CORS middleware cho phép kết nối từ các nguồn khác
@@ -33,6 +45,7 @@ app.use(bodyParser.json()); // Phân tích dữ liệu JSON từ request body
 app.use("/api/auth", authRoutes); // Đăng nhập, đăng ký
 app.use("/api/customer", customerRoutes); // Các chức năng của khách hàng
 app.use("/api/admin", adminRoutes); // Các chức năng của quản trị viên
+app.use("/api/posts", postRoutes); // Route for posts
 
 sequelize.sync({ force: true }).then(() => {
   console.log("Database synced");
