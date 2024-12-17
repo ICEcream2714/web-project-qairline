@@ -16,14 +16,14 @@ lerna-debug.log*
 .log
 
 # Editor directories and files
-.vscode/
+.vscode/*
+!.vscode/extensions.json
 .idea/
 .DS_Store
 *.swp
 *~
 
 # Environment variables
-.env
 .env.local
 .env.*.local
 
@@ -56,9 +56,9 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
-# JetBrains IDEs
-.idea/
-*.iml
+# # JetBrains IDEs
+# .idea/
+# *.iml
 
 # Miscellaneous
 *.log
@@ -73,3 +73,6 @@ Desktop.ini
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
+
+# database
+server/qairline.sqlite
