@@ -80,3 +80,43 @@ exports.getPosts = async () => {
     throw new Error("Lỗi khi lấy danh sách các bài đăng");
   }
 };
+
+exports.updateSeatCount = async (airplaneId, seatCount) => {
+  try {
+    const airplane = await Airplane.findByPk(airplaneId);
+    if (!airplane) {
+      return null;
+    }
+
+    airplane.seat_count = seatCount;
+    await airplane.save();
+    return airplane;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// Delete a post
+exports.deletePost = async (id) => {
+  const post = await Post.findByPk(id);
+  if (!post) {
+    throw new Error("Post not found");
+  }
+  await post.destroy();
+};
+
+// Edit a post
+exports.editPost = async (id, title, image, cta) => {
+  const post = await Post.findByPk(id);
+  if (!post) {
+    throw new Error("Post not found");
+  }
+
+  post.title = title;
+  post.image = image;
+  post.cta = cta;
+
+  await post.save();
+  return post;
+};

@@ -33,3 +33,30 @@ exports.getPosts = async (req, res) => {
     res.status(500).send("Lỗi hệ thống");
   }
 };
+
+// Delete a post
+exports.deletePost = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await adminService.deletePost(id);
+    res.status(200).send("Post deleted successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Lỗi hệ thống");
+  }
+};
+
+// Edit a post
+exports.editPost = async (req, res) => {
+  const { id } = req.params;
+  const { title, image, cta } = req.body;
+
+  try {
+    const updatedPost = await adminService.editPost(id, title, image, cta);
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Lỗi hệ thống");
+  }
+};
