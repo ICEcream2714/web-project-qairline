@@ -161,49 +161,15 @@ function Navbar() {
                 Login / Sign Up
               </Button>
             ) : (
-              <div className="flex items-center space-x-4">
-        <UserProfile
-          name="Hoang Nguyen"
-          id="681897319"
-          tier="Burgundy"
-          avios={0}
-          qpoints={0}
-          isScrolled={isScrolled}
-          onLogout={handleLogout}
-        />
-      </div>
-              // <Popover>
-              //   <PopoverTrigger>
-              //     <Button
-              //       variant="link"
-              //       className={`${isScrolled ? 'text-gray-800' : 'text-white'} p-0 font-semibold hover:text-purple-600 [&_svg]:size-auto`}
-              //     >
-              //       <CircleUserRound size={24} />
-              //     </Button>
-              //   </PopoverTrigger>
-              //   <PopoverContent className="border-0 bg-white">
-              //     <UserProfile
-              //       name="Hoang Nguyen"
-              //       id="681897319"
-              //       tier="Burgundy"
-              //       avios={0}
-              //       qpoints={0}
-              //       onLogout={handleLogout}
-              //     />
-              //     <div className="border-b-2">
-              //       <div>Hoang Nguyen</div>
-              //       <div>681897319 | Burgundy</div>
-              //     </div>
-              //     <div>2</div>
-              //     <div className="flex flex-row">
-              //       <Button variant="link">Flight</Button>
-              //       <Button variant="link">Profile</Button>
-              //       <Button variant="link" onClick={handleLogout}>
-              //         Logout
-              //       </Button>
-              //     </div>
-              //   </PopoverContent>
-              // </Popover>
+              <UserProfile
+                name="Hoang Nguyen"
+                id="681897319"
+                tier="Burgundy"
+                avios={0}
+                qpoints={0}
+                isScrolled={isScrolled}
+                onLogout={handleLogout}
+              />
             )}
           </div>
         </div>
@@ -294,16 +260,16 @@ function Navbar() {
               </Button>
             ) : (
               <div className="flex items-center space-x-4">
-        <UserProfile
-          name="Hoang Nguyen"
-          id="681897319"
-          tier="Burgundy"
-          avios={0}
-          qpoints={0}
-          isScrolled={isScrolled}
-          onLogout={handleLogout}
-        />
-      </div>
+                <UserProfile
+                  name="Hoang Nguyen"
+                  id="681897319"
+                  tier="Burgundy"
+                  avios={0}
+                  qpoints={0}
+                  isScrolled={isScrolled}
+                  onLogout={handleLogout}
+                />
+              </div>
               // <Popover>
               //   <PopoverTrigger>
               //     <Button

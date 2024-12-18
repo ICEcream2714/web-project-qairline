@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import BookingCard from './BookingCard';
 import Navbar from '@/layouts/Navbar/Navbar';
+import { NavbarSimple } from '@/layouts/Navbar/NavbarSimple';
 
 function MyBookingPage() {
   const [bookings, setBookings] = useState([]);
@@ -48,7 +49,7 @@ function MyBookingPage() {
 
   return (
     <>
-      <Navbar />
+      <NavbarSimple />
       <div className="container mx-auto px-4 py-8 pt-40">
         <h1 className="mb-6 text-3xl font-bold">My Bookings</h1>
         <div className="space-y-6">

@@ -30,10 +30,21 @@ import {
 
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import 'tailwindcss/tailwind.css';
+import AlertDialog from '@/layouts/Notification/alert-dialog';
 
 const SignupPage = () => {
+  //route
   const navigate = useNavigate();
 
+  //alert dialog state
+  const [alert, setAlert] = useState({
+    open: false,
+    title: '',
+    message: '',
+    isSuccess: false,
+  });
+
+  //component state
   const [showPassword, setShowPassword] = useState(false);
   const [showValidPassword, setShowValidPassword] = useState(true);
   const [showRePassword, setShowRePassword] = useState(false);
@@ -46,6 +57,7 @@ const SignupPage = () => {
   });
   const [isCheckedTerm, setIsCheckedTerm] = useState(false);
 
+  //value component
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [repassword, setRePassword] = useState('');
@@ -176,7 +188,13 @@ const SignupPage = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Đăng ký thành công:', data);
-        alert('Register successfully, please login to continue.');
+        // alert('Register successfully, please login to continue.');
+        setAlert({
+          open: true,
+          title: 'QAirline',
+          message: 'Register successfully, please login to continue.',
+          isSuccess: true,
+        });
         navigate('/login'); // Chuyển hướng người dùng về trang login
       } else {
         // Xử lý lỗi trả về từ server
@@ -186,11 +204,23 @@ const SignupPage = () => {
             ? error.errors[0].msg
             : 'Lỗi đăng ký';
         console.error('Lỗi đăng ký:', error);
-        alert('Lỗi đăng ký: ' + errorMessage);
+        // alert('Lỗi đăng ký: ' + errorMessage);
+        setAlert({
+          open: true,
+          title: 'QAirline',
+          message: `Sign up failed: + ${errorMessage}`,
+          isSuccess: false,
+        });
       }
     } catch (error) {
       console.error('Lỗi kết nối:', error);
-      alert('Lỗi kết nối, vui lòng thử lại sau.');
+      // alert('Lỗi kết nối, vui lòng thử lại sau.');
+      setAlert({
+        open: true,
+        title: 'QAirline',
+        message: `Connect failed: + ${error}  + . Please try again!`,
+        isSuccess: false,
+      });
     }
   };
 
@@ -654,6 +684,13 @@ const SignupPage = () => {
             >
               Sign up
             </Button>
+            <AlertDialog
+              open={alert.open}
+              onClose={() => setAlert({ ...alert, open: false })}
+              title={alert.title}
+              message={alert.message}
+              isSuccess={alert.isSuccess}
+            />
           </div>
         </CardContent>
 

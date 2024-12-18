@@ -19,9 +19,18 @@ import {
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Navbar from '@/layouts/Navbar/Navbar';
 import 'tailwindcss/tailwind.css';
+import AlertDialog from '@/layouts/Notification/alert-dialog';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+
+  //alert dialog state
+  const [alert, setAlert] = useState({
+    open: false,
+    title: '',
+    message: '',
+    isSuccess: false,
+  });
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -59,8 +68,18 @@ const LoginPage = () => {
         const data = await response.json();
         console.log('Login ok', data);
         localStorage.setItem('token', data.token); // Lưu token vào localStorage
-        alert('Login successfully!');
-        navigate('/');
+        // alert('Login successfully!');
+        setAlert({
+          open: true,
+          title: 'QAirline',
+          message: 'Login successfully!',
+          isSuccess: true,
+        });
+
+        //
+        setTimeout(() => {
+          navigate('/'); // Điều hướng đến trang chính sau khi hiển thị thông báo
+        }, 8000);
       } else {
         const error = await response.json();
         const errorMessage =
@@ -68,11 +87,23 @@ const LoginPage = () => {
             ? error.errors[0].msg
             : 'Login failed!';
         console.log('Login failed', error);
-        alert('Lỗi đăng nhập: ', errorMessage);
+        // alert('Lỗi đăng nhập: ', errorMessage);
+        setAlert({
+          open: true,
+          title: 'QAirline',
+          message: `Login failed: + ${errorMessage}`,
+          isSuccess: false,
+        });
       }
     } catch (error) {
       console.error('Lỗi kết nối:', error);
-      alert('Lỗi kết nối, vui lòng thử lại sau.');
+      // alert('Lỗi kết nối, vui lòng thử lại sau.');
+      setAlert({
+        open: true,
+        title: 'QAirline',
+        message: `Connect failed: + ${error}  + . Please try again!`,
+        isSuccess: false,
+      });
     }
   };
 
@@ -169,6 +200,13 @@ const LoginPage = () => {
             >
               Log in
             </Button>
+            <AlertDialog
+              open={alert.open}
+              onClose={() => setAlert({ ...alert, open: false })}
+              title={alert.title}
+              message={alert.message}
+              isSuccess={alert.isSuccess}
+            />
           </div>
 
           <div className="my-5 flex items-center">
