@@ -5,6 +5,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
+import { NavbarSimple } from '@/layouts/Navbar/NavbarSimple';
+import Footer from '@/layouts/Footer';
 
 export default function PaymentPage() {
   const navigate = useNavigate();
@@ -75,7 +77,8 @@ export default function PaymentPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+      <NavbarSimple />
+      <div className="container mx-auto px-28 py-36">
         <div className="grid gap-8 md:grid-cols-3">
           <div className="md:col-span-2">
             <Card>
@@ -157,41 +160,115 @@ export default function PaymentPage() {
               <CardHeader>
                 <CardTitle>Payment Summary</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {outboundFlight && (
-                    <div>
-                      <h3 className="font-medium">Outbound Flight</h3>
-                      <p className="text-sm text-gray-500">
-                        {outboundFlight.origin} → {outboundFlight.destination}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {format(
-                          new Date(outboundFlight.departure_time),
-                          'EEE, d MMM yyyy'
-                        )}
-                      </p>
+              <CardContent className="space-y-6">
+                {/* Outbound Flight */}
+                {outboundFlight && (
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Outbound flight
+                    </h3>
+                    <div className="flex justify-between text-sm font-medium">
+                      <div className="w-1/3 text-center">
+                        <p className="text-sm text-gray-500">
+                          {format(
+                            new Date(outboundFlight.departure_time),
+                            'EEE, dd MMM yyyy'
+                          )}
+                        </p>
+                        <p className="text-lg font-bold">
+                          {format(
+                            new Date(outboundFlight.departure_time),
+                            'HH:mm'
+                          )}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {outboundFlight.origin}
+                        </p>
+                      </div>
+                      <div className="flex w-1/3 flex-col items-center justify-center">
+                        <span className="text-gray-500">
+                          {outboundFlight.duration}
+                        </span>
+                        <div className="h-px w-full bg-gray-300"></div>
+                      </div>
+                      <div className="w-1/3 text-center">
+                        <p className="text-sm text-gray-500">
+                          {format(
+                            new Date(outboundFlight.arrival_time),
+                            'EEE, dd MMM yyyy'
+                          )}
+                        </p>
+                        <p className="text-lg font-bold">
+                          {format(
+                            new Date(outboundFlight.arrival_time),
+                            'HH:mm'
+                          )}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {outboundFlight.destination}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                  {returnFlight && (
-                    <div>
-                      <h3 className="font-medium">Return Flight</h3>
-                      <p className="text-sm text-gray-500">
-                        {returnFlight.origin} → {returnFlight.destination}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {format(
-                          new Date(returnFlight.departure_time),
-                          'EEE, d MMM yyyy'
-                        )}
-                      </p>
+                  </div>
+                )}
+
+                {/* Return Flight */}
+                {returnFlight && (
+                  <div className="space-y-2">
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Return flight
+                    </h3>
+                    <div className="flex justify-between text-sm font-medium">
+                      <div className="w-1/3 text-center">
+                        <p className="text-sm text-gray-500">
+                          {format(
+                            new Date(returnFlight.departure_time),
+                            'EEE, dd MMM yyyy'
+                          )}
+                        </p>
+                        <p className="text-lg font-bold">
+                          {format(
+                            new Date(returnFlight.departure_time),
+                            'HH:mm'
+                          )}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {returnFlight.origin}
+                        </p>
+                      </div>
+                      <div className="flex w-1/3 flex-col items-center justify-center">
+                        <span className="text-gray-500">
+                          {returnFlight.duration}
+                        </span>
+                        <div className="my-1 h-px w-full bg-gray-300"></div>
+                      </div>
+                      <div className="w-1/3 text-center">
+                        <p className="text-sm text-gray-500">
+                          {format(
+                            new Date(returnFlight.arrival_time),
+                            'EEE, dd MMM yyy'
+                          )}
+                        </p>
+                        <p className="text-lg font-bold">
+                          {format(new Date(returnFlight.arrival_time), 'HH:mm')}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          {returnFlight.destination}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                  <div className="border-t pt-4">
-                    <div className="flex justify-between">
-                      <span className="font-medium">Total Amount</span>
-                      <span className="font-bold">USD {totalPrice}</span>
-                    </div>
+                  </div>
+                )}
+
+                {/* Total Price */}
+                <div className="border-t pt-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-700">
+                      Total trip price:
+                    </span>
+                    <span className="text-xl font-bold">
+                      {totalPrice.toFixed(2)} USD
+                    </span>
                   </div>
                 </div>
               </CardContent>
@@ -199,6 +276,7 @@ export default function PaymentPage() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
