@@ -12,7 +12,7 @@ router.post("/post", verifyToken, verifyAdmin, adminController.createPost);
 router.post("/airplane", verifyToken, verifyAdmin, adminController.addAirplane);
 
 // Thêm chuyến bay
-router.post("/flight", verifyToken, verifyAdmin, adminController.addFlight);
+router.post("/flight", adminController.addFlight);
 
 // Xem và thống kê các đặt vé
 router.get("/bookings", verifyToken, verifyAdmin, adminController.viewBookings);
@@ -23,6 +23,14 @@ router.put(
   verifyToken,
   verifyAdmin,
   adminController.updateFlightStatus
+);
+
+// Update seat count of an airplane
+router.put(
+  "/airplane/seatCount",
+  verifyToken,
+  verifyAdmin,
+  adminController.updateSeatCount
 );
 
 module.exports = router;

@@ -80,3 +80,19 @@ exports.getPosts = async () => {
     throw new Error("Lỗi khi lấy danh sách các bài đăng");
   }
 };
+
+exports.updateSeatCount = async (airplaneId, seatCount) => {
+  try {
+    const airplane = await Airplane.findByPk(airplaneId);
+    if (!airplane) {
+      return null;
+    }
+
+    airplane.seat_count = seatCount;
+    await airplane.save();
+    return airplane;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
