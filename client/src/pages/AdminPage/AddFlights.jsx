@@ -230,13 +230,13 @@ const FlightsPage = () => {
                 placeholder="Destination"
               />
               <DateTimePicker
-                date={selectedFlight.departure_time}
-                setDate={(date) => setSelectedFlight({ ...selectedFlight, departure_time: date })}
+                dateTime={selectedFlight.departure_time}
+                setDateTime={(date) => setSelectedFlight({ ...selectedFlight, departure_time: date })}
                 title="Departure Time"
               />
               <DateTimePicker
-                date={selectedFlight.arrival_time}
-                setDate={(date) => setSelectedFlight({ ...selectedFlight, arrival_time: date })}
+                dateTime={selectedFlight.arrival_time}
+                setDateTime={(date) => setSelectedFlight({ ...selectedFlight, arrival_time: date })}
                 title="Arrival Time"
               />
               <Input
