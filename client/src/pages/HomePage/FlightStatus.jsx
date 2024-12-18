@@ -3,8 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import DatePicker from '@/components/DatePicker';
 
 const FlightStatus = () => {
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
   const [activeTab, setActiveTab] = useState('route');
   const [route, setRoute] = useState({ from: '', to: '' });
   const [flightNumber, setFlightNumber] = useState('');
@@ -25,14 +28,14 @@ const FlightStatus = () => {
   };
 
   return (
-    <Card className="rounded-lg bg-white p-6 shadow-md">
+    <Card className="rounded-lg bg-white p-0 shadow-md">
       {/* Header Tabs */}
       <CardHeader className="mb-4 border-b">
         <div className="flex justify-center space-x-4">
           <Button
             variant="ghost"
             onClick={() => setActiveTab('route')}
-            className={`flex-1 py-2 text-center text-lg font-medium ${
+            className={`flex-1 py-1 text-center text-lg font-medium ${
               activeTab === 'route'
                 ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
@@ -57,36 +60,48 @@ const FlightStatus = () => {
       {/* Content */}
       <CardContent>
         {activeTab === 'route' ? (
-          <form className="flex flex-col gap-4 md:flex-row">
+          <form className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center">
             {/* From */}
-            <div className="flex-1">
-              <Label htmlFor="from">From</Label>
-              <Input
-                id="from"
-                placeholder="Enter departure city"
-                value={route.from}
-                onChange={(e) => setRoute({ ...route, from: e.target.value })}
-              />
-            </div>
-            {/* To */}
-            <div className="flex-1">
-              <Label htmlFor="to">To</Label>
-              <Input
-                id="to"
-                placeholder="Enter destination city"
-                value={route.to}
-                onChange={(e) => setRoute({ ...route, to: e.target.value })}
-              />
-            </div>
+              <div className="relative w-full">
+                <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
+                  From
+                </Label>
+                <Input
+                  id="from"
+                  placeholder="Enter departure city"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
+                />
+              </div>
+
+              {/* Switch Arrow */}
+              <span
+                className="mx-0 md:mx-4 mt-3 md:mt-4 cursor-pointer text-gray-400 hover:text-gray-600"
+                onClick={() => {
+                  setFrom(to);
+                  setTo(from);
+                 }}
+                >
+                  ⇄
+              </span>
+
+                {/* To */}
+              <div className="relative w-full">
+                <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
+                  To
+                </Label>
+                <Input
+                  id="to"
+                  placeholder="Enter destination city"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                />
+              </div>
+        
             {/* Date */}
-            <div className="flex-1">
+            <div className="relative w-full md:px-4">
               <Label htmlFor="date">Date</Label>
-              <Input
-                id="date"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
+              <DatePicker date={date} setDate={setDate} />
             </div>
             {/* Search Button */}
             <div className="mt-6 flex justify-center">
@@ -113,12 +128,7 @@ const FlightStatus = () => {
             {/* Date */}
             <div className="flex-1">
               <Label htmlFor="flightDate">Date</Label>
-              <Input
-                id="flightDate"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
+              <DatePicker date={date} setDate={setDate} />
             </div>
             {/* Search Button */}
             <div className="mt-6 flex justify-center">
