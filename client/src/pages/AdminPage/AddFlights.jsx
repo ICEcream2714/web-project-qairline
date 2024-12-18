@@ -19,6 +19,27 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
+import { useState } from 'react';
+import { Pencil, Trash } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import DateTimePicker from '@/components/ui/DateTimePicker';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
 
 const FlightsPage = () => {
   const [flights, setFlights] = useState([
@@ -52,6 +73,18 @@ const FlightsPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleAddFlight = () => {
+    if (
+      !newFlight.aircraft_type ||
+      !newFlight.arrival_time ||
+      !newFlight.departure_time ||
+      !newFlight.destination ||
+      !newFlight.duration ||
+      !newFlight.flight_number ||
+      !newFlight.origin ||
+      !newFlight.seat_number ||
+      !newFlight.status
+    )
+      return;
     const newFlightData = {
       ...newFlight,
       id: flights.length + 1,
@@ -276,14 +309,14 @@ const FlightsPage = () => {
                 }
                 placeholder="Destination"
               />
-              <DatePicker
+              <DateTimePicker
                 date={selectedFlight.departure_time}
                 setDate={(date) =>
                   setSelectedFlight({ ...selectedFlight, departure_time: date })
                 }
                 title="Departure Time"
               />
-              <DatePicker
+              <DateTimePicker
                 date={selectedFlight.arrival_time}
                 setDate={(date) =>
                   setSelectedFlight({ ...selectedFlight, arrival_time: date })
