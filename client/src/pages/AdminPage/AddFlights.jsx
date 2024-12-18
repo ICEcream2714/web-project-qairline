@@ -3,7 +3,7 @@ import { Pencil, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import DatePicker from "@/components/DatePicker";
+import DateTimePicker from "@/components/ui/DateTimePicker";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 
@@ -39,6 +39,10 @@ const FlightsPage = () => {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const handleAddFlight = () => {
+    if (!newFlight.aircraft_type || !newFlight.arrival_time || !newFlight.departure_time ||
+      !newFlight.destination || !newFlight.duration || !newFlight.flight_number || ! newFlight.origin
+      || ! newFlight.seat_number || !newFlight.status
+    ) return;
     const newFlightData = {
       ...newFlight,
       id: flights.length + 1,
@@ -103,14 +107,14 @@ const FlightsPage = () => {
                 onChange={(e) => setNewFlight({ ...newFlight, destination: e.target.value })}
                 placeholder="Destination"
               />
-              <DatePicker
-                date={newFlight.departure_time}
-                setDate={(date) => setNewFlight({ ...newFlight, departure_time: date })}
+              <DateTimePicker
+                dateTime={newFlight.departure_time}
+                setDateTime={(date) => setNewFlight({ ...newFlight, departure_time: date })}
                 title="Departure Time"
               />
-              <DatePicker
-                date={newFlight.arrival_time}
-                setDate={(date) => setNewFlight({ ...newFlight, arrival_time: date })}
+              <DateTimePicker
+                dateTime={newFlight.arrival_time}
+                setDateTime={(date) => setNewFlight({ ...newFlight, arrival_time: date })}
                 title="Arrival Time"
               />
               <Input
@@ -225,12 +229,12 @@ const FlightsPage = () => {
                 onChange={(e) => setSelectedFlight({ ...selectedFlight, destination: e.target.value })}
                 placeholder="Destination"
               />
-              <DatePicker
+              <DateTimePicker
                 date={selectedFlight.departure_time}
                 setDate={(date) => setSelectedFlight({ ...selectedFlight, departure_time: date })}
                 title="Departure Time"
               />
-              <DatePicker
+              <DateTimePicker
                 date={selectedFlight.arrival_time}
                 setDate={(date) => setSelectedFlight({ ...selectedFlight, arrival_time: date })}
                 title="Arrival Time"
