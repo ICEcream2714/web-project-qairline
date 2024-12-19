@@ -1,9 +1,13 @@
-import { CalendarIcon, ClockIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { useState } from "react";
+import { CalendarIcon, ClockIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { useState } from 'react';
 
 const TimePicker = ({ time, setTime }) => {
   const handleTimeChange = (event) => {
@@ -16,12 +20,12 @@ const TimePicker = ({ time, setTime }) => {
       <select
         value={time}
         onChange={handleTimeChange}
-        className="border rounded p-1 text-sm"
+        className="rounded border p-1 text-sm"
       >
         {Array.from({ length: 24 }, (_, hour) =>
           Array.from({ length: 2 }, (_, half) => {
             const minute = half * 30;
-            const value = `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+            const value = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
             return (
               <option key={value} value={value}>
                 {value}
@@ -34,17 +38,21 @@ const TimePicker = ({ time, setTime }) => {
   );
 };
 
-const DateTimePicker = ({ dateTime, setDateTime, title = "Pick a date and time" }) => {
-  const [time, setTime] = useState("00:00");
+const DateTimePicker = ({
+  dateTime,
+  setDateTime,
+  title = 'Pick a date and time',
+}) => {
+  const [time, setTime] = useState('00:00');
 
   const setDate = (selectedDate) => {
     if (selectedDate) {
       const year = selectedDate.getFullYear();
-      const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
-      const day = String(selectedDate.getDate()).padStart(2, "0");
+      const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+      const day = String(selectedDate.getDate()).padStart(2, '0');
       setDateTime(`${year}-${month}-${day}T${time}`);
     } else {
-      setDateTime("");
+      setDateTime('');
     }
   };
 
@@ -55,7 +63,7 @@ const DateTimePicker = ({ dateTime, setDateTime, title = "Pick a date and time" 
           variant="outline"
           className="w-full justify-start text-left font-normal"
         >
-          {dateTime ? format(new Date(dateTime), "PPP p") : title}
+          {dateTime ? format(new Date(dateTime), 'PPP p') : title}
           <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -73,7 +81,7 @@ const DateTimePicker = ({ dateTime, setDateTime, title = "Pick a date and time" 
             if (dateTime) {
               const selectedDate = new Date(dateTime);
               setDateTime(
-                `${selectedDate.toISOString().split("T")[0]}T${newTime}`
+                `${selectedDate.toISOString().split('T')[0]}T${newTime}`
               );
             }
           }}

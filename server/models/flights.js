@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     duration: {
-      type: DataTypes.TIME,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     status: {
@@ -33,10 +33,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Flight.associate = function (models) {
-    // Mối quan hệ (associations)
-    Flight.belongsTo(models.Airplane, { foreignKey: "airplane_id" }); // Liên kết với bảng Airplane
-    Flight.hasMany(models.Booking, { foreignKey: "flight_id" }); // Một flight có nhiều booking
-    Flight.hasMany(models.Seat, { foreignKey: "flight_id" }); // Một flight có nhiều seat
+    Flight.belongsTo(models.Airplane, { foreignKey: "airplane_id" });
+    Flight.hasMany(models.Booking, { foreignKey: "flight_id" });
+    Flight.hasMany(models.Seat, { foreignKey: "flight_id" });
   };
 
   return Flight;
