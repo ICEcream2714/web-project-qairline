@@ -36,6 +36,8 @@ const authRoutes = require("./routes/authRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const postRoutes = require("./routes/postRoutes"); // Import postRoutes
+const flightRoutes = require("./routes/flightRoutes"); // Import flightRoutes
+const airplaneRoutes = require("./routes/airplaneRoutes"); // Import airplaneRoutes
 
 // Middleware
 app.use(cors()); // CORS middleware cho phép kết nối từ các nguồn khác
@@ -46,6 +48,8 @@ app.use("/api/auth", authRoutes); // Đăng nhập, đăng ký
 app.use("/api/customer", customerRoutes); // Các chức năng của khách hàng
 app.use("/api/admin", adminRoutes); // Các chức năng của quản trị viên
 app.use("/api/posts", postRoutes); // Route for posts
+app.use("/api/flights", flightRoutes); // Route for flights
+app.use("/api/airplanes", airplaneRoutes); // Route for airplanes
 
 sequelize.sync({ force: true }).then(() => {
   console.log("Database synced");

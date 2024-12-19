@@ -18,17 +18,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
 
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
@@ -137,8 +126,8 @@ const PostsPage = () => {
           <span className="block text-sm text-gray-500">
             Todo:
             <ul className="ml-6 list-disc">
-              <li>Confirmation dialog cho sửa vs xóa</li>
-              <li>Toast notification sau khi sửa, xóa</li>
+              <li>Confirmation dialog add, edit, delete</li>
+              <li>Toast/sonner notification add, edit, delete</li>
               <li>Disable nút Add post khi thông tin chưa được nhập đủ</li>
             </ul>
           </span>

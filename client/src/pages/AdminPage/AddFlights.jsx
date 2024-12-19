@@ -1,84 +1,227 @@
-import { useState } from "react";
-import { Pencil, Trash } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import DateTimePicker from "@/components/ui/DateTimePicker";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { useState, useEffect } from 'react';
+import { Pencil, Trash } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import DateTimePicker from '@/components/ui/DateTimePicker';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import ResponsiveDialog from '@/components/ui/ResponsiveDialog';
+
+const calculateDuration = (departure, arrival) => {
+  const departureTime = new Date(departure);
+  const arrivalTime = new Date(arrival);
+  const duration = Math.abs(arrivalTime - departureTime) / 36e5; // convert milliseconds to hours
+  const hours = Math.floor(duration);
+  const minutes = Math.round((duration - hours) * 60);
+  return `${hours}h ${minutes}m`;
+};
+
+const formatDateTime = (dateTime) => {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+  return new Date(dateTime).toLocaleDateString(undefined, options);
+};
 
 const FlightsPage = () => {
-  const [flights, setFlights] = useState([
-    {
-      id: 1,
-      flight_number: "VN123",
-      origin: "Hanoi",
-      destination: "Ho Chi Minh",
-      departure_time: "2024-06-25",
-      arrival_time: "2024-06-25",
-      duration: "2:30",
-      status: "Scheduled",
-      aircraft_type: "Airbus A320",
-      seat_number: 150,
-    },
-  ]);
-
+  const [flights, setFlights] = useState([]);
+  const [airplaneModels, setAirplaneModels] = useState([]);
   const [newFlight, setNewFlight] = useState({
-    flight_number: "",
-    origin: "",
-    destination: "",
-    departure_time: "",
-    arrival_time: "",
-    duration: "",
-    status: "Scheduled",
-    aircraft_type: "",
-    seat_number: "",
+    flight_number: '',
+    origin: '',
+    destination: '',
+    departure_time: '',
+    arrival_time: '',
+    status: 'Scheduled',
+    aircraft_type: '',
   });
 
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [sortConfig, setSortConfig] = useState({
+    key: null,
+    direction: 'ascending',
+  });
 
-  const handleAddFlight = () => {
-    if (!newFlight.aircraft_type || !newFlight.arrival_time || !newFlight.departure_time ||
-      !newFlight.destination || !newFlight.duration || !newFlight.flight_number || ! newFlight.origin
-      || ! newFlight.seat_number || !newFlight.status
-    ) return;
-    const newFlightData = {
-      ...newFlight,
-      id: flights.length + 1,
-    };
-    setFlights([...flights, newFlightData]);
-    resetForm();
+  const fetchFlights = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/flights');
+      const data = await response.json();
+      setFlights(data);
+      // console.log(data);
+    } catch (error) {
+      console.error('Error fetching flights:', error);
+    }
   };
 
-  const handleDeleteFlight = (id) => {
-    const updatedFlights = flights.filter((flight) => flight.id !== id);
-    setFlights(updatedFlights);
+  const fetchAirplaneModels = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:5000/api/airplanes/models'
+      );
+      const data = await response.json();
+      setAirplaneModels(data);
+    } catch (error) {
+      console.error('Error fetching airplane models:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFlights();
+    fetchAirplaneModels();
+  }, []);
+
+  const handleAddFlight = async () => {
+    if (
+      !newFlight.aircraft_type ||
+      !newFlight.arrival_time ||
+      !newFlight.departure_time ||
+      !newFlight.destination ||
+      !newFlight.flight_number ||
+      !newFlight.origin ||
+      !newFlight.status
+    )
+      return;
+
+    try {
+      console.log('newFlight', newFlight); // Debug log
+      const response = await fetch('http://localhost:5000/api/flights', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          flightNumber: newFlight.flight_number,
+          origin: newFlight.origin,
+          destination: newFlight.destination,
+          departureTime: newFlight.departure_time,
+          arrivalTime: newFlight.arrival_time,
+          status: newFlight.status,
+          airplaneModel: newFlight.aircraft_type, // Sending airplane model instead of ID
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add flight');
+      }
+
+      const addedFlight = await response.json();
+      setFlights([...flights, addedFlight]);
+      resetForm();
+    } catch (error) {
+      console.error('Error adding flight:', error);
+    }
+  };
+
+  const handleDeleteFlight = async (id) => {
+    try {
+      // console.log('id', id);
+      const response = await fetch(`http://localhost:5000/api/flights/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete flight');
+      }
+
+      const updatedFlights = flights.filter((flight) => flight.id !== id);
+      setFlights(updatedFlights);
+    } catch (error) {
+      console.error('Error deleting flight:', error);
+    }
   };
 
   const handleEditFlight = (flight) => {
-    setSelectedFlight(flight);
+    setSelectedFlight({
+      ...flight,
+      aircraft_type: flight.Airplane ? flight.Airplane.model : '',
+    });
     setIsEditOpen(true);
   };
 
-  const handleSaveEdit = () => {
-    setFlights(
-      flights.map((flight) => (flight.id === selectedFlight.id ? selectedFlight : flight))
-    );
-    setIsEditOpen(false);
+  const handleSaveEdit = async () => {
+    console.log('selected flight', selectedFlight);
+    if (!selectedFlight || !selectedFlight.id) {
+      console.error('No flight ID found');
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/flights/${selectedFlight.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            flightNumber: selectedFlight.flight_number,
+            origin: selectedFlight.origin,
+            destination: selectedFlight.destination,
+            departureTime: selectedFlight.departure_time,
+            arrivalTime: selectedFlight.arrival_time,
+            status: selectedFlight.status,
+            airplaneModel: selectedFlight.aircraft_type, // Sending airplane model instead of ID
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to update flight');
+      }
+
+      const updatedFlight = await response.json();
+      setFlights(
+        flights.map((flight) =>
+          flight.id === updatedFlight.id ? updatedFlight : flight
+        )
+      );
+      setIsEditOpen(false);
+    } catch (error) {
+      console.error('Error updating flight:', error);
+    }
   };
+
+  const handleSort = (key) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedFlights = [...flights].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'ascending' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'ascending' ? 1 : -1;
+    }
+    return 0;
+  });
 
   const resetForm = () => {
     setNewFlight({
-      flight_number: "",
-      origin: "",
-      destination: "",
-      departure_time: "",
-      arrival_time: "",
-      duration: "",
-      status: "Scheduled",
-      aircraft_type: "",
-      seat_number: "",
+      flight_number: '',
+      origin: '',
+      destination: '',
+      departure_time: '',
+      arrival_time: '',
+      duration: '',
+      status: 'Scheduled',
+      aircraft_type: '',
+      seat_number: '',
     });
   };
 
@@ -86,46 +229,73 @@ const FlightsPage = () => {
     <div className="container mx-auto p-4 md:p-6">
       <Card className="shadow-md">
         <CardHeader>
-          <h1 className="text-2xl font-bold text-center">Flights Management</h1>
+          <h1 className="text-center text-2xl font-bold">Flights Management</h1>
+          <span className="text-sm text-gray-500">
+            TODO:
+            <ul className="ml-4 list-disc">
+              <li>Confirm add, edit, delete flight</li>
+              <li>Toast/sooner notification when add, edit, delete</li>
+              <li>Disable nút Add khi thông tin chưa được nhập đủ</li>
+              <li>Chỉnh lại sắp xếp giao diện (optional)</li>
+            </ul>
+          </span>
         </CardHeader>
         <CardContent>
           {/* Form thêm chuyến bay */}
-          <div className="space-y-4 mb-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mb-6 space-y-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               <Input
                 value={newFlight.flight_number}
-                onChange={(e) => setNewFlight({ ...newFlight, flight_number: e.target.value })}
+                onChange={(e) =>
+                  setNewFlight({ ...newFlight, flight_number: e.target.value })
+                }
                 placeholder="Flight Number"
               />
               <Input
                 value={newFlight.origin}
-                onChange={(e) => setNewFlight({ ...newFlight, origin: e.target.value })}
+                onChange={(e) =>
+                  setNewFlight({ ...newFlight, origin: e.target.value })
+                }
                 placeholder="Origin"
               />
               <Input
                 value={newFlight.destination}
-                onChange={(e) => setNewFlight({ ...newFlight, destination: e.target.value })}
+                onChange={(e) =>
+                  setNewFlight({ ...newFlight, destination: e.target.value })
+                }
                 placeholder="Destination"
               />
               <DateTimePicker
                 dateTime={newFlight.departure_time}
-                setDateTime={(date) => setNewFlight({ ...newFlight, departure_time: date })}
+                setDateTime={(date) =>
+                  setNewFlight({ ...newFlight, departure_time: date })
+                }
                 title="Departure Time"
               />
               <DateTimePicker
                 dateTime={newFlight.arrival_time}
-                setDateTime={(date) => setNewFlight({ ...newFlight, arrival_time: date })}
+                setDateTime={(date) =>
+                  setNewFlight({ ...newFlight, arrival_time: date })
+                }
                 title="Arrival Time"
               />
-              <Input
-                value={newFlight.duration}
-                onChange={(e) => setNewFlight({ ...newFlight, duration: e.target.value })}
-                placeholder="Duration (e.g., 2:30)"
-              />
+              <div className="ml-2 flex items-center">
+                <span className="text-gray-700">Duration: </span>
+                <span className="ml-2">
+                  {newFlight.departure_time && newFlight.arrival_time
+                    ? calculateDuration(
+                        newFlight.departure_time,
+                        newFlight.arrival_time
+                      )
+                    : '0h 0m'}
+                </span>
+              </div>
               <select
                 value={newFlight.status}
-                onChange={(e) => setNewFlight({ ...newFlight, status: e.target.value })}
-                className="border rounded-md p-2 w-full"
+                onChange={(e) =>
+                  setNewFlight({ ...newFlight, status: e.target.value })
+                }
+                className="w-full rounded-md border p-2"
               >
                 <option value="Scheduled">Scheduled</option>
                 <option value="Delayed">Delayed</option>
@@ -133,23 +303,33 @@ const FlightsPage = () => {
               </select>
               <select
                 value={newFlight.aircraft_type}
-                onChange={(e) => setNewFlight({ ...newFlight, aircraft_type: e.target.value })}
-                className="border rounded-md p-2 w-full"
+                onChange={(e) => {
+                  setNewFlight({ ...newFlight, aircraft_type: e.target.value });
+                  console.log('aircraft_type:', e.target.value);
+                }}
+                className="w-full rounded-md border p-2"
               >
                 <option value="">Select Aircraft Type</option>
-                <option value="Airbus A320">Airbus A320</option>
-                <option value="Boeing 737">Boeing 737</option>
-                <option value="Airbus A321">Airbus A321</option>
+                {airplaneModels.map((airplane) => (
+                  <option key={airplane.model} value={airplane.model}>
+                    {airplane.model}
+                  </option>
+                ))}
               </select>
-              <Input
+              {/* <Input
                 type="number"
                 value={newFlight.seat_number}
-                onChange={(e) => setNewFlight({ ...newFlight, seat_number: e.target.value })}
+                onChange={(e) =>
+                  setNewFlight({ ...newFlight, seat_number: e.target.value })
+                }
                 placeholder="Number of Seats"
-              />
+              /> */}
             </div>
             <div className="text-right">
-              <Button onClick={handleAddFlight} className="bg-blue-600 hover:bg-blue-700 text-white">
+              <Button
+                onClick={handleAddFlight}
+                className="bg-blue-600 text-white hover:bg-blue-700"
+              >
                 Add Flight
               </Button>
             </div>
@@ -160,39 +340,66 @@ const FlightsPage = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100">
-                  <TableHead>Flight Number</TableHead>
-                  <TableHead>Origin</TableHead>
-                  <TableHead>Destination</TableHead>
-                  <TableHead>Departure</TableHead>
-                  <TableHead>Arrival</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Aircraft</TableHead>
-                  <TableHead>Seats</TableHead>
+                  <TableHead onClick={() => handleSort('flight_number')}>
+                    Flight Number
+                  </TableHead>
+                  <TableHead onClick={() => handleSort('origin')}>
+                    Origin
+                  </TableHead>
+                  <TableHead onClick={() => handleSort('destination')}>
+                    Destination
+                  </TableHead>
+                  <TableHead onClick={() => handleSort('departure_time')}>
+                    Departure
+                  </TableHead>
+                  <TableHead onClick={() => handleSort('arrival_time')}>
+                    Arrival
+                  </TableHead>
+                  <TableHead onClick={() => handleSort('status')}>
+                    Status
+                  </TableHead>
+                  <TableHead onClick={() => handleSort('aircraft_type')}>
+                    Aircraft
+                  </TableHead>
+                  <TableHead onClick={() => handleSort('duration')}>
+                    Duration
+                  </TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {flights.map((flight) => (
+                {sortedFlights.map((flight) => (
                   <TableRow key={flight.id}>
                     <TableCell>{flight.flight_number}</TableCell>
                     <TableCell>{flight.origin}</TableCell>
                     <TableCell>{flight.destination}</TableCell>
-                    <TableCell>{flight.departure_time}</TableCell>
-                    <TableCell>{flight.arrival_time}</TableCell>
+                    <TableCell className="min-w-[150px]">
+                      {formatDateTime(flight.departure_time)}
+                    </TableCell>
+                    <TableCell className="min-w-[150px]">
+                      {formatDateTime(flight.arrival_time)}
+                    </TableCell>
                     <TableCell>{flight.status}</TableCell>
-                    <TableCell>{flight.aircraft_type}</TableCell>
-                    <TableCell>{flight.seat_number}</TableCell>
+                    <TableCell>
+                      {flight.Airplane ? flight.Airplane.model : 'N/A'}
+                    </TableCell>
+                    <TableCell>
+                      {calculateDuration(
+                        flight.departure_time,
+                        flight.arrival_time
+                      )}
+                    </TableCell>
                     <TableCell className="flex space-x-2">
                       <Button
                         onClick={() => handleEditFlight(flight)}
-                        className="bg-yellow-500 hover:bg-yellow-600 p-2 rounded-md"
+                        className="rounded-md bg-yellow-500 p-2 hover:bg-yellow-600"
                         size="icon"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
                       <Button
                         onClick={() => handleDeleteFlight(flight.id)}
-                        className="bg-red-500 hover:bg-red-600 p-2 rounded-md"
+                        className="rounded-md bg-red-500 p-2 hover:bg-red-600"
                         size="icon"
                       >
                         <Trash className="h-4 w-4" />
@@ -208,75 +415,116 @@ const FlightsPage = () => {
 
       {/* Modal chỉnh sửa chuyến bay */}
       {selectedFlight && (
-        <Dialog open={isEditOpen} onOpenChange={() => setIsEditOpen(false)}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Edit Flight Information</DialogTitle>
-            </DialogHeader>
-            <div className="grid grid-cols-1 gap-4">
-              <Input
-                value={selectedFlight.flight_number}
-                onChange={(e) => setSelectedFlight({ ...selectedFlight, flight_number: e.target.value })}
-                placeholder="Flight Number"
-              />
-              <Input
-                value={selectedFlight.origin}
-                onChange={(e) => setSelectedFlight({ ...selectedFlight, origin: e.target.value })}
-                placeholder="Origin"
-              />
-              <Input
-                value={selectedFlight.destination}
-                onChange={(e) => setSelectedFlight({ ...selectedFlight, destination: e.target.value })}
-                placeholder="Destination"
-              />
-              <DateTimePicker
-                date={selectedFlight.departure_time}
-                setDate={(date) => setSelectedFlight({ ...selectedFlight, departure_time: date })}
-                title="Departure Time"
-              />
-              <DateTimePicker
-                date={selectedFlight.arrival_time}
-                setDate={(date) => setSelectedFlight({ ...selectedFlight, arrival_time: date })}
-                title="Arrival Time"
-              />
-              <Input
-                value={selectedFlight.duration}
-                onChange={(e) => setSelectedFlight({ ...selectedFlight, duration: e.target.value })}
-                placeholder="Duration (e.g., 2:30)"
-              />
-              <select
-                value={selectedFlight.status}
-                onChange={(e) => setSelectedFlight({ ...selectedFlight, status: e.target.value })}
-                className="border rounded-md p-2 w-full"
-              >
-                <option value="Scheduled">Scheduled</option>
-                <option value="Delayed">Delayed</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
-              <select
-                value={selectedFlight.aircraft_type}
-                onChange={(e) => setSelectedFlight({ ...selectedFlight, aircraft_type: e.target.value })}
-                className="border rounded-md p-2 w-full"
-              >
-                <option value="">Select Aircraft Type</option>
-                <option value="Airbus A320">Airbus A320</option>
-                <option value="Boeing 737">Boeing 737</option>
-                <option value="Airbus A321">Airbus A321</option>
-              </select>
-              <Input
-                type="number"
-                value={selectedFlight.seat_number}
-                onChange={(e) => setSelectedFlight({ ...selectedFlight, seat_number: e.target.value })}
-                placeholder="Number of Seats"
-              />
+        <ResponsiveDialog
+          isOpen={isEditOpen}
+          onClose={() => setIsEditOpen(false)}
+          title="Edit Flight Information"
+        >
+          <div className="grid grid-cols-1 gap-4">
+            <Input
+              value={selectedFlight.flight_number}
+              onChange={(e) =>
+                setSelectedFlight({
+                  ...selectedFlight,
+                  flight_number: e.target.value,
+                })
+              }
+              placeholder="Flight Number"
+            />
+            <Input
+              value={selectedFlight.origin}
+              onChange={(e) =>
+                setSelectedFlight({
+                  ...selectedFlight,
+                  origin: e.target.value,
+                })
+              }
+              placeholder="Origin"
+            />
+            <Input
+              value={selectedFlight.destination}
+              onChange={(e) =>
+                setSelectedFlight({
+                  ...selectedFlight,
+                  destination: e.target.value,
+                })
+              }
+              placeholder="Destination"
+            />
+            <DateTimePicker
+              dateTime={selectedFlight.departure_time}
+              setDateTime={(date) =>
+                setSelectedFlight({ ...selectedFlight, departure_time: date })
+              }
+              title="Departure Time"
+            />
+            <DateTimePicker
+              dateTime={selectedFlight.arrival_time}
+              setDateTime={(date) =>
+                setSelectedFlight({ ...selectedFlight, arrival_time: date })
+              }
+              title="Arrival Time"
+            />
+            <div className="flex items-center text-center">
+              <span className="text-gray-700"> Duration: </span>
+              <span className="ml-2">
+                {selectedFlight.departure_time && selectedFlight.arrival_time
+                  ? calculateDuration(
+                      selectedFlight.departure_time,
+                      selectedFlight.arrival_time
+                    )
+                  : '00'}
+              </span>
             </div>
-            <DialogFooter>
-              <Button onClick={handleSaveEdit} className="bg-blue-600 text-white">
-                Save Changes
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            <select
+              value={selectedFlight.status}
+              onChange={(e) =>
+                setSelectedFlight({
+                  ...selectedFlight,
+                  status: e.target.value,
+                })
+              }
+              className="w-full rounded-md border p-2"
+            >
+              <option value="Scheduled">Scheduled</option>
+              <option value="Delayed">Delayed</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+            <select
+              value={selectedFlight.aircraft_type}
+              onChange={(e) =>
+                setSelectedFlight({
+                  ...selectedFlight,
+                  aircraft_type: e.target.value,
+                })
+              }
+              className="w-full rounded-md border p-2"
+            >
+              <option value="">Select Aircraft Type</option>
+              {airplaneModels.map((airplane) => (
+                <option key={airplane.model} value={airplane.model}>
+                  {airplane.model}
+                </option>
+              ))}
+            </select>
+            {/* <Input
+              type="number"
+              value={selectedFlight.seat_number}
+              onChange={(e) =>
+                setSelectedFlight({
+                  ...selectedFlight,
+                  seat_number: e.target.value,
+                })
+              }
+              placeholder="Number of Seats"
+            /> */}
+          </div>
+          <div className="mt-4 text-right">
+            <Button onClick={handleSaveEdit} className="bg-blue-600 text-white">
+              Save Changes
+            </Button>
+          </div>
+        </ResponsiveDialog>
       )}
     </div>
   );
