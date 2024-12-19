@@ -3,7 +3,7 @@ const { User, Admin } = require("../models");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    const hashedPassword = await bcrypt.hash("admin", 10);
+    const hashedPassword = await bcrypt.hash("Admin123", 10);
 
     // Create a user with admin role
     const user = await User.create({

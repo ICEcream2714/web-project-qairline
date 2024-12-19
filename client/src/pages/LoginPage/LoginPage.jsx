@@ -30,6 +30,7 @@ const LoginPage = () => {
     title: '',
     message: '',
     isSuccess: false,
+    onClose: null,
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -66,20 +67,23 @@ const LoginPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        const { token, role } = data;
         console.log('Login ok', data);
-        localStorage.setItem('token', data.token); // Lưu token vào localStorage
+        localStorage.setItem('token', token); // Lưu token vào localStorage
         // alert('Login successfully!');
         setAlert({
           open: true,
           title: 'QAirline',
           message: 'Login successfully!',
           isSuccess: true,
+          onClose: () => {
+            if (email === 'admin@example.com') {
+              navigate('/admin');
+            } else {
+              navigate('/');
+            }
+          },
         });
-
-        //
-        setTimeout(() => {
-          navigate('/'); // Điều hướng đến trang chính sau khi hiển thị thông báo
-        }, 8000);
       } else {
         const error = await response.json();
         const errorMessage =
@@ -202,7 +206,12 @@ const LoginPage = () => {
             </Button>
             <AlertDialog
               open={alert.open}
-              onClose={() => setAlert({ ...alert, open: false })}
+              onClose={() => {
+                if (alert.onClose) {
+                  alert.onClose();
+                }
+                setAlert({ ...alert, open: false });
+              }}
               title={alert.title}
               message={alert.message}
               isSuccess={alert.isSuccess}
