@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Pencil, Trash } from 'lucide-react';
+import { Pencil, Trash, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -236,6 +236,7 @@ const FlightsPage = () => {
               <li>Confirm add, edit, delete flight</li>
               <li>Toast/sooner notification when add, edit, delete</li>
               <li>Disable nút Add khi thông tin chưa được nhập đủ</li>
+              <li>Sửa lại nút sort</li>
               <li>Chỉnh lại sắp xếp giao diện (optional)</li>
             </ul>
           </span>
@@ -340,29 +341,101 @@ const FlightsPage = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-gray-100">
-                  <TableHead onClick={() => handleSort('flight_number')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('flight_number')}
+                  >
                     Flight Number
+                    {sortConfig.key === 'flight_number' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
-                  <TableHead onClick={() => handleSort('origin')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('origin')}
+                  >
                     Origin
+                    {sortConfig.key === 'origin' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
-                  <TableHead onClick={() => handleSort('destination')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('destination')}
+                  >
                     Destination
+                    {sortConfig.key === 'destination' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
-                  <TableHead onClick={() => handleSort('departure_time')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('departure_time')}
+                  >
                     Departure
+                    {sortConfig.key === 'departure_time' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
-                  <TableHead onClick={() => handleSort('arrival_time')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('arrival_time')}
+                  >
                     Arrival
+                    {sortConfig.key === 'arrival_time' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
-                  <TableHead onClick={() => handleSort('status')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('status')}
+                  >
                     Status
+                    {sortConfig.key === 'status' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
-                  <TableHead onClick={() => handleSort('aircraft_type')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('aircraft_type')}
+                  >
                     Aircraft
+                    {sortConfig.key === 'aircraft_type' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
-                  <TableHead onClick={() => handleSort('duration')}>
+                  <TableHead
+                    className="cursor-pointer"
+                    onClick={() => handleSort('duration')}
+                  >
                     Duration
+                    {sortConfig.key === 'duration' &&
+                      (sortConfig.direction === 'ascending' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
                   </TableHead>
                   <TableHead>Actions</TableHead>
                 </TableRow>
