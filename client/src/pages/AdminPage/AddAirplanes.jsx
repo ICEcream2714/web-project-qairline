@@ -1,9 +1,356 @@
-const Loader = () => {
+import { useState, useEffect } from 'react';
+import { Pencil, Trash, ArrowUp, ArrowDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+
+const AirplanePage = () => {
+  const [airplanes, setAirplanes] = useState([]);
+  const [newAirplane, setNewAirplane] = useState({
+    model: '',
+    manufacturer: '',
+    seat_count: '',
+  });
+  const [selectedAirplane, setSelectedAirplane] = useState(null);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [sortConfig, setSortConfig] = useState({
+    key: 'model',
+    direction: 'asc',
+  });
+
+  useEffect(() => {
+    // Fetch airplane data from the server
+    const fetchAirplanes = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/airplanes/');
+        const data = await response.json();
+        setAirplanes(data);
+      } catch (error) {
+        console.error('Error fetching airplane data:', error);
+      }
+    };
+
+    fetchAirplanes();
+  }, []);
+
+  const handleAddAirplane = async () => {
+    if (!newAirplane.model || !newAirplane.seat_count) return;
+    try {
+      const response = await fetch('http://localhost:5000/api/airplanes/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newAirplane),
+      });
+
+      if (response.ok) {
+        const addedAirplane = await response.json();
+        setAirplanes([...airplanes, addedAirplane]);
+        setNewAirplane({ model: '', manufacturer: '', seat_count: '' });
+      } else {
+        console.error('Failed to add airplane');
+      }
+    } catch (error) {
+      console.error('Error adding airplane:', error);
+    }
+  };
+
+  const handleDeleteAirplane = async (id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/airplanes/${id}`,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      if (response.ok) {
+        setAirplanes(airplanes.filter((plane) => plane.id !== id));
+      } else {
+        console.error('Failed to delete airplane');
+      }
+    } catch (error) {
+      console.error('Error deleting airplane:', error);
+    }
+  };
+
+  const handleEditAirplane = (plane) => {
+    setSelectedAirplane(plane);
+    setIsEditOpen(true);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/airplanes/${selectedAirplane.id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(selectedAirplane),
+        }
+      );
+
+      if (response.ok) {
+        const updatedAirplane = await response.json();
+        setAirplanes(
+          airplanes.map((plane) =>
+            plane.id === updatedAirplane.id ? updatedAirplane : plane
+          )
+        );
+        setIsEditOpen(false);
+      } else {
+        console.error('Failed to update airplane');
+      }
+    } catch (error) {
+      console.error('Error updating airplane:', error);
+    }
+  };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedAirplanes = [...airplanes].sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
   return (
-    <div className="flex h-screen items-center justify-center bg-white">
-      <div className="h-16 w-16 animate-spin rounded-full border-4 border-solid border-primary border-t-transparent"></div>
+    <div className="container mx-auto p-4 md:p-6">
+      <Card className="shadow-md">
+        <CardHeader>
+          <h1 className="text-center text-2xl font-bold">
+            Airplane Management
+          </h1>
+          <span className="text-sm text-gray-500">
+            TODO:
+            <ul className="ml-4 list-disc">
+              <li>Confirm add, edit, delete</li>
+              <li>Toast/sooner notification when add, edit, delete</li>
+              <li>Disable nút Add khi thông tin chưa được nhập đủ</li>
+            </ul>
+          </span>
+        </CardHeader>
+        <CardContent>
+          {/* Form thêm máy bay */}
+          <div className="mb-6 space-y-4">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+              <Input
+                value={newAirplane.model}
+                onChange={(e) =>
+                  setNewAirplane({ ...newAirplane, model: e.target.value })
+                }
+                placeholder="Airplane Model"
+                required
+              />
+              <Input
+                value={newAirplane.manufacturer}
+                onChange={(e) =>
+                  setNewAirplane({
+                    ...newAirplane,
+                    manufacturer: e.target.value,
+                  })
+                }
+                placeholder="Manufacturer (Optional)"
+              />
+              <Input
+                type="number"
+                value={newAirplane.seat_count}
+                onChange={(e) =>
+                  setNewAirplane({ ...newAirplane, seat_count: e.target.value })
+                }
+                placeholder="Seat Count"
+                required
+              />
+            </div>
+            <div className="text-right">
+              <Button
+                onClick={handleAddAirplane}
+                className="bg-blue-600 text-white hover:bg-blue-700"
+              >
+                Add Airplane
+              </Button>
+            </div>
+          </div>
+
+          {/* Table hiển thị danh sách máy bay */}
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-100">
+                  <TableHead
+                    className="w-1/4 cursor-pointer text-center"
+                    onClick={() => handleSort('model')}
+                  >
+                    Model
+                    {sortConfig.key === 'model' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
+                  </TableHead>
+                  <TableHead
+                    className="w-1/4 cursor-pointer text-center"
+                    onClick={() => handleSort('manufacturer')}
+                  >
+                    Manufacturer
+                    {sortConfig.key === 'manufacturer' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
+                  </TableHead>
+                  <TableHead
+                    className="w-1/4 cursor-pointer text-center"
+                    onClick={() => handleSort('seat_count')}
+                  >
+                    Seat Count
+                    {sortConfig.key === 'seat_count' &&
+                      (sortConfig.direction === 'asc' ? (
+                        <ArrowUp className="ml-1 inline" size={16} />
+                      ) : (
+                        <ArrowDown className="ml-1 inline" size={16} />
+                      ))}
+                  </TableHead>
+                  <TableHead className="w-1/4 text-center">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {sortedAirplanes.length > 0 ? (
+                  sortedAirplanes.map((plane) => (
+                    <TableRow
+                      key={plane.id}
+                      className="transition duration-300 hover:bg-gray-50"
+                    >
+                      <TableCell className="text-center">
+                        {plane.model}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {plane.manufacturer || 'N/A'}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {plane.seat_count}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        <div className="flex justify-center space-x-2">
+                          <Button
+                            onClick={() => handleEditAirplane(plane)}
+                            className="rounded-md bg-yellow-500 p-2 hover:bg-yellow-600"
+                            size="icon"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            onClick={() => handleDeleteAirplane(plane.id)}
+                            className="rounded-md bg-red-500 p-2 hover:bg-red-600"
+                            size="icon"
+                          >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan="4"
+                      className="text-center italic text-gray-500"
+                    >
+                      No airplanes available.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Modal chỉnh sửa máy bay */}
+      {selectedAirplane && (
+        <Dialog open={isEditOpen} onOpenChange={() => setIsEditOpen(false)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Edit Airplane</DialogTitle>
+            </DialogHeader>
+            <div className="grid grid-cols-1 gap-4">
+              <Input
+                value={selectedAirplane.model}
+                onChange={(e) =>
+                  setSelectedAirplane({
+                    ...selectedAirplane,
+                    model: e.target.value,
+                  })
+                }
+                placeholder="Airplane Model"
+                required
+              />
+              <Input
+                value={selectedAirplane.manufacturer}
+                onChange={(e) =>
+                  setSelectedAirplane({
+                    ...selectedAirplane,
+                    manufacturer: e.target.value,
+                  })
+                }
+                placeholder="Manufacturer (Optional)"
+              />
+              <Input
+                type="number"
+                value={selectedAirplane.seat_count}
+                onChange={(e) =>
+                  setSelectedAirplane({
+                    ...selectedAirplane,
+                    seat_count: e.target.value,
+                  })
+                }
+                placeholder="Seat Count"
+                required
+              />
+            </div>
+            <DialogFooter>
+              <Button
+                onClick={handleSaveEdit}
+                className="bg-blue-600 text-white"
+              >
+                Save Changes
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
 
-export default Loader;
+export default AirplanePage;

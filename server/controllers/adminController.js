@@ -92,3 +92,22 @@ exports.updateFlightStatus = async (req, res) => {
     res.status(500).send("Lỗi hệ thống");
   }
 };
+
+// Update seat count of an airplane
+exports.updateSeatCount = async (req, res) => {
+  const { airplaneId, seatCount } = req.body;
+
+  try {
+    const updatedAirplane = await adminService.updateSeatCount(
+      airplaneId,
+      seatCount
+    );
+    if (!updatedAirplane) {
+      return res.status(404).send("Airplane not found.");
+    }
+    res.status(200).json(updatedAirplane);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Lỗi hệ thống");
+  }
+};
