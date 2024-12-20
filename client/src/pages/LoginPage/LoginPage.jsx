@@ -78,7 +78,7 @@ const LoginPage = () => {
           isSuccess: true,
           onClose: () => {
             if (email === 'admin@example.com') {
-              navigate('/admin');
+              navigate('/admin/post-information');
             } else {
               navigate('/');
             }

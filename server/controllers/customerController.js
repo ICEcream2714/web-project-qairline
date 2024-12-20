@@ -174,6 +174,27 @@ exports.bookFlight = async (req, res) => {
   }
 
   try {
+    // Verify that the customer exists
+    const customer = await Customer.findByPk(customerId);
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    // Verify that the outbound flight exists
+    const outboundFlightRecord = await Flight.findByPk(outboundFlight.id);
+    if (!outboundFlightRecord) {
+      return res.status(404).json({ message: "Outbound flight not found" });
+    }
+
+    // Verify that the return flight exists (if provided)
+    let returnFlightRecord = null;
+    if (returnFlight) {
+      returnFlightRecord = await Flight.findByPk(returnFlight.id);
+      if (!returnFlightRecord) {
+        return res.status(404).json({ message: "Return flight not found" });
+      }
+    }
+
     const booking = await Booking.create({
       customer_id: customerId,
       outbound_flight_id: outboundFlight.id,
@@ -356,6 +377,64 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
+// Lấy tất cả thông tin đặt vé của người dùng
+exports.getUserBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.findAll({
+      where: { customer_id: req.userId },
+      include: [
+        {
+          model: Passenger,
+          attributes: ["first_name", "last_name", "email", "phone"],
+        },
+        {
+          model: Flight,
+          as: "outboundFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+          ],
+        },
+        {
+          model: Flight,
+          as: "returnFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+          ],
+        },
+        {
+          model: Seat,
+          as: "outboundSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+        {
+          model: Seat,
+          as: "returnSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+      ],
+    });
+
+    if (!bookings.length) {
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy thông tin đặt vé" });
+    }
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching user bookings:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
+  }
+};
+
 // Lấy tất cả thông tin của khách hàng đã đăng nhập
 exports.getLoggedInCustomerInfo = async (req, res) => {
   try {
@@ -473,4 +552,5 @@ exports.updateProfile = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal server error", error: error.message });
-  }};
+  }
+};

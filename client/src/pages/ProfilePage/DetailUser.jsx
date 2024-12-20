@@ -16,6 +16,7 @@ const DetailUser = () => {
   const [countryCode, setCountryCode] = useState('');
   const [phone, setPhone] = useState('');
   const [gender, setGender] = useState('');
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,11 +30,12 @@ const DetailUser = () => {
           }
         );
         const data = await response.json();
-        setHomeAddress(data.address);
-        setEmail(data.User.email);
-        setCountryCode(data.country_code.toString()); // Convert to string
-        setPhone(data.User.phone);
-        setGender(data.gender);
+        setUserData(data);
+        setHomeAddress(data?.address || '');
+        setEmail(data?.User?.email || '');
+        setCountryCode(data?.country_code?.toString() || ''); // Convert to string
+        setPhone(data?.User?.phone || '');
+        setGender(data?.gender || '');
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -41,6 +43,10 @@ const DetailUser = () => {
 
     fetchData();
   }, []);
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   const countryCodes = [
     { code: '1', country: 'United States' },

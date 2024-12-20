@@ -55,7 +55,8 @@ export default function PaymentPage() {
         },
         body: JSON.stringify(bookingData),
       });
-      console.log('Response:', response);
+      console.log('bookingData: ', bookingData),
+        console.log('Response:', response);
 
       if (response.ok) {
         alert('Booking confirmed! Thank you for your purchase.');

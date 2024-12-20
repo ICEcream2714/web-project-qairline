@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
@@ -12,6 +12,28 @@ const FlightStatus = () => {
   const [route, setRoute] = useState({ from: '', to: '' });
   const [flightNumber, setFlightNumber] = useState('');
   const [date, setDate] = useState('');
+  const [fromCities, setFromCities] = useState([]);
+  const [toCities, setToCities] = useState([]);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/flights/');
+        const data = await response.json();
+        const origins = [...new Set(data.map((flight) => flight.origin))];
+        const destinations = [
+          ...new Set(data.map((flight) => flight.destination)),
+        ];
+        setFromCities(origins);
+        setToCities(destinations);
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+      }
+    };
+
+    fetchCities();
+  }, []);
 
   const handleSearch = () => {
     if (activeTab === 'route' && (!route.from || !route.to || !date)) {
@@ -60,44 +82,81 @@ const FlightStatus = () => {
       {/* Content */}
       <CardContent>
         {activeTab === 'route' ? (
-          <form className="col-span-1 md:col-span-2 flex flex-col md:flex-row items-center">
+          <form className="col-span-1 flex flex-col items-center md:col-span-2 md:flex-row">
             {/* From */}
-              <div className="relative w-full">
-                <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
-                  From
-                </Label>
-                <Input
-                  id="from"
-                  placeholder="Enter departure city"
-                  value={from}
-                  onChange={(e) => setFrom(e.target.value)}
-                />
-              </div>
+            <div className="relative w-full">
+              <Label
+                htmlFor="from"
+                className="mb-1 block text-sm text-gray-600"
+              >
+                From
+              </Label>
+              <Input
+                id="from"
+                placeholder="Enter departure city"
+                value={from}
+                onClick={() => setActiveDropdown('from')}
+                onChange={(e) => setFrom(e.target.value)}
+              />
+              {activeDropdown === 'from' && (
+                <div className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
+                  {fromCities.map((city) => (
+                    <div
+                      key={city}
+                      className="cursor-pointer p-2 hover:bg-gray-100"
+                      onClick={() => {
+                        setFrom(city);
+                        setActiveDropdown(null);
+                      }}
+                    >
+                      {city}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
-              {/* Switch Arrow */}
-              <span
-                className="mx-0 md:mx-4 mt-3 md:mt-4 cursor-pointer text-gray-400 hover:text-gray-600"
-                onClick={() => {
-                  setFrom(to);
-                  setTo(from);
-                 }}
-                >
-                  ⇄
-              </span>
+            {/* Switch Arrow */}
+            <span
+              className="mx-0 mt-3 cursor-pointer text-gray-400 hover:text-gray-600 md:mx-4 md:mt-4"
+              onClick={() => {
+                setFrom(to);
+                setTo(from);
+              }}
+            >
+              ⇄
+            </span>
 
-                {/* To */}
-              <div className="relative w-full">
-                <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
-                  To
-                </Label>
-                <Input
-                  id="to"
-                  placeholder="Enter destination city"
-                  value={to}
-                  onChange={(e) => setTo(e.target.value)}
-                />
-              </div>
-        
+            {/* To */}
+            <div className="relative w-full">
+              <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
+                To
+              </Label>
+              <Input
+                id="to"
+                placeholder="Enter destination city"
+                value={to}
+                onClick={() => setActiveDropdown('to')}
+                onChange={(e) => setTo(e.target.value)}
+              />
+              {activeDropdown === 'to' && (
+                <div className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
+                  {toCities.map((city) => (
+                    <div
+                      key={city}
+                      className="cursor-pointer p-2 hover:bg-gray-100"
+                      onClick={() => {
+                        setTo(city);
+                        setActiveDropdown(null);
+                      }}
+                    >
+                      {city}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* Date */}
             <div className="relative w-full md:px-4">
               <Label htmlFor="date">Date</Label>

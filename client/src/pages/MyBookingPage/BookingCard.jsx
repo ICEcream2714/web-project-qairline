@@ -7,7 +7,7 @@ import FlightInfo from './FlightInfo';
 import PaymentInfo from './PaymentInfo';
 import PassengerInfo from './PassengerInfo';
 
-const BookingCard = ({ booking }) => {
+const BookingCard = ({ booking, index }) => {
   const [isCancelling, setIsCancelling] = useState(false);
   const [isCancelled, setIsCancelled] = useState(
     booking.status === 'Cancelled'
@@ -54,7 +54,7 @@ const BookingCard = ({ booking }) => {
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Booking #{booking.id}</span>
+          <span>Booking #{index + 1}</span> {/* Display booking number */}
           <Badge
             variant={booking.status === 'Confirmed' ? 'success' : 'warning'}
           >
