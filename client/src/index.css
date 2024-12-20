@@ -11,7 +11,7 @@
     @apply min-h-screen;
     overflow-x: hidden; /* Ngăn cuộn ngang nếu không cần thiết */
   }
-  
+
   body {
     @apply min-h-screen;
     margin: 0;

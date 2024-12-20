@@ -127,7 +127,9 @@ function BookingPage() {
 
   return (
     <div className="h-screen min-h-screen">
+      {/* Navbar */}
       <NavbarBooking />
+      {/* Main */}
       <main className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pt-28 md:px-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium">

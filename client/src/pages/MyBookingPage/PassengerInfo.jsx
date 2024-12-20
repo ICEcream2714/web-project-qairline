@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 const PassengerInfo = ({ passengers }) => {
   return (
     <Card>
-      <CardContent className="p-4">
+      <CardContent className="p-2 md:p-6">
         <h3 className="mb-2 text-lg font-semibold">Passenger Information</h3>
         {passengers && passengers.length > 0 ? (
           passengers.map((passenger, index) => (
