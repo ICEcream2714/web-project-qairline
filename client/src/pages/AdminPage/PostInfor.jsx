@@ -129,7 +129,7 @@ const PostsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Toaster position="top-right" /> 
+      <Toaster/> 
 
       <Card className="shadow-md">
         <CardHeader>

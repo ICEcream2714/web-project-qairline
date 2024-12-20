@@ -156,7 +156,7 @@ const AirplanePage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Toaster position="top-right" />
+      <Toaster/>
       <Card className="shadow-md">
         <CardHeader>
           <h1 className="text-center text-2xl font-bold">
