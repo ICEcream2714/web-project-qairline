@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Pencil, Trash, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Toaster } from '@/components/ui/sonner'; 
+import { toast } from "sonner"
 import {
   Dialog,
   DialogContent,
@@ -41,6 +43,7 @@ const AirplanePage = () => {
         const data = await response.json();
         setAirplanes(data);
       } catch (error) {
+        toast.error('Failed to fetch airplanes.');
         console.error('Error fetching airplane data:', error);
       }
     };
@@ -49,7 +52,10 @@ const AirplanePage = () => {
   }, []);
 
   const handleAddAirplane = async () => {
-    if (!newAirplane.model || !newAirplane.seat_count) return;
+    if (!newAirplane.model || !newAirplane.seat_count) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
     try {
       const response = await fetch('http://localhost:5000/api/airplanes/', {
         method: 'POST',
@@ -63,10 +69,12 @@ const AirplanePage = () => {
         const addedAirplane = await response.json();
         setAirplanes([...airplanes, addedAirplane]);
         setNewAirplane({ model: '', manufacturer: '', seat_count: '' });
+        toast.success('Airplane added successfully!');
       } else {
         console.error('Failed to add airplane');
       }
     } catch (error) {
+      toast.error('Failed to add airplane.');
       console.error('Error adding airplane:', error);
     }
   };
@@ -81,8 +89,10 @@ const AirplanePage = () => {
       );
 
       if (response.ok) {
+        toast.success('Airplane deleted successfully!');
         setAirplanes(airplanes.filter((plane) => plane.id !== id));
       } else {
+        toast.error('Failed to delete airplane.');
         console.error('Failed to delete airplane');
       }
     } catch (error) {
@@ -115,11 +125,13 @@ const AirplanePage = () => {
             plane.id === updatedAirplane.id ? updatedAirplane : plane
           )
         );
+        toast.success('Airplane updated successfully!');
         setIsEditOpen(false);
       } else {
         console.error('Failed to update airplane');
       }
     } catch (error) {
+      toast.error('Failed to update airplane.');
       console.error('Error updating airplane:', error);
     }
   };
@@ -143,7 +155,8 @@ const AirplanePage = () => {
   });
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
+    <div className="container mx-auto p-4">
+      <Toaster position="top-right" />
       <Card className="shadow-md">
         <CardHeader>
           <h1 className="text-center text-2xl font-bold">
@@ -153,8 +166,8 @@ const AirplanePage = () => {
             TODO:
             <ul className="ml-4 list-disc">
               <li>Confirm add, edit, delete</li>
-              <li>Toast/sooner notification when add, edit, delete</li>
-              <li>Disable nút Add khi thông tin chưa được nhập đủ</li>
+              <li>done Toast/sooner notification when add, edit, delete</li>
+              <li>done Disable nút Add khi thông tin chưa được nhập đủ</li>
             </ul>
           </span>
         </CardHeader>
@@ -193,7 +206,10 @@ const AirplanePage = () => {
             <div className="text-right">
               <Button
                 onClick={handleAddAirplane}
-                className="bg-blue-600 text-white hover:bg-blue-700"
+                className={`bg-blue-600 text-white hover:bg-blue-700 ${
+                  !newAirplane.model || !newAirplane.seat_count? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={!newAirplane.model || !newAirplane.seat_count}
               >
                 Add Airplane
               </Button>

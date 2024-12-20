@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Pencil, Trash, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/sonner'; 
+import { toast } from "sonner"
 import { Input } from '@/components/ui/input';
 import {
   Table,
@@ -61,6 +63,7 @@ const FlightsPage = () => {
       setFlights(data);
       // console.log(data);
     } catch (error) {
+      toast.error('Failed to fetch flights.');
       console.error('Error fetching flights:', error);
     }
   };
@@ -73,6 +76,7 @@ const FlightsPage = () => {
       const data = await response.json();
       setAirplaneModels(data);
     } catch (error) {
+      toast.error('Failed to fetch airplane models.');
       console.error('Error fetching airplane models:', error);
     }
   };
@@ -83,14 +87,17 @@ const FlightsPage = () => {
   }, []);
 
   const handleAddFlight = async () => {
-    // if (
-    //   !newFlight.arrival_time ||
-    //   !newFlight.departure_time ||
-    //   !newFlight.destination ||
-    //   !newFlight.flight_number ||
-    //   !newFlight.origin
-    // )
-    //   return;
+    if (
+      !newFlight.arrival_time ||
+      !newFlight.departure_time ||
+      !newFlight.destination ||
+      !newFlight.flight_number ||
+      !newFlight.origin||
+      !newFlight.aircraft_type
+    ) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
 
     try {
       console.log('newFlight', newFlight); // Debug log
@@ -117,7 +124,9 @@ const FlightsPage = () => {
       const addedFlight = await response.json();
       setFlights([...flights, addedFlight]);
       resetForm();
+      toast.success('Flight added successfully!');
     } catch (error) {
+      toast.success('Failed to add flight');
       console.error('Error adding flight:', error);
     }
   };
@@ -135,7 +144,9 @@ const FlightsPage = () => {
 
       const updatedFlights = flights.filter((flight) => flight.id !== id);
       setFlights(updatedFlights);
+      toast.success('Flight deleted successfully!');
     } catch (error) {
+      toast.error('Failed to delete flight.');
       console.error('Error deleting flight:', error);
     }
   };
@@ -185,8 +196,10 @@ const FlightsPage = () => {
           flight.id === updatedFlight.id ? updatedFlight : flight
         )
       );
+      toast.success('Flight updated successfully!');
       setIsEditOpen(false);
     } catch (error) {
+      toast.error('Failed to update flight.');
       console.error('Error updating flight:', error);
     }
   };
@@ -224,7 +237,8 @@ const FlightsPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
+    <div className="container mx-auto p-4">
+      <Toaster position="top-right" /> 
       <Card className="shadow-md">
         <CardHeader>
           <h1 className="text-center text-2xl font-bold">Flights Management</h1>
@@ -232,8 +246,8 @@ const FlightsPage = () => {
             TODO:
             <ul className="ml-4 list-disc">
               <li>Confirm add, edit, delete flight</li>
-              <li>Toast/sooner notification when add, edit, delete</li>
-              <li>Disable nút Add khi thông tin chưa được nhập đủ</li>
+              <li>done Toast/sooner notification when add, edit, delete</li>
+              <li>done Disable nút Add khi thông tin chưa được nhập đủ</li>
               <li>Sửa lại nút sort</li>
               <li>Chỉnh lại sắp xếp giao diện (optional)</li>
             </ul>
@@ -327,7 +341,20 @@ const FlightsPage = () => {
             <div className="text-right">
               <Button
                 onClick={handleAddFlight}
-                className="bg-blue-600 text-white hover:bg-blue-700"
+                className={`bg-blue-600 text-white hover:bg-blue-700 ${
+                  !newFlight.arrival_time ||
+                  !newFlight.departure_time ||
+                  !newFlight.destination ||
+                  !newFlight.flight_number ||
+                  !newFlight.origin ||
+                  !newFlight.aircraft_type? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={!newFlight.arrival_time ||
+                  !newFlight.departure_time ||
+                  !newFlight.destination ||
+                  !newFlight.flight_number ||
+                  !newFlight.origin||
+                  !newFlight.aircraft_type}
               >
                 Add Flight
               </Button>

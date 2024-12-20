@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Toaster } from '@/components/ui/sonner'; 
+import { toast } from "sonner"
 import { Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,6 +34,7 @@ const PostsPage = () => {
         const data = await response.json();
         setPosts(data);
       } catch (error) {
+        toast.error('Failed to fetch posts.');
         console.error('Error fetching posts:', error);
       }
     };
@@ -40,7 +43,10 @@ const PostsPage = () => {
   }, []);
 
   const handleAddPost = async () => {
-    if (!newPost.title || !newPost.image || !newPost.cta) return;
+    if (!newPost.title || !newPost.image || !newPost.cta) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
     try {
       const response = await fetch('http://localhost:5000/api/posts/', {
         method: 'POST',
@@ -57,7 +63,9 @@ const PostsPage = () => {
       const addedPost = await response.json();
       setPosts([...posts, addedPost]);
       setNewPost({ title: '', image: '', cta: '' });
+      toast.success('Post added successfully!');
     } catch (error) {
+      toast.error('Failed to add post.');
       console.error('Error adding post:', error);
     }
   };
@@ -73,7 +81,9 @@ const PostsPage = () => {
       }
 
       setPosts(posts.filter((post) => post.id !== id));
+      toast.success('Post deleted successfully!');
     } catch (error) {
+      toast.error('Failed to delete post.');
       console.error('Error deleting post:', error);
     }
   };
@@ -82,9 +92,6 @@ const PostsPage = () => {
     setSelectedPost(post);
     setIsEditOpen(true);
   };
-
-  //TODO: confirmation dialog
-  //TODO: Toast notification
 
   const handleSaveEdit = async () => {
     try {
@@ -108,7 +115,9 @@ const PostsPage = () => {
         posts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
       );
       setIsEditOpen(false);
+      toast.success('Post updated successfully!');
     } catch (error) {
+      toast.error('Failed to update post.');
       console.error('Error saving changes:', error);
     }
   };
@@ -120,17 +129,19 @@ const PostsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
+      <Toaster position="top-right" /> 
+
       <Card className="shadow-md">
         <CardHeader>
-          <h1 className="text-center text-2xl font-bold">Post Management</h1>
-          <span className="block text-sm text-gray-500">
+        <span className="block text-sm text-gray-500">
             Todo:
             <ul className="ml-6 list-disc">
               <li>Confirmation dialog add, edit, delete</li>
-              <li>Toast/sonner notification add, edit, delete</li>
-              <li>Disable nút Add post khi thông tin chưa được nhập đủ</li>
+              <li>done Toast/sonner notification add, edit, delete</li>
+              <li>done Disable nút Add post khi thông tin chưa được nhập đủ</li>
             </ul>
           </span>
+          <h1 className="text-center text-2xl font-bold">Post Management</h1>
         </CardHeader>
         <CardContent>
           {/* Form thêm bài viết */}
@@ -143,12 +154,6 @@ const PostsPage = () => {
                 }
                 placeholder="Post Title"
               />
-              {/* <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setNewPost({ ...newPost, image: e.target.files[0] })}
-                placeholder="Upload Image"
-              /> */}
               <Input
                 value={newPost.image}
                 onChange={(e) =>
@@ -167,7 +172,10 @@ const PostsPage = () => {
             <div className="text-right">
               <Button
                 onClick={handleAddPost}
-                className="bg-blue-600 text-white hover:bg-blue-700"
+                className={`bg-blue-600 text-white hover:bg-blue-700 ${
+                  !newPost.title || !newPost.image || !newPost.cta ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={!newPost.title || !newPost.image || !newPost.cta}
               >
                 Add Post
               </Button>
@@ -241,12 +249,6 @@ const PostsPage = () => {
                 }
                 placeholder="Post Title"
               />
-              {/* <Input
-                type="file"
-                accept="image/*"
-                onChange={(e) => setSelectedPost({ ...selectedPost, image: e.target.files[0] })}
-                placeholder="Upload Image"
-              /> */}
               <Input
                 value={selectedPost.image}
                 onChange={(e) =>
