@@ -1,8 +1,17 @@
 const { Op } = require("sequelize");
-const { Flight, Seat, Booking, Passenger, Airplane } = require("../models");
+const {
+  Flight,
+  Seat,
+  Booking,
+  Passenger,
+  Airplane,
+  User,
+  Customer,
+} = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { User } = require("../models");
+const fs = require("fs");
+const path = require("path");
 
 // controllers/customerController.js
 const customerService = require("../services/customerService");
@@ -347,6 +356,22 @@ exports.getAllBookings = async (req, res) => {
   }
 };
 
+// Lấy tất cả thông tin của khách hàng đã đăng nhập
+exports.getLoggedInCustomerInfo = async (req, res) => {
+  try {
+    const customer = await customerService.getCustomerByUserId(req.userId);
+    if (!customer) {
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy thông tin khách hàng." });
+    }
+    res.status(200).json(customer);
+  } catch (error) {
+    console.error("Error fetching logged-in customer info:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
+  }
+};
+
 // Đăng nhập
 exports.login = async (req, res) => {
   const { email, password } = req.body;
@@ -374,3 +399,78 @@ exports.login = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+// Cập nhật thông tin khách hàng
+exports.updateProfile = async (req, res) => {
+  const {
+    email,
+    phone,
+    profilePicture,
+    address,
+    country_name,
+    title,
+    country_code,
+    first_name,
+    middle_name,
+    last_name,
+    date_of_birth,
+    gender,
+    promo_code,
+  } = req.body;
+  const userId = req.userId;
+
+  try {
+    // Cập nhật thông tin User
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+
+    if (profilePicture) {
+      // Xóa ảnh cũ nếu có
+      if (user.profilePicture) {
+        fs.unlink(
+          path.join(__dirname, "..", "avatars", user.profilePicture),
+          (err) => {
+            if (err) {
+              console.error("Error deleting old avatar:", err);
+            }
+          }
+        );
+      }
+
+      // Lưu ảnh mới
+      user.profilePicture = profilePicture;
+    }
+
+    await user.save();
+
+    // Cập nhật thông tin Customer
+    const customer = await Customer.findOne({ where: { user_id: userId } });
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+    customer.address = address || customer.address;
+    customer.country_name = country_name || customer.country_name;
+    customer.title = title || customer.title;
+    customer.country_code = country_code || customer.country_code;
+    customer.first_name = first_name || customer.first_name;
+    customer.middle_name = middle_name || customer.middle_name;
+    customer.last_name = last_name || customer.last_name;
+    customer.date_of_birth = date_of_birth || customer.date_of_birth;
+    customer.gender = gender || customer.gender;
+    customer.promo_code = promo_code || customer.promo_code;
+    await customer.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      profilePicture: user.profilePicture,
+    });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
+  }};

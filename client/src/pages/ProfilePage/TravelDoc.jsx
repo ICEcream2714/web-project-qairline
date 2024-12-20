@@ -8,10 +8,10 @@ const TravelDoc = () => {
         <h2 className="text-lg font-semibold text-gray-700">
           Your travel documents
         </h2>
-        <button className="flex items-center gap-1 text-primary">
+        {/* <button className="flex items-center gap-1 text-primary">
           <Pencil className="h-4 w-4 text-primary" />
           Edit
-        </button>
+        </button> */}
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>

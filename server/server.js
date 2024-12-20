@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const sequelize = require("./config/database");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const path = require("path");
 dotenv.config();
 
 app.use(cors());
@@ -50,6 +51,11 @@ app.use("/api/admin", adminRoutes); // Các chức năng của quản trị viê
 app.use("/api/posts", postRoutes); // Route for posts
 app.use("/api/flights", flightRoutes); // Route for flights
 app.use("/api/airplanes", airplaneRoutes); // Route for airplanes
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Serve user avatars
+app.use("/avatars", express.static(path.join(__dirname, "avatars")));
 
 sequelize.sync({ force: true }).then(() => {
   console.log("Database synced");

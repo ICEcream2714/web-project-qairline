@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/popover';
 import UserProfile from '@/layouts/Navbar/UserProfile'; // Import UserProfile từ ShadCN
 import { CircleUserRound } from 'lucide-react';
+import axios from 'axios'; // Import axios for API calls
 
 function Navbar() {
   const navigate = useNavigate();
@@ -16,12 +17,14 @@ function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(null); // Trạng thái để mở dropdown
   const [isScrolled, setIsScrolled] = useState(false); // Trạng thái để thay đổi nền khi cuộn
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: '', email: '' }); // State to store user info
 
   // Kiểm tra nếu người dùng đã đăng nhập
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true); // Người dùng đã đăng nhập
+      fetchUserInfo(token); // Fetch user info
     } else {
       setIsLoggedIn(false); // Người dùng chưa đăng nhập
     }
@@ -54,6 +57,24 @@ function Navbar() {
 
   const handleLogoClick = () => {
     navigate('/');
+  };
+
+  // Fetch user info from the API
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:5000/api/customer/my-info',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const { first_name, last_name, User } = response.data;
+      setUserInfo({ name: `${first_name} ${last_name}`, email: User.email });
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
   };
 
   return (
@@ -162,9 +183,9 @@ function Navbar() {
               </Button>
             ) : (
               <UserProfile
-                name="Hoang Nguyen"
-                id="681897319"
-                tier="Burgundy"
+                name={userInfo.name}
+                id={userInfo.email}
+                tier="New Member"
                 avios={0}
                 qpoints={0}
                 isScrolled={isScrolled}
@@ -261,47 +282,15 @@ function Navbar() {
             ) : (
               <div className="flex items-center space-x-4">
                 <UserProfile
-                  name="Hoang Nguyen"
-                  id="681897319"
-                  tier="Burgundy"
+                  name={userInfo.name}
+                  id={userInfo.email}
+                  tier="New Member"
                   avios={0}
                   qpoints={0}
                   isScrolled={isScrolled}
                   onLogout={handleLogout}
                 />
               </div>
-              // <Popover>
-              //   <PopoverTrigger>
-              //     <Button
-              //       variant="link"
-              //       className={`${isScrolled ? 'text-gray-800' : 'text-white'} p-0 font-semibold hover:text-purple-600 [&_svg]:size-auto`}
-              //     >
-              //       <CircleUserRound size={24} />
-              //     </Button>
-              //   </PopoverTrigger>
-              //   <PopoverContent className="border-0 bg-white">
-              //     <UserProfile
-              //       name="Hoang Nguyen"
-              //       id="681897319"
-              //       tier="Burgundy"
-              //       avios={0}
-              //       qpoints={0}
-              //       onLogout={handleLogout}
-              //     />
-              //     <div className="border-b-2">
-              //       <div>Hoang Nguyen</div>
-              //       <div>681897319 | Burgundy</div>
-              //     </div>
-              //     <div>2</div>
-              //     <div className="flex flex-row">
-              //       <Button variant="link">Flight</Button>
-              //       <Button variant="link">Profile</Button>
-              //       <Button variant="link" onClick={handleLogout}>
-              //         Logout
-              //       </Button>
-              //     </div>
-              //   </PopoverContent>
-              // </Popover>
             )}
           </div>
         </div>

@@ -2,6 +2,7 @@ import Navbar from '@/layouts/Navbar/Navbar';
 import Header from './Header';
 import Main from './Main';
 import Side from './Side';
+import Footer from '@/layouts/Footer';
 
 function ProfilePage() {
   return (
@@ -18,6 +19,7 @@ function ProfilePage() {
         {/* <HeaderTabs /> */}
         <Main />
       </div>
+      {/* <Footer /> */}
     </div>
   );
 }

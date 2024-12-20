@@ -64,7 +64,7 @@ module.exports = {
         first_name: "John",
         middle_name: "A.",
         last_name: "Doe",
-        date_of_birth: "1990-01-01",
+        date_of_birth: "1990-12-15",
         address: "123 Main St, Ha Noi",
         country_name: "Vietnam",
         country_code: 84,

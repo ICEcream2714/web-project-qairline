@@ -1,12 +1,17 @@
 // services/customerService.js
 const { Op } = require("sequelize");
-const { Flight, Booking, Seat, Customer } = require("../models");
+const { Flight, Booking, Seat, Customer, User } = require("../models");
 
 // Lấy thông tin khách hàng từ userId
 exports.getCustomerByUserId = async (userId) => {
   return await Customer.findOne({
-    where: { userId },
-    attributes: { exclude: ["password"] },
+    where: { user_id: userId },
+    include: [
+      {
+        model: User,
+        attributes: ["profilePicture", "email", "phone"],
+      },
+    ],
   });
 };
 
