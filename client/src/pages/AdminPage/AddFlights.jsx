@@ -83,16 +83,14 @@ const FlightsPage = () => {
   }, []);
 
   const handleAddFlight = async () => {
-    if (
-      !newFlight.aircraft_type ||
-      !newFlight.arrival_time ||
-      !newFlight.departure_time ||
-      !newFlight.destination ||
-      !newFlight.flight_number ||
-      !newFlight.origin ||
-      !newFlight.status
-    )
-      return;
+    // if (
+    //   !newFlight.arrival_time ||
+    //   !newFlight.departure_time ||
+    //   !newFlight.destination ||
+    //   !newFlight.flight_number ||
+    //   !newFlight.origin
+    // )
+    //   return;
 
     try {
       console.log('newFlight', newFlight); // Debug log
