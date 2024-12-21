@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Pencil, Trash, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Toaster } from '@/components/ui/sonner'; 
+import { toast } from "sonner"
 import {
   Dialog,
   DialogContent,
@@ -9,6 +11,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import {
   Table,
@@ -32,7 +35,13 @@ const AirplanePage = () => {
     key: 'model',
     direction: 'asc',
   });
-
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    action: null,
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
   useEffect(() => {
     // Fetch airplane data from the server
     const fetchAirplanes = async () => {
@@ -41,6 +50,7 @@ const AirplanePage = () => {
         const data = await response.json();
         setAirplanes(data);
       } catch (error) {
+        toast.error('Failed to fetch airplanes.');
         console.error('Error fetching airplane data:', error);
       }
     };
@@ -49,7 +59,15 @@ const AirplanePage = () => {
   }, []);
 
   const handleAddAirplane = async () => {
-    if (!newAirplane.model || !newAirplane.seat_count) return;
+    if (!newAirplane.model || !newAirplane.seat_count) {
+      toast.error('Please fill in all fields.');
+      return;
+    }
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Add Airplane',
+      message: 'Are you sure you want to add this airplane?',
+      onConfirm: async () => {
     try {
       const response = await fetch('http://localhost:5000/api/airplanes/', {
         method: 'POST',
@@ -63,15 +81,24 @@ const AirplanePage = () => {
         const addedAirplane = await response.json();
         setAirplanes([...airplanes, addedAirplane]);
         setNewAirplane({ model: '', manufacturer: '', seat_count: '' });
+        toast.success('Airplane added successfully!');
       } else {
         console.error('Failed to add airplane');
       }
     } catch (error) {
+      toast.error('Failed to add airplane.');
       console.error('Error adding airplane:', error);
-    }
+    } setConfirmDialog({ ...confirmDialog, isOpen: false });
+  }, onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleDeleteAirplane = async (id) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Delete Airplane',
+      message: 'Are you sure you want to delete this airplane?',
+      onConfirm: async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/airplanes/${id}`,
@@ -81,13 +108,17 @@ const AirplanePage = () => {
       );
 
       if (response.ok) {
+        toast.success('Airplane deleted successfully!');
         setAirplanes(airplanes.filter((plane) => plane.id !== id));
       } else {
+        toast.error('Failed to delete airplane.');
         console.error('Failed to delete airplane');
       }
     } catch (error) {
       console.error('Error deleting airplane:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleEditAirplane = (plane) => {
@@ -96,6 +127,11 @@ const AirplanePage = () => {
   };
 
   const handleSaveEdit = async () => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Save Changes',
+      message: 'Are you sure you want to save changes to this airplane?',
+      onConfirm: async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/airplanes/${selectedAirplane.id}`,
@@ -115,13 +151,17 @@ const AirplanePage = () => {
             plane.id === updatedAirplane.id ? updatedAirplane : plane
           )
         );
+        toast.success('Airplane updated successfully!');
         setIsEditOpen(false);
       } else {
         console.error('Failed to update airplane');
       }
     } catch (error) {
+      toast.error('Failed to update airplane.');
       console.error('Error updating airplane:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleSort = (key) => {
@@ -143,7 +183,8 @@ const AirplanePage = () => {
   });
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
+    <div className="container mx-auto p-4">
+      <Toaster/>
       <Card className="shadow-md">
         <CardHeader>
           <h1 className="text-center text-2xl font-bold">
@@ -153,8 +194,8 @@ const AirplanePage = () => {
             TODO:
             <ul className="ml-4 list-disc">
               <li>Confirm add, edit, delete</li>
-              <li>Toast/sooner notification when add, edit, delete</li>
-              <li>Disable nút Add khi thông tin chưa được nhập đủ</li>
+              <li>done Toast/sooner notification when add, edit, delete</li>
+              <li>done Disable nút Add khi thông tin chưa được nhập đủ</li>
             </ul>
           </span>
         </CardHeader>
@@ -193,7 +234,10 @@ const AirplanePage = () => {
             <div className="text-right">
               <Button
                 onClick={handleAddAirplane}
-                className="bg-blue-600 text-white hover:bg-blue-700"
+                className={`bg-blue-600 text-white hover:bg-blue-700 ${
+                  !newAirplane.model || !newAirplane.seat_count? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={!newAirplane.model || !newAirplane.seat_count}
               >
                 Add Airplane
               </Button>
@@ -349,6 +393,13 @@ const AirplanePage = () => {
           </DialogContent>
         </Dialog>
       )}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        onConfirm={confirmDialog.onConfirm}
+        onCancel={confirmDialog.onCancel}
+      />
     </div>
   );
 };

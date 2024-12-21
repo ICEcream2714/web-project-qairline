@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Pencil, Trash, ArrowUp, ArrowDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/sonner'; 
+import { toast } from "sonner"
 import { Input } from '@/components/ui/input';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import {
   Table,
   TableBody,
@@ -46,7 +49,13 @@ const FlightsPage = () => {
     status: 'Scheduled',
     aircraft_type: '',
   });
-
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    action: null,
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState({
@@ -61,6 +70,7 @@ const FlightsPage = () => {
       setFlights(data);
       // console.log(data);
     } catch (error) {
+      toast.error('Failed to fetch flights.');
       console.error('Error fetching flights:', error);
     }
   };
@@ -73,6 +83,7 @@ const FlightsPage = () => {
       const data = await response.json();
       setAirplaneModels(data);
     } catch (error) {
+      toast.error('Failed to fetch airplane models.');
       console.error('Error fetching airplane models:', error);
     }
   };
@@ -84,16 +95,21 @@ const FlightsPage = () => {
 
   const handleAddFlight = async () => {
     if (
-      !newFlight.aircraft_type ||
       !newFlight.arrival_time ||
       !newFlight.departure_time ||
       !newFlight.destination ||
       !newFlight.flight_number ||
-      !newFlight.origin ||
-      !newFlight.status
-    )
+      !newFlight.origin||
+      !newFlight.aircraft_type
+    ) {
+      toast.error('Please fill in all fields.');
       return;
-
+    }
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Add Flight',
+      message: 'Are you sure you want to add this flight?',
+      onConfirm: async () => {
     try {
       console.log('newFlight', newFlight); // Debug log
       const response = await fetch('http://localhost:5000/api/flights', {
@@ -119,12 +135,21 @@ const FlightsPage = () => {
       const addedFlight = await response.json();
       setFlights([...flights, addedFlight]);
       resetForm();
+      toast.success('Flight added successfully!');
     } catch (error) {
+      toast.success('Failed to add flight');
       console.error('Error adding flight:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleDeleteFlight = async (id) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Delete Flight',
+      message: 'Are you sure you want to delete this flight?',
+      onConfirm: async () => {
     try {
       // console.log('id', id);
       const response = await fetch(`http://localhost:5000/api/flights/${id}`, {
@@ -137,9 +162,13 @@ const FlightsPage = () => {
 
       const updatedFlights = flights.filter((flight) => flight.id !== id);
       setFlights(updatedFlights);
+      toast.success('Flight deleted successfully!');
     } catch (error) {
+      toast.error('Failed to delete flight.');
       console.error('Error deleting flight:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleEditFlight = (flight) => {
@@ -156,7 +185,11 @@ const FlightsPage = () => {
       console.error('No flight ID found');
       return;
     }
-
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Save Changes',
+      message: 'Are you sure you want to save changes to this flight?',
+      onConfirm: async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/flights/${selectedFlight.id}`,
@@ -187,10 +220,14 @@ const FlightsPage = () => {
           flight.id === updatedFlight.id ? updatedFlight : flight
         )
       );
+      toast.success('Flight updated successfully!');
       setIsEditOpen(false);
     } catch (error) {
+      toast.error('Failed to update flight.');
       console.error('Error updating flight:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleSort = (key) => {
@@ -226,7 +263,8 @@ const FlightsPage = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-6">
+    <div className="container mx-auto p-4">
+      <Toaster/> 
       <Card className="shadow-md">
         <CardHeader>
           <h1 className="text-center text-2xl font-bold">Flights Management</h1>
@@ -234,8 +272,8 @@ const FlightsPage = () => {
             TODO:
             <ul className="ml-4 list-disc">
               <li>Confirm add, edit, delete flight</li>
-              <li>Toast/sooner notification when add, edit, delete</li>
-              <li>Disable nút Add khi thông tin chưa được nhập đủ</li>
+              <li>done Toast/sooner notification when add, edit, delete</li>
+              <li>done Disable nút Add khi thông tin chưa được nhập đủ</li>
               <li>Sửa lại nút sort</li>
               <li>Chỉnh lại sắp xếp giao diện (optional)</li>
             </ul>
@@ -243,93 +281,117 @@ const FlightsPage = () => {
         </CardHeader>
         <CardContent>
           {/* Form thêm chuyến bay */}
-          <div className="mb-6 space-y-4">
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-              <Input
-                value={newFlight.flight_number}
-                onChange={(e) =>
-                  setNewFlight({ ...newFlight, flight_number: e.target.value })
-                }
-                placeholder="Flight Number"
-              />
-              <Input
-                value={newFlight.origin}
-                onChange={(e) =>
-                  setNewFlight({ ...newFlight, origin: e.target.value })
-                }
-                placeholder="Origin"
-              />
-              <Input
-                value={newFlight.destination}
-                onChange={(e) =>
-                  setNewFlight({ ...newFlight, destination: e.target.value })
-                }
-                placeholder="Destination"
-              />
-              <DateTimePicker
-                dateTime={newFlight.departure_time}
-                setDateTime={(date) =>
-                  setNewFlight({ ...newFlight, departure_time: date })
-                }
-                title="Departure Time"
-              />
-              <DateTimePicker
-                dateTime={newFlight.arrival_time}
-                setDateTime={(date) =>
-                  setNewFlight({ ...newFlight, arrival_time: date })
-                }
-                title="Arrival Time"
-              />
-              <div className="ml-2 flex items-center">
-                <span className="text-gray-700">Duration: </span>
-                <span className="ml-2">
-                  {newFlight.departure_time && newFlight.arrival_time
-                    ? calculateDuration(
-                        newFlight.departure_time,
-                        newFlight.arrival_time
-                      )
-                    : '0h 0m'}
-                </span>
-              </div>
-              <select
-                value={newFlight.status}
-                onChange={(e) =>
-                  setNewFlight({ ...newFlight, status: e.target.value })
-                }
-                className="w-full rounded-md border p-2"
-              >
-                <option value="Scheduled">Scheduled</option>
-                <option value="Delayed">Delayed</option>
-                <option value="Cancelled">Cancelled</option>
-              </select>
-              <select
-                value={newFlight.aircraft_type}
-                onChange={(e) => {
-                  setNewFlight({ ...newFlight, aircraft_type: e.target.value });
-                  console.log('aircraft_type:', e.target.value);
-                }}
-                className="w-full rounded-md border p-2"
-              >
-                <option value="">Select Aircraft Type</option>
-                {airplaneModels.map((airplane) => (
-                  <option key={airplane.model} value={airplane.model}>
-                    {airplane.model}
-                  </option>
-                ))}
-              </select>
-              {/* <Input
-                type="number"
-                value={newFlight.seat_number}
-                onChange={(e) =>
-                  setNewFlight({ ...newFlight, seat_number: e.target.value })
-                }
-                placeholder="Number of Seats"
-              /> */}
-            </div>
+          <div className="mb-6 space-y-6">
+  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    {/* Flight Number */}
+    <Input
+      value={newFlight.flight_number}
+      onChange={(e) =>
+        setNewFlight({ ...newFlight, flight_number: e.target.value })
+      }
+      placeholder="Flight Number"
+    />
+
+    {/* Origin */}
+    <Input
+      value={newFlight.origin}
+      onChange={(e) =>
+        setNewFlight({ ...newFlight, origin: e.target.value })
+      }
+      placeholder="Origin"
+    />
+
+    {/* Destination */}
+    <Input
+      value={newFlight.destination}
+      onChange={(e) =>
+        setNewFlight({ ...newFlight, destination: e.target.value })
+      }
+      placeholder="Destination"
+    />
+
+    {/* Departure Time */}
+    <DateTimePicker
+      dateTime={newFlight.departure_time}
+      setDateTime={(date) =>
+        setNewFlight({ ...newFlight, departure_time: date })
+      }
+      title="Departure Time"
+    />
+
+    {/* Arrival Time */}
+    <DateTimePicker
+      dateTime={newFlight.arrival_time}
+      setDateTime={(date) =>
+        setNewFlight({ ...newFlight, arrival_time: date })
+      }
+      title="Arrival Time"
+    />
+
+    {/* Duration */}
+    <div className="flex items-center">
+      <span className="text-gray-700">Duration:</span>
+      <span className="ml-2">
+        {newFlight.departure_time && newFlight.arrival_time
+          ? calculateDuration(
+              newFlight.departure_time,
+              newFlight.arrival_time
+            )
+          : '0h 0m'}
+      </span>
+    </div>
+  </div>
+
+  {/* Status and Aircraft Type */}
+  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    {/* Flight Status */}
+    <select
+      value={newFlight.status}
+      onChange={(e) =>
+        setNewFlight({ ...newFlight, status: e.target.value })
+      }
+      className="w-full rounded-md border p-2"
+    >
+      <option value="Scheduled">Scheduled</option>
+      <option value="Delayed">Delayed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+
+    {/* Aircraft Type */}
+    <select
+      value={newFlight.aircraft_type}
+      onChange={(e) => {
+        setNewFlight({ ...newFlight, aircraft_type: e.target.value });
+        console.log('aircraft_type:', e.target.value);
+      }}
+      className="w-full rounded-md border p-2"
+    >
+      <option value="">Select Aircraft Type</option>
+      {airplaneModels.map((airplane) => (
+        <option key={airplane.model} value={airplane.model}>
+          {airplane.model}
+        </option>
+      ))}
+    </select>
+  </div>
+
             <div className="text-right">
               <Button
                 onClick={handleAddFlight}
-                className="bg-blue-600 text-white hover:bg-blue-700"
+                className={`bg-blue-600 text-white hover:bg-blue-700 ${
+                  !newFlight.arrival_time ||
+                  !newFlight.departure_time ||
+                  !newFlight.destination ||
+                  !newFlight.flight_number ||
+                  !newFlight.origin ||
+                  !newFlight.aircraft_type? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+                disabled={!newFlight.arrival_time ||
+                  !newFlight.departure_time ||
+                  !newFlight.destination ||
+                  !newFlight.flight_number ||
+                  !newFlight.origin||
+                  !newFlight.aircraft_type}
               >
                 Add Flight
               </Button>
@@ -339,117 +401,120 @@ const FlightsPage = () => {
           {/* Table hiển thị danh sách chuyến bay */}
           <div className="overflow-x-auto">
             <Table>
-              <TableHeader>
-                <TableRow className="bg-gray-100">
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('flight_number')}
-                  >
-                    Flight Number
-                    {sortConfig.key === 'flight_number' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('origin')}
-                  >
-                    Origin
-                    {sortConfig.key === 'origin' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('destination')}
-                  >
-                    Destination
-                    {sortConfig.key === 'destination' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('departure_time')}
-                  >
-                    Departure
-                    {sortConfig.key === 'departure_time' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('arrival_time')}
-                  >
-                    Arrival
-                    {sortConfig.key === 'arrival_time' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('status')}
-                  >
-                    Status
-                    {sortConfig.key === 'status' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('aircraft_type')}
-                  >
-                    Aircraft
-                    {sortConfig.key === 'aircraft_type' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort('duration')}
-                  >
-                    Duration
-                    {sortConfig.key === 'duration' &&
-                      (sortConfig.direction === 'ascending' ? (
-                        <ArrowUp className="ml-1 inline" size={16} />
-                      ) : (
-                        <ArrowDown className="ml-1 inline" size={16} />
-                      ))}
-                  </TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
+            <TableHeader>
+  <TableRow className="bg-gray-100">
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('flight_number')}
+    >
+      Flight Number
+      {sortConfig.key === 'flight_number' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('origin')}
+    >
+      Origin
+      {sortConfig.key === 'origin' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('destination')}
+    >
+      Destination
+      {sortConfig.key === 'destination' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('departure_time')}
+    >
+      Departure
+      {sortConfig.key === 'departure_time' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('arrival_time')}
+    >
+      Arrival
+      {sortConfig.key === 'arrival_time' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('status')}
+    >
+      Status
+      {sortConfig.key === 'status' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('aircraft_type')}
+    >
+      Aircraft
+      {sortConfig.key === 'aircraft_type' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead
+      className="cursor-pointer whitespace-nowrap text-center px-4 py-2"
+      onClick={() => handleSort('duration')}
+    >
+      Duration
+      {sortConfig.key === 'duration' &&
+        (sortConfig.direction === 'ascending' ? (
+          <ArrowUp className="ml-1 inline" size={16} />
+        ) : (
+          <ArrowDown className="ml-1 inline" size={16} />
+        ))}
+    </TableHead>
+    <TableHead className="whitespace-nowrap text-center px-4 py-2">
+      Actions
+    </TableHead>
+  </TableRow>
+</TableHeader>
+
               <TableBody>
                 {sortedFlights.map((flight) => (
                   <TableRow key={flight.id}>
                     <TableCell>{flight.flight_number}</TableCell>
                     <TableCell>{flight.origin}</TableCell>
                     <TableCell>{flight.destination}</TableCell>
-                    <TableCell className="min-w-[150px]">
+                    <TableCell className="min-w-[200px]">
                       {formatDateTime(flight.departure_time)}
                     </TableCell>
-                    <TableCell className="min-w-[150px]">
+                    <TableCell className="min-w-[200px]">
                       {formatDateTime(flight.arrival_time)}
                     </TableCell>
                     <TableCell>{flight.status}</TableCell>
@@ -599,6 +664,13 @@ const FlightsPage = () => {
           </div>
         </ResponsiveDialog>
       )}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        onConfirm={confirmDialog.onConfirm}
+        onCancel={confirmDialog.onCancel}
+      />
     </div>
   );
 };
