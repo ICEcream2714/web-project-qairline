@@ -1,5 +1,10 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from '@/components/ui/accordion';
 import { FaPlane, FaHotel, FaUserCheck, FaInfoCircle } from 'react-icons/fa'; // Import icon từ react-icons
 import BookAFlight from './Bookflight';
 import Stopover from './Stopover';
@@ -25,25 +30,25 @@ function FlightTabs() {
           <TabsList className="flex justify-between rounded-lg">
             <TabsTrigger
               value="book"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-secondary hover:text-white focus:outline-none"
             >
               <FaPlane className="text-xl" /> Book a flight
             </TabsTrigger>
             <TabsTrigger
               value="stopover"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-secondary hover:text-white focus:outline-none"
             >
               <FaHotel className="text-xl" /> Stopover / Packages
             </TabsTrigger>
             <TabsTrigger
               value="manage"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-secondary hover:text-white focus:outline-none"
             >
               <FaUserCheck className="text-xl" /> Manage / Check in
             </TabsTrigger>
             <TabsTrigger
               value="status"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-secondary hover:text-white focus:outline-none"
             >
               <FaInfoCircle className="text-xl" /> Flight status
             </TabsTrigger>
@@ -70,7 +75,7 @@ function FlightTabs() {
         <div className="block md:hidden">
           <Accordion type="single" collapsible className="space-y-2">
             <AccordionItem value="book">
-              <AccordionTrigger className="flex items-center gap-2 text-gray-700 bg-gray-100 px-4 py-3 rounded-lg">
+              <AccordionTrigger className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-3 text-gray-700">
                 <FaPlane className="text-xl" /> Book a flight
               </AccordionTrigger>
               <AccordionContent className="px-4 py-3">
@@ -79,7 +84,7 @@ function FlightTabs() {
             </AccordionItem>
 
             <AccordionItem value="stopover">
-              <AccordionTrigger className="flex items-center gap-2 text-gray-700 bg-gray-100 px-4 py-3 rounded-lg">
+              <AccordionTrigger className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-3 text-gray-700">
                 <FaHotel className="text-xl" /> Stopover / Packages
               </AccordionTrigger>
               <AccordionContent className="px-4 py-3">
@@ -88,7 +93,7 @@ function FlightTabs() {
             </AccordionItem>
 
             <AccordionItem value="manage">
-              <AccordionTrigger className="flex items-center gap-2 text-gray-700 bg-gray-100 px-4 py-3 rounded-lg">
+              <AccordionTrigger className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-3 text-gray-700">
                 <FaUserCheck className="text-xl" /> Manage / Check in
               </AccordionTrigger>
               <AccordionContent className="px-4 py-3">
@@ -97,7 +102,7 @@ function FlightTabs() {
             </AccordionItem>
 
             <AccordionItem value="status">
-              <AccordionTrigger className="flex items-center gap-2 text-gray-700 bg-gray-100 px-4 py-3 rounded-lg">
+              <AccordionTrigger className="flex items-center gap-2 rounded-lg bg-gray-100 px-4 py-3 text-gray-700">
                 <FaInfoCircle className="text-xl" /> Flight status
               </AccordionTrigger>
               <AccordionContent className="px-4 py-3">

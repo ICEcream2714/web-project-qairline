@@ -240,11 +240,18 @@ const SignupPage = () => {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              <BreadcrumbLink
+                className="text-primary hover:text-secondary"
+                href="/"
+              >
+                Home
+              </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator />
+            <BreadcrumbSeparator className="text-primary" />
             <BreadcrumbItem>
-              <BreadcrumbPage>Sign up</BreadcrumbPage>
+              <BreadcrumbPage className="text-secondary">
+                Sign up
+              </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -263,10 +270,14 @@ const SignupPage = () => {
           <div className="grid grid-cols-6 md:gap-4">
             {/* credentials card */}
             <div className="col-span-full md:col-span-2">
-              <p className="text-primary">Let&apos;s create your credentials</p>
+              <p className="text-secondary-foreground">
+                Let&apos;s create your credentials
+              </p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0 md:mt-3">
-              <p className="text-primary">Create an account using</p>
+              <p className="text-secondary-foreground">
+                Create an account using
+              </p>
               <div className="flex gap-4">
                 <button className="flex h-12 w-12 items-center justify-center rounded-full border border-gray-300 hover:bg-gray-100">
                   <a href="https://accounts.google.com/v3/signin/identifier?authuser=0&continue=https%3A%2F%2Fwww.google.com%2F&ec=GAlAmgQ&hl=vi&flowName=GlifWebSignIn&flowEntry=AddSession&dsh=S252850339%3A1731953360109578&ddm=1">
@@ -287,7 +298,7 @@ const SignupPage = () => {
                   </a>
                 </button>
               </div>
-              <p className="text-primary">
+              <p className="text-secondary-foreground">
                 or join by filling up the form below
               </p>
 
@@ -304,7 +315,7 @@ const SignupPage = () => {
                 />
                 <label
                   htmlFor="email"
-                  className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                  className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                 >
                   Enter your email*
                 </label>
@@ -326,7 +337,7 @@ const SignupPage = () => {
                     />
                     <label
                       htmlFor="password"
-                      className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                      className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                     >
                       Type a password
                     </label>
@@ -401,7 +412,7 @@ const SignupPage = () => {
                     />
                     <label
                       htmlFor="re-password"
-                      className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                      className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                     >
                       Retype password
                     </label>
@@ -433,7 +444,7 @@ const SignupPage = () => {
 
             {/* detail */}
             <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
-              <p className="text-primary">Your personal details</p>
+              <p className="text-secondary-foreground">Your personal details</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <Select onValueChange={handleTitleChange}>
@@ -470,7 +481,7 @@ const SignupPage = () => {
                   />
                   <label
                     htmlFor="firstname"
-                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                   >
                     First Name*
                   </label>
@@ -487,7 +498,7 @@ const SignupPage = () => {
                   />
                   <label
                     htmlFor="middlename"
-                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                   >
                     Middle Name
                   </label>
@@ -504,7 +515,7 @@ const SignupPage = () => {
                   />
                   <label
                     htmlFor="lastname"
-                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                   >
                     Last Name*
                   </label>
@@ -522,7 +533,7 @@ const SignupPage = () => {
                   />
                   <label
                     htmlFor="date-birth"
-                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-0.5 max-w-full truncate pr-4 text-sm/5 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                    className="peer-placeholder-shown:top-2.2 absolute left-3 top-0.5 max-w-full truncate pr-4 text-sm/5 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                   >
                     Date of birth
                   </label>
@@ -553,7 +564,7 @@ const SignupPage = () => {
             {/* country */}
             <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
               {' '}
-              <p className="text-primary">Where do you live?</p>
+              <p className="text-secondary-foreground">Where do you live?</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <Select className="w-full" onValueChange={handleCountryChange}>
@@ -602,7 +613,7 @@ const SignupPage = () => {
             {/* promocode */}
             <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
               {' '}
-              <p className="text-primary">Enrolment promo code</p>
+              <p className="text-secondary-foreground">Enrolment promo code</p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
               <div className="relative w-full sm:w-1/2">
@@ -616,7 +627,7 @@ const SignupPage = () => {
                 />
                 <label
                   htmlFor="enrolment-code"
-                  className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-12 pr-3 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                  className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-3 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0 peer-valid:text-sm peer-valid:text-secondary-foreground peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary-foreground"
                 >
                   Enrolment code (optional)
                 </label>
@@ -626,10 +637,12 @@ const SignupPage = () => {
 
             {/* news & offer */}
             <div className="col-span-full mt-3 md:col-span-2 md:mt-0">
-              <p className="text-primary">Sign up for our news and offers</p>
+              <p className="text-secondary-foreground">
+                Sign up for our news and offers
+              </p>
             </div>
             <div className="col-span-full mb-4 md:col-span-4 md:mb-0">
-              <p className="mb-2 text-primary">
+              <p className="mb-2 text-secondary-foreground">
                 I would like to receive news and offers from:
               </p>
               <div className="flex items-center space-x-2">
@@ -639,7 +652,10 @@ const SignupPage = () => {
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   Other{' '}
-                  <a href="#" className="cursor-pointer text-primary underline">
+                  <a
+                    href="#"
+                    className="cursor-pointer text-secondary-foreground underline"
+                  >
                     Q Airways group entities
                   </a>
                 </label>
@@ -666,12 +682,12 @@ const SignupPage = () => {
             />
             <Label htmlFor="terms" className="text-sm text-muted-foreground">
               I agree to{' '}
-              <a href="#" className="text-primary underline">
+              <a href="#" className="text-secondary-foreground underline">
                 Terms and Conditions
               </a>
               , and understand that my information will be processed in
               accordance with the QAirline{' '}
-              <a href="#" className="text-primary underline">
+              <a href="#" className="text-secondary-foreground underline">
                 Privacy Notice
               </a>
               .
@@ -681,7 +697,7 @@ const SignupPage = () => {
           {/* Sign up Button */}
           <div className="mt-5">
             <Button
-              className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/50"
+              className="w-full rounded-lg bg-primary py-2 text-secondary hover:bg-secondary-foreground"
               disabled={!isLoginBtnValid}
               onClick={handleSignup}
             >
