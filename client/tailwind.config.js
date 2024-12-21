@@ -53,6 +53,11 @@ export default {
           5: 'hsl(27 87% 67%)',
         },
       },
+      fontFamily: {
+        sans: ['YourCustomFont', 'sans-serif'],
+        serif: ['YourCustomFontSerif', 'serif'],
+        mono: ['YourCustomFontMono', 'monospace'],
+      },
       keyframes: {
         'accordion-down': {
           from: {
