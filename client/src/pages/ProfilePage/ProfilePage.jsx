@@ -19,7 +19,7 @@ function ProfilePage() {
         {/* <HeaderTabs /> */}
         <Main />
       </div>
-      {/* <Footer /> */}
+       <Footer /> 
     </div>
   );
 }

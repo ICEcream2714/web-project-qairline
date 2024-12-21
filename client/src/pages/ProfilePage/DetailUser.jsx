@@ -115,31 +115,36 @@ const DetailUser = () => {
   return (
     <div className="mb-6 md:border-b md:border-gray-300 md:pb-6">
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-gray-700">
-          Your contact details
-        </h2>
-        <button
-          className={`flex items-center gap-1 ${isClickedEditBtn ? 'text-red-600' : 'text-primary'}`}
-          onClick={handleEditBtnChange}
-        >
-          {isClickedEditBtn ? (
-            <X className="h-4 w-4 text-red-600" />
-          ) : (
-            <Pencil className="h-4 w-4 text-primary" />
-          )}
+  <h2 className="text-lg font-semibold text-gray-700">
+    Your contact details
+  </h2>
+  <div
+    className={`flex ${isClickedEditBtn ? 'flex-col items-end' : 'items-center gap-1'}`}
+  >
+    <button
+      className={`flex items-center gap-1 ${isClickedEditBtn ? 'text-red-600' : 'text-primary'}`}
+      onClick={handleEditBtnChange}
+    >
+      {isClickedEditBtn ? (
+        <X className="h-4 w-4 text-red-600" />
+      ) : (
+        <Pencil className="h-4 w-4 text-primary" />
+      )}
+      {isClickedEditBtn ? 'Exit' : 'Edit'}
+    </button>
 
-          {isClickedEditBtn ? 'Exit' : 'Edit'}
-        </button>
-        {isClickedEditBtn && (
-          <button
-            onClick={handleSaveDetails}
-            className="ml-4 flex items-center gap-1 text-primary"
-          >
-            <Save className="h-4 w-4 text-primary" />
-            Save
-          </button>
-        )}
-      </div>
+    {isClickedEditBtn && (
+      <button
+        onClick={handleSaveDetails}
+        className="mt-2 flex items-center gap-1 text-primary"
+      >
+        <Save className="h-4 w-4 text-primary" />
+        Save
+      </button>
+    )}
+  </div>
+</div>
+
       {!isClickedEditBtn ? (
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -284,11 +289,6 @@ const DetailUser = () => {
               </label>
             </div>
           </div>
-
-          {/* <div className="col-span-full px-2.5 md:col-span-1">
-            <p className="font-semibold text-primary">Home/work phone</p>
-            <p className="text-primary">N/A</p>
-          </div> */}
         </div>
       )}
     </div>
