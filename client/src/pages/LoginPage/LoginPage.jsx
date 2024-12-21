@@ -20,6 +20,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Navbar from '@/layouts/Navbar/Navbar';
 import 'tailwindcss/tailwind.css';
 import AlertDialog from '@/layouts/Notification/alert-dialog';
+import logo from '@/assets/image.png';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -114,7 +115,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-gray-700 to-gray-300 px-3">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-pink-300 to-gray-50 px-3">
       <Navbar />
       <div className="mb-6">
         <Breadcrumb>
@@ -129,13 +130,9 @@ const LoginPage = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <Card className="w-full max-w-sm rounded-lg bg-card shadow-md sm:max-w-md md:max-w-lg">
+      <Card className="mb-3 w-full max-w-sm rounded-lg bg-card shadow-md sm:max-w-md md:max-w-lg">
         <CardHeader className="flex flex-col items-center space-y-2">
-          <img
-            src="https://i.pinimg.com/control2/736x/56/ed/da/56edda40a95cab939a8cc5f04b5b2109.jpg"
-            alt="logo"
-            className="w-20"
-          />
+          <img src={logo} alt="logo" className="h-20 w-20" />
           <h2 className="text-center text-xl font-semibold text-primary md:text-2xl">
             Log in to your account
           </h2>

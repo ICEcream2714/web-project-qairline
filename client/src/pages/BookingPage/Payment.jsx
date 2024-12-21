@@ -141,11 +141,11 @@ export default function PaymentPage() {
       {isVisible && <Navbar />}
       <Booking />
       {/* Main */}
-      <main className="-mt-20 bg-gradient-to-t from-slate-700 to-slate-300 sm:px-3 md:h-full md:px-10">
+      <main className="-mt-20 sm:px-3 md:h-full md:px-10">
         <div className="container relative z-20 mx-auto -mt-24 px-3 md:px-28 lg:px-16">
           <div className="grid grid-cols-3 gap-8">
             <div className="col-span-3 lg:col-span-2">
-              <Card>
+              <Card className="px-3 py-7 shadow-lg">
                 <CardHeader>
                   <CardTitle>Payment Details</CardTitle>
                 </CardHeader>
@@ -227,7 +227,7 @@ export default function PaymentPage() {
               </Card>
             </div>
             <div className="col-span-3 lg:col-span-1">
-              <Card>
+              <Card className="shadow-lg">
                 <CardHeader>
                   <CardTitle>Payment Summary</CardTitle>
                 </CardHeader>
@@ -353,7 +353,7 @@ export default function PaymentPage() {
         <StartPlanning />
       </main>
       {/* Footer */}
-      <footer className="w-full bg-slate-700 bg-transparent px-3 pb-5 pt-3 md:px-36">
+      <footer className="mt-10 w-full bg-gradient-to-b from-white to-slate-200 px-3 pb-5 pt-3 md:px-36">
         <div className="flex justify-between text-sm text-black">
           <p>© 2024 Airline Booking. All rights reserved.</p>
           <div className="space-x-4">
