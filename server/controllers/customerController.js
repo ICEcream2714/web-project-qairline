@@ -412,6 +412,7 @@ exports.getUserBookings = async (req, res) => {
             "departure_time",
             "arrival_time",
             "status",
+            "duration",
           ],
         },
         {
@@ -423,6 +424,7 @@ exports.getUserBookings = async (req, res) => {
             "departure_time",
             "arrival_time",
             "status",
+            "duration",
           ],
         },
         {

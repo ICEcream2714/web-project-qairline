@@ -41,11 +41,11 @@ const FlightInfo = ({ type, flight, seat }) => {
             <div className="mb-8 flex items-start justify-between">
               <div className="space-y-1">
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl font-medium text-[#693e52]">
+                  <span className="text-2xl font-medium text-secondary-foreground">
                     {flight.origin}
                   </span>
                   <span className="text-2xl text-gray-400">›</span>
-                  <span className="text-2xl font-medium text-[#693e52]">
+                  <span className="text-2xl font-medium text-secondary-foreground">
                     {flight.destination}
                   </span>
                 </div>
@@ -61,32 +61,32 @@ const FlightInfo = ({ type, flight, seat }) => {
               {/* Departure */}
               <div>
                 <h3 className="mb-1 text-gray-600">Departure</h3>
-                <p className="mb-2 text-3xl font-bold">
+                <p className="mb-2 text-3xl font-bold text-accent-foreground">
                   {formatDateTime(flight.departure_time)}
                 </p>
                 <div className="space-y-1 text-gray-500">
                   <p>{flight.origin_airport}</p>
                   <p>{flight.origin_country}</p>
-                  <p>Terminal {flight.origin_terminal}</p>
+                  <p className="text-white">.{flight.origin_terminal}</p>
                 </div>
               </div>
 
               {/* Duration */}
               <div className="flex flex-col items-center justify-center text-sm text-gray-500">
                 <span>{flight.duration}</span>
-                <span>{flight.stops} stop(s)</span>
+                <span>{flight.stops}</span>
               </div>
 
               {/* Arrival */}
               <div className="text-right">
                 <h3 className="mb-1 text-gray-600">Arrival</h3>
-                <p className="mb-2 text-3xl font-bold">
+                <p className="mb-2 text-3xl font-bold text-accent-foreground">
                   {formatDateTime(flight.arrival_time)}
                 </p>
                 <div className="space-y-1 text-gray-500">
                   <p>{flight.destination_airport}</p>
                   <p>{flight.destination_country}</p>
-                  <p>Terminal {flight.destination_terminal}</p>
+                  <p className="text-white">.{flight.origin_terminal}</p>
                 </div>
               </div>
             </div>

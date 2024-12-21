@@ -115,7 +115,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary/80 to-gray-50 px-3">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-secondary-foreground to-accent-foreground px-3">
       <Navbar />
       <div className="mb-6">
         <Breadcrumb>
@@ -198,7 +198,7 @@ const LoginPage = () => {
           {/* Log in Button */}
           <div className="mt-4">
             <Button
-              className="w-full rounded-lg bg-secondary py-2 text-primary-foreground hover:bg-secondary-foreground"
+              className="w-full rounded-lg bg-secondary py-2 text-white hover:bg-secondary-foreground"
               onClick={handleLogin}
             >
               Log in

@@ -36,7 +36,7 @@ export default {
         },
         accent: {
           DEFAULT: 'hsl(0 0% 96.1%)',
-          foreground: '#7E60BF',
+          foreground: '#ad5389',
         },
         destructive: {
           DEFAULT: 'hsl(0 84.2% 60.2%)',

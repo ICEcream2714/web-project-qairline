@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Toaster } from '@/components/ui/sonner'; 
-import { toast } from "sonner"
+import { Toaster } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,29 +60,31 @@ const PostsPage = () => {
       title: 'Add Post',
       message: 'Are you sure you want to add this post?',
       onConfirm: async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/posts/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newPost),
-      });
+        try {
+          const response = await fetch('http://localhost:5000/api/posts/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newPost),
+          });
 
-      if (!response.ok) {
-        throw new Error('Failed to add post');
-      }
+          if (!response.ok) {
+            throw new Error('Failed to add post');
+          }
 
-      const addedPost = await response.json();
-      setPosts([...posts, addedPost]);
-      setNewPost({ title: '', image: '', cta: '' });
-      toast.success('Post added successfully!');
-    } catch (error) {
-      toast.error('Failed to add post.');
-      console.error('Error adding post:', error);
-    }setConfirmDialog({ ...confirmDialog, isOpen: false });
-  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
-});
+          const addedPost = await response.json();
+          setPosts([...posts, addedPost]);
+          setNewPost({ title: '', image: '', cta: '' });
+          toast.success('Post added successfully!');
+        } catch (error) {
+          toast.error('Failed to add post.');
+          console.error('Error adding post:', error);
+        }
+        setConfirmDialog({ ...confirmDialog, isOpen: false });
+      },
+      onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+    });
   };
 
   const handleDeletePost = async (id) => {
@@ -91,23 +93,28 @@ const PostsPage = () => {
       title: 'Delete Post',
       message: 'Are you sure you want to delete this post?',
       onConfirm: async () => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
-        method: 'DELETE',
-      });
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/posts/${id}`,
+            {
+              method: 'DELETE',
+            }
+          );
 
-      if (!response.ok) {
-        throw new Error('Failed to delete post');
-      }
+          if (!response.ok) {
+            throw new Error('Failed to delete post');
+          }
 
-      setPosts(posts.filter((post) => post.id !== id));
-      toast.success('Post deleted successfully!');
-    } catch (error) {
-      toast.error('Failed to delete post.');
-      console.error('Error deleting post:', error);
-    }setConfirmDialog({ ...confirmDialog, isOpen: false });
-  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
-});
+          setPosts(posts.filter((post) => post.id !== id));
+          toast.success('Post deleted successfully!');
+        } catch (error) {
+          toast.error('Failed to delete post.');
+          console.error('Error deleting post:', error);
+        }
+        setConfirmDialog({ ...confirmDialog, isOpen: false });
+      },
+      onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+    });
   };
 
   const handleEditPost = (post) => {
@@ -121,34 +128,38 @@ const PostsPage = () => {
       title: 'Save Changes',
       message: 'Are you sure you want to save changes to this post?',
       onConfirm: async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/posts/${selectedPost.id}`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(selectedPost),
+        try {
+          const response = await fetch(
+            `http://localhost:5000/api/posts/${selectedPost.id}`,
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(selectedPost),
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error('Failed to save changes');
+          }
+
+          const updatedPost = await response.json();
+          setPosts(
+            posts.map((post) =>
+              post.id === updatedPost.id ? updatedPost : post
+            )
+          );
+          setIsEditOpen(false);
+          toast.success('Post updated successfully!');
+        } catch (error) {
+          toast.error('Failed to update post.');
+          console.error('Error saving changes:', error);
         }
-      );
-
-      if (!response.ok) {
-        throw new Error('Failed to save changes');
-      }
-
-      const updatedPost = await response.json();
-      setPosts(
-        posts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
-      );
-      setIsEditOpen(false);
-      toast.success('Post updated successfully!');
-    } catch (error) {
-      toast.error('Failed to update post.');
-      console.error('Error saving changes:', error);
-    } setConfirmDialog({ ...confirmDialog, isOpen: false });
-  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
-});
+        setConfirmDialog({ ...confirmDialog, isOpen: false });
+      },
+      onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+    });
   };
 
   const renderImagePreview = (imageURL) => {
@@ -158,18 +169,10 @@ const PostsPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <Toaster/> 
+      <Toaster />
 
       <Card className="shadow-md">
         <CardHeader>
-        <span className="block text-sm text-gray-500">
-            Todo:
-            <ul className="ml-6 list-disc">
-              <li>Confirmation dialog add, edit, delete</li>
-              <li>done Toast/sonner notification add, edit, delete</li>
-              <li>done Disable nút Add post khi thông tin chưa được nhập đủ</li>
-            </ul>
-          </span>
           <h1 className="text-center text-2xl font-bold">Post Management</h1>
         </CardHeader>
         <CardContent>
@@ -201,8 +204,10 @@ const PostsPage = () => {
             <div className="text-right">
               <Button
                 onClick={handleAddPost}
-                className={`bg-blue-400 text-white hover:bg-blue-500 ${
-                  !newPost.title || !newPost.image || !newPost.cta ? 'opacity-50 cursor-not-allowed bg-gray-400' : ''
+                className={` text-white${
+                  !newPost.title || !newPost.image || !newPost.cta
+                    ? 'cursor-not-allowed bg-gray-400 opacity-50'
+                    : ''
                 }`}
                 disabled={!newPost.title || !newPost.image || !newPost.cta}
               >
@@ -294,10 +299,7 @@ const PostsPage = () => {
               />
             </div>
             <DialogFooter>
-              <Button
-                onClick={handleSaveEdit}
-                className="bg-blue-600 text-white"
-              >
+              <Button onClick={handleSaveEdit} className="text-white">
                 Save Changes
               </Button>
             </DialogFooter>

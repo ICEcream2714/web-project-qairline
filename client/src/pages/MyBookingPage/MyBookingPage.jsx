@@ -11,30 +11,29 @@ function MyBookingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
-  
-    const handleScroll = () => {
-      if (typeof window !== "undefined") {
-        const currentScrollY = window.scrollY;
-  
-        // If the current scroll position is greater than the last scroll position, hide the Navbar
-        if (currentScrollY >= lastScrollY) {
-          setIsVisible(false);
-        } else {
-          setIsVisible(true);
-        }
-  
-        setLastScrollY(currentScrollY);
-      }
-    };
-  
-    useEffect(() => {
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }, [lastScrollY]);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
+  const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+      const currentScrollY = window.scrollY;
+
+      // If the current scroll position is greater than the last scroll position, hide the Navbar
+      if (currentScrollY >= lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -79,8 +78,8 @@ function MyBookingPage() {
   }, []);
 
   return (
-    <div className="h-full bg-gradient-to-r from-gray-500 to-slate-300">
-      {isVisible && <Navbar/>}
+    <div className="to- h-full bg-gradient-to-r from-secondary-foreground to-[#ad5389]">
+      {isVisible && <Navbar />}
       <div className="container mx-auto px-3 py-8 pt-24 md:px-28">
         <h1 className="mb-7 text-3xl font-bold text-white">Manage booking</h1>
 

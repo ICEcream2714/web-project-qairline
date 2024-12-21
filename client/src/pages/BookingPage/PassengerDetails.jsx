@@ -144,7 +144,7 @@ export default function PassengerDetailsPage() {
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full text-white">
                       Continue to Payment
                     </Button>
                   </form>

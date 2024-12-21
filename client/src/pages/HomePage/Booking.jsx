@@ -1,9 +1,9 @@
 const BookingSection = () => {
   return (
-    <div className="font-sans">
+    <div className="rounded-b-none font-sans">
       {/* Nội dung phần "Đặt vé ngay" */}
       <div
-        className="relative my-8 flex flex-col items-start justify-center overflow-hidden rounded-bl-lg rounded-br-lg bg-gray-100 px-6 py-12 font-sans shadow-lg md:flex-row"
+        className="relative my-8 flex flex-col items-start justify-center overflow-hidden rounded-b-none bg-gray-100 px-6 py-12 font-sans shadow-lg md:flex-row"
         style={{ minHeight: '425px' }} // Tăng chiều cao phần Booking
       >
         {/* Hình ảnh */}
@@ -11,7 +11,7 @@ const BookingSection = () => {
           <img
             src="https://genk.mediacdn.vn/thumb_w/640/139269124445442048/2022/5/24/take-photo-out-an-airplane-window-800x534-1653368460753-1653368460868632169694.jpg"
             alt="Qatar Airways"
-            className="h-full w-full object-cover"
+            className="h-full w-full rounded-b-none object-cover"
           />
         </div>
 

@@ -230,7 +230,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-gradient-to-b from-primary/60 to-gray-50">
+    <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-gradient-to-t from-secondary to-primary-foreground">
       <Navbar />
       <div className="-mt-8 w-full">
         <Booking />

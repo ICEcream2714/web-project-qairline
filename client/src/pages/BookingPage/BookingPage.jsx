@@ -154,7 +154,7 @@ function BookingPage() {
       {/* Navbar */}
       {isVisible && <NavbarBooking />}
       {/* Main */}
-      <div className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pb-8 pt-28 md:px-10">
+      <div className="h-full bg-gradient-to-t from-secondary-foreground to-primary px-3 pb-8 pt-28 md:px-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium">
             {isSelectingReturnFlight

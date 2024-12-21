@@ -213,7 +213,7 @@ export default function PaymentPage() {
                         />
                       </div>
                     </div>
-                    <Button type="submit" className="w-full">
+                    <Button type="submit" className="w-full text-white">
                       Complete Payment
                     </Button>
                     <AlertDialog

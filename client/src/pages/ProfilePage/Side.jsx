@@ -46,7 +46,7 @@ const Side = () => {
 
   return (
     <aside className="w-full px-3 md:w-64 md:max-w-sm md:px-0">
-      <Card className="py-5 rounded-md border-none bg-gradient-to-r from-[#3c1053] to-[#ad5389] text-center text-white">
+      <Card className="rounded-md border-none bg-gradient-to-r from-secondary-foreground to-[#ad5389] py-5 text-center text-white">
         <CardHeader>
           <Avatar className="mx-auto h-24 w-24">
             <AvatarImage
@@ -64,9 +64,9 @@ const Side = () => {
             Membership number: <strong>{userData.membershipNumber}</strong>
           </p>
           <div className="mt-4 space-y-1 text-sm">
-            <p>Avios: {userData.avios}</p>
-            <p>Qpoints: {userData.qpoints}</p>
-            <p>Qcredits: {userData.qcredits}</p>
+            <p>Apoints: 5</p>
+            <p>Qpoints: 10</p>
+            <p>_________________________</p>
           </div>
         </CardContent>
       </Card>

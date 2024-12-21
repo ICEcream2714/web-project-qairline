@@ -243,7 +243,7 @@ export default function BookAFlight() {
         <div className="relative w-full pr-0 md:max-w-xs md:pr-4">
           <Button
             onClick={toggleDropdown}
-            className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700"
+            className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700 hover:bg-white hover:text-secondary"
           >
             {`${passengers.adults + passengers.children + passengers.infants} Passenger${
               passengers.adults + passengers.children + passengers.infants > 1
@@ -315,7 +315,7 @@ export default function BookAFlight() {
               {/* Confirm Button */}
               <div className="border-t p-4">
                 <Button
-                  className="w-full bg-purple-600 text-white hover:bg-purple-700"
+                  className="w-full text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   Confirm
@@ -324,7 +324,7 @@ export default function BookAFlight() {
             </div>
           )}
         </div>
-        <Button className="rounded-lg" onClick={handleSearchFlights}>
+        <Button className="text-white" onClick={handleSearchFlights}>
           Search flights
         </Button>
       </div>
