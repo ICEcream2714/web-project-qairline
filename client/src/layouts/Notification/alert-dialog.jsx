@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,6 +17,24 @@ const AlertDialog = ({
   message,
   isSuccess,
 }) => {
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    let timer;
+    if (isSuccess) {
+      timer = setInterval(() => {
+        setCountdown((prev) => (prev > 0 ? prev - 1 : 0)); // Giảm countdown
+      }, 1000);
+
+      // Xử lý điều hướng sau khi countdown kết thúc
+      if (countdown === 0) {
+        onClose(); // Gọi hàm đóng hoặc điều hướng khi countdown bằng 0
+      }
+    }
+
+    return () => clearInterval(timer); // Dọn dẹp interval khi component bị unmounted
+  }, [isSuccess, countdown, onClose]);
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-[400px] rounded-lg text-center">
@@ -36,12 +54,19 @@ const AlertDialog = ({
           {message}
         </DialogDescription>
         <div className="flex justify-center">
-          <Button
-            onClick={onClose}
-            className="min-w-[100px] bg-[#693e52] text-white hover:bg-[#693e52]/90"
-          >
-            OK
-          </Button>
+          {!isSuccess ? (
+            <Button
+              onClick={onClose}
+              className="min-w-[100px] bg-[#693e52] text-white hover:bg-[#693e52]/90"
+            >
+              OK
+            </Button>
+          ) : (
+            <p className="text-center text-gray-600">
+              The page will be redirected in <strong>{countdown}</strong>{' '}
+              seconds.
+            </p>
+          )}
         </div>
       </DialogContent>
     </Dialog>

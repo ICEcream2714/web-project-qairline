@@ -80,7 +80,9 @@ const LoginPage = () => {
             if (email === 'admin@example.com') {
               navigate('/admin/post-information');
             } else {
-              navigate('/');
+              setTimeout(() => {
+                navigate('/'); // Điều hướng đến trang chính sau khi hiển thị thông báo
+              }, 3000);
             }
           },
         });
@@ -163,7 +165,7 @@ const LoginPage = () => {
               <Input
                 type={showPassword ? 'text' : 'password'}
                 id="password"
-                className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
+                className="peer block h-11 w-full rounded-lg border border-border bg-transparent pb-2 pl-3 pr-10 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
                 placeholder=""
                 required
                 onChange={handlePasswordChange}

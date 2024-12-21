@@ -50,7 +50,7 @@ export function NavbarSimple() {
 
   return (
     <nav
-      className={`fixed left-0 right-0 top-0 z-50 bg-gradient-to-r from-gray-500 to-slate-300 transition-colors duration-300`}
+      className={`fixed left-0 right-0 top-0 z-50 transition-colors duration-300 ${isScrolled ? 'bg-white shadow-md' : 'bg-transparent'}`}
     >
       <div className="container mx-auto flex h-16 w-full items-center justify-between px-4">
         {/* Left section */}

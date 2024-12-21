@@ -5,7 +5,7 @@ import { CreditCard } from 'lucide-react';
 const PaymentInfo = ({ payment }) => {
   return (
     <Card>
-      <CardContent className="p-4">
+      <CardContent className="p-2 md:p-6">
         <h3 className="mb-2 text-lg font-semibold">Payment Information</h3>
         <div className="space-y-2">
           <p>Status: {payment.payment_status}</p>

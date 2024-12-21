@@ -195,7 +195,10 @@ const SignupPage = () => {
           message: 'Register successfully, please login to continue.',
           isSuccess: true,
         });
-        navigate('/login'); // Chuyển hướng người dùng về trang login
+
+        setTimeout(() => {
+          navigate('/login');
+        }, 3000);
       } else {
         // Xử lý lỗi trả về từ server
         const error = await response.json();
