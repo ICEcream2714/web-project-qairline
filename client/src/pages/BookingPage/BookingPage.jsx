@@ -23,6 +23,7 @@ import { format } from 'date-fns';
 import { NavbarBooking } from '../../layouts/Navbar/NavbarBooking';
 import Footer from '@/layouts/Footer';
 
+
 function BookingPage() {
   const navigate = useNavigate();
   const location = useLocation(); // Nhận dữ liệu từ location
@@ -41,7 +42,30 @@ function BookingPage() {
   const [origin, setOrigin] = useState('Doha'); // Default origin
   const [destination, setDestination] = useState('Al-Baha'); // Default destination
   const [totalPrice, setTotalPrice] = useState(0); // State to track total price
-
+  const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+  
+    const handleScroll = () => {
+      if (typeof window !== "undefined") {
+        const currentScrollY = window.scrollY;
+  
+        // If the current scroll position is greater than the last scroll position, hide the Navbar
+        if (currentScrollY >= lastScrollY) {
+          setIsVisible(false);
+        } else {
+          setIsVisible(true);
+        }
+  
+        setLastScrollY(currentScrollY);
+      }
+    };
+  
+    useEffect(() => {
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, [lastScrollY]);
   // Lấy dữ liệu chuyến bay từ location.state
   useEffect(() => {
     if (location.state) {
@@ -129,7 +153,7 @@ function BookingPage() {
   return (
     <div>
       {/* Navbar */}
-      <NavbarBooking />
+      {isVisible &&<NavbarBooking />}
       {/* Main */}
       <div className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pb-8 pt-28 md:px-10">
         <div className="mb-8">

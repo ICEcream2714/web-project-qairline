@@ -8,6 +8,7 @@ import {
   Search,
   Users,
 } from 'lucide-react';
+import logos from '../../assets/image.png'
 import { useNavigate } from 'react-router-dom';
 import UserProfile from './UserProfile';
 import axios from 'axios';
@@ -78,14 +79,18 @@ export function NavbarBooking() {
       <div className="container mx-auto flex h-16 w-full items-center justify-between px-4">
         {/* Left section */}
         <div className="flex items-center gap-4">
-          <a href="/" className="flex items-center gap-10">
+          <a href="/" className="flex items-center gap-5">
             <ChevronLeft className="h-5 w-5" />
-            <button
-              className={`hidden text-lg font-bold lg:block ${isScrolled ? 'text-gray-800' : 'text-white'}`}
-              onClick={handleLogoClick}
-            >
-              QAirlines
-            </button>
+              {/* Logo bên cạnh */}
+              <img
+                src={logos} // Path to your image
+                alt="Logo"
+                className="w-12 h-10 " // Adjust size and ensure it fits inside the circle
+              />
+              {/* Tên hãng */}
+              <span className="font-serif text-2xl tracking-wider">
+                Q<span className="text-purple-400">Airlines</span>
+              </span>
           </a>
         </div>
 
@@ -139,15 +144,16 @@ export function NavbarBooking() {
               name={userInfo.name}
               id={userInfo.email}
               tier="Burgundy"
-              avios={0}
-              qpoints={0}
+              avios={5}
+              qpoints={10}
               isScrolled={isScrolled}
               onLogout={handleLogout}
             />
           )}
-          <span className="hidden text-sm lg:block">
-            {isLoggedIn ? userInfo.name : ''}
-          </span>
+          <span className="hidden text-sm font-medium text-gray-800 lg:block hover:text-primary transition-colors">
+  {isLoggedIn ? userInfo.name : ''}
+</span>
+
         </div>
       </div>
     </nav>
