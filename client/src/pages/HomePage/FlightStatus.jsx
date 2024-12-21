@@ -59,7 +59,7 @@ const FlightStatus = () => {
             onClick={() => setActiveTab('route')}
             className={`flex-1 py-1 text-center text-lg font-medium ${
               activeTab === 'route'
-                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                ? 'rounded-none border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
@@ -70,7 +70,7 @@ const FlightStatus = () => {
             onClick={() => setActiveTab('flightNumber')}
             className={`flex-1 py-2 text-center text-lg font-medium ${
               activeTab === 'flightNumber'
-                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                ? 'rounded-none border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
