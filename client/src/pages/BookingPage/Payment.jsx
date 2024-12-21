@@ -68,8 +68,6 @@ export default function PaymentPage() {
         console.log('Response:', response);
 
       if (response.ok) {
-        // alert('Booking confirmed! Thank you for your purchase.');
-
         setAlert({
           open: true,
           title: 'QAirline',
@@ -84,7 +82,6 @@ export default function PaymentPage() {
         const errorText = await response.text(); // Read response as text
         try {
           const errorData = JSON.parse(errorText); // Try to parse as JSON
-          // alert(`Error: ${errorData.message}`);
           setAlert({
             open: true,
             title: 'QAirline',
@@ -92,8 +89,6 @@ export default function PaymentPage() {
             isSuccess: false,
           });
         } catch {
-          // alert(`Error: ${errorText}`);
-          // Fallback to plain text
           setAlert({
             open: true,
             title: 'QAirline',
@@ -104,7 +99,6 @@ export default function PaymentPage() {
       }
     } catch (error) {
       console.error('Error:', error);
-      // alert('An error occurred while processing your booking.');
       setAlert({
         open: true,
         title: 'QAirline',

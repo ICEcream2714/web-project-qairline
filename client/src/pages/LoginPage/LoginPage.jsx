@@ -82,7 +82,7 @@ const LoginPage = () => {
             } else {
               setTimeout(() => {
                 navigate('/'); // Điều hướng đến trang chính sau khi hiển thị thông báo
-              }, 3000);
+              }, 0);
             }
           },
         });

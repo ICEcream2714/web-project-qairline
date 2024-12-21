@@ -50,8 +50,9 @@ function Navbar() {
     navigate('/login');
   };
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token'); // Remove the token from localStorage
     setIsLoggedIn(false);
+    setUserInfo({ name: '', email: '' }); // Clear user info
     navigate('/');
   };
 

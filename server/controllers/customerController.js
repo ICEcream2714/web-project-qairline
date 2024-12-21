@@ -166,7 +166,9 @@ exports.bookFlight = async (req, res) => {
     passengerDetails,
     paymentDetails,
   } = req.body;
-  const customerId = req.userId; // Lấy customerId từ user đã đăng nhập
+  const userId = req.userId; // Changed from customerId to userId for clarity
+
+  console.log("User ID:", userId);
 
   // Validate inputs
   if (!totalPrice || !outboundFlight || !passengerDetails || !paymentDetails) {
@@ -174,8 +176,12 @@ exports.bookFlight = async (req, res) => {
   }
 
   try {
-    // Verify that the customer exists
-    const customer = await Customer.findByPk(customerId);
+    // Changed from findByPk to findOne with where clause
+    const customer = await Customer.findOne({
+      where: { user_id: userId },
+    });
+    console.log("Customer:", customer);
+
     if (!customer) {
       return res.status(404).json({ message: "Customer not found" });
     }
@@ -196,7 +202,7 @@ exports.bookFlight = async (req, res) => {
     }
 
     const booking = await Booking.create({
-      customer_id: customerId,
+      customer_id: customer.id, // Changed from userId to customer.id
       outbound_flight_id: outboundFlight.id,
       return_flight_id: returnFlight ? returnFlight.id : null,
       departure_time: outboundFlight.departure_time,
@@ -380,8 +386,18 @@ exports.getAllBookings = async (req, res) => {
 // Lấy tất cả thông tin đặt vé của người dùng
 exports.getUserBookings = async (req, res) => {
   try {
+    // First, find the customer using user_id
+    const customer = await Customer.findOne({
+      where: { user_id: req.userId },
+    });
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    // Then find bookings using customer_id
     const bookings = await Booking.findAll({
-      where: { customer_id: req.userId },
+      where: { customer_id: customer.id }, // Use customer.id instead of req.userId
       include: [
         {
           model: Passenger,
@@ -422,13 +438,8 @@ exports.getUserBookings = async (req, res) => {
       ],
     });
 
-    if (!bookings.length) {
-      return res
-        .status(404)
-        .json({ message: "Không tìm thấy thông tin đặt vé" });
-    }
-
-    res.status(200).json(bookings);
+    // Even if no bookings are found, return an empty array instead of 404
+    return res.status(200).json(bookings);
   } catch (error) {
     console.error("Error fetching user bookings:", error);
     res.status(500).json({ message: "Lỗi hệ thống", error: error.message });

@@ -15,6 +15,8 @@ function MyBookingPage() {
     const fetchBookings = async () => {
       try {
         const token = localStorage.getItem('token');
+        console.log('Fetching bookings with token:', token); // Debug log
+
         const response = await fetch(
           'http://localhost:5000/api/customer/my-bookings',
           {
@@ -23,14 +25,13 @@ function MyBookingPage() {
             },
           }
         );
-        if (!response.ok) {
-          if (response.status === 404) {
-            setBookings([]); // No bookings found
-          } else {
-            throw new Error('Failed to fetch bookings');
-          }
-        } else {
-          const data = await response.json();
+
+        console.log('Response status:', response.status); // Debug log
+
+        const data = await response.json();
+        console.log('Fetched bookings:', data); // Debug log
+
+        if (response.ok) {
           // Sort bookings: confirmed first, cancelled last
           const sortedBookings = data.sort((a, b) => {
             if (a.status === 'Cancelled' && b.status !== 'Cancelled') return 1;
@@ -38,10 +39,13 @@ function MyBookingPage() {
             return 0;
           });
           setBookings(sortedBookings);
+        } else {
+          setError(data.message);
         }
-        setLoading(false);
       } catch (err) {
+        console.error('Error fetching bookings:', err); // Debug log
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
