@@ -4,6 +4,7 @@ import { toast } from "sonner"
 import { Pencil, Trash } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import {
   Dialog,
   DialogContent,
@@ -26,6 +27,13 @@ const PostsPage = () => {
   const [newPost, setNewPost] = useState({ title: '', image: '', cta: '' });
   const [selectedPost, setSelectedPost] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    action: null,
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -47,6 +55,11 @@ const PostsPage = () => {
       toast.error('Please fill in all fields.');
       return;
     }
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Add Post',
+      message: 'Are you sure you want to add this post?',
+      onConfirm: async () => {
     try {
       const response = await fetch('http://localhost:5000/api/posts/', {
         method: 'POST',
@@ -67,10 +80,17 @@ const PostsPage = () => {
     } catch (error) {
       toast.error('Failed to add post.');
       console.error('Error adding post:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleDeletePost = async (id) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Delete Post',
+      message: 'Are you sure you want to delete this post?',
+      onConfirm: async () => {
     try {
       const response = await fetch(`http://localhost:5000/api/posts/${id}`, {
         method: 'DELETE',
@@ -85,7 +105,9 @@ const PostsPage = () => {
     } catch (error) {
       toast.error('Failed to delete post.');
       console.error('Error deleting post:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleEditPost = (post) => {
@@ -94,6 +116,11 @@ const PostsPage = () => {
   };
 
   const handleSaveEdit = async () => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Save Changes',
+      message: 'Are you sure you want to save changes to this post?',
+      onConfirm: async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/posts/${selectedPost.id}`,
@@ -119,7 +146,9 @@ const PostsPage = () => {
     } catch (error) {
       toast.error('Failed to update post.');
       console.error('Error saving changes:', error);
-    }
+    } setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const renderImagePreview = (imageURL) => {
@@ -275,6 +304,13 @@ const PostsPage = () => {
           </DialogContent>
         </Dialog>
       )}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        onConfirm={confirmDialog.onConfirm}
+        onCancel={confirmDialog.onCancel}
+      />
     </div>
   );
 };

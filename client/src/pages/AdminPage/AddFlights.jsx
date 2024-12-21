@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/sonner'; 
 import { toast } from "sonner"
 import { Input } from '@/components/ui/input';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import {
   Table,
   TableBody,
@@ -48,7 +49,13 @@ const FlightsPage = () => {
     status: 'Scheduled',
     aircraft_type: '',
   });
-
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    action: null,
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [sortConfig, setSortConfig] = useState({
@@ -98,7 +105,11 @@ const FlightsPage = () => {
       toast.error('Please fill in all fields.');
       return;
     }
-
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Add Flight',
+      message: 'Are you sure you want to add this flight?',
+      onConfirm: async () => {
     try {
       console.log('newFlight', newFlight); // Debug log
       const response = await fetch('http://localhost:5000/api/flights', {
@@ -128,10 +139,17 @@ const FlightsPage = () => {
     } catch (error) {
       toast.success('Failed to add flight');
       console.error('Error adding flight:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleDeleteFlight = async (id) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Delete Flight',
+      message: 'Are you sure you want to delete this flight?',
+      onConfirm: async () => {
     try {
       // console.log('id', id);
       const response = await fetch(`http://localhost:5000/api/flights/${id}`, {
@@ -148,7 +166,9 @@ const FlightsPage = () => {
     } catch (error) {
       toast.error('Failed to delete flight.');
       console.error('Error deleting flight:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleEditFlight = (flight) => {
@@ -165,7 +185,11 @@ const FlightsPage = () => {
       console.error('No flight ID found');
       return;
     }
-
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Save Changes',
+      message: 'Are you sure you want to save changes to this flight?',
+      onConfirm: async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/flights/${selectedFlight.id}`,
@@ -201,7 +225,9 @@ const FlightsPage = () => {
     } catch (error) {
       toast.error('Failed to update flight.');
       console.error('Error updating flight:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleSort = (key) => {
@@ -638,6 +664,13 @@ const FlightsPage = () => {
           </div>
         </ResponsiveDialog>
       )}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        onConfirm={confirmDialog.onConfirm}
+        onCancel={confirmDialog.onCancel}
+      />
     </div>
   );
 };

@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
+import ConfirmDialog from '@/components/ConfirmDialog';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import {
   Table,
@@ -34,7 +35,13 @@ const AirplanePage = () => {
     key: 'model',
     direction: 'asc',
   });
-
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    action: null,
+    title: '',
+    message: '',
+    onConfirm: null,
+  });
   useEffect(() => {
     // Fetch airplane data from the server
     const fetchAirplanes = async () => {
@@ -56,6 +63,11 @@ const AirplanePage = () => {
       toast.error('Please fill in all fields.');
       return;
     }
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Add Airplane',
+      message: 'Are you sure you want to add this airplane?',
+      onConfirm: async () => {
     try {
       const response = await fetch('http://localhost:5000/api/airplanes/', {
         method: 'POST',
@@ -76,10 +88,17 @@ const AirplanePage = () => {
     } catch (error) {
       toast.error('Failed to add airplane.');
       console.error('Error adding airplane:', error);
-    }
+    } setConfirmDialog({ ...confirmDialog, isOpen: false });
+  }, onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleDeleteAirplane = async (id) => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Delete Airplane',
+      message: 'Are you sure you want to delete this airplane?',
+      onConfirm: async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/airplanes/${id}`,
@@ -97,7 +116,9 @@ const AirplanePage = () => {
       }
     } catch (error) {
       console.error('Error deleting airplane:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleEditAirplane = (plane) => {
@@ -106,6 +127,11 @@ const AirplanePage = () => {
   };
 
   const handleSaveEdit = async () => {
+    setConfirmDialog({
+      isOpen: true,
+      title: 'Save Changes',
+      message: 'Are you sure you want to save changes to this airplane?',
+      onConfirm: async () => {
     try {
       const response = await fetch(
         `http://localhost:5000/api/airplanes/${selectedAirplane.id}`,
@@ -133,7 +159,9 @@ const AirplanePage = () => {
     } catch (error) {
       toast.error('Failed to update airplane.');
       console.error('Error updating airplane:', error);
-    }
+    }setConfirmDialog({ ...confirmDialog, isOpen: false });
+  },onCancel: () => setConfirmDialog({ ...confirmDialog, isOpen: false }),
+});
   };
 
   const handleSort = (key) => {
@@ -365,6 +393,13 @@ const AirplanePage = () => {
           </DialogContent>
         </Dialog>
       )}
+      <ConfirmDialog
+        isOpen={confirmDialog.isOpen}
+        title={confirmDialog.title}
+        message={confirmDialog.message}
+        onConfirm={confirmDialog.onConfirm}
+        onCancel={confirmDialog.onCancel}
+      />
     </div>
   );
 };
