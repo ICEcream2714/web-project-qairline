@@ -169,8 +169,8 @@ function Navbar() {
                 name={userInfo.name}
                 id={userInfo.email}
                 tier="New Member"
-                avios={0}
-                qpoints={0}
+                avios={5}
+                qpoints={10}
                 isScrolled={isScrolled}
                 onLogout={handleLogout}
                 isOpen={isOpen}
@@ -249,8 +249,8 @@ function Navbar() {
                   name={userInfo.name}
                   id={userInfo.email}
                   tier="New Member"
-                  avios={0}
-                  qpoints={0}
+                  avios={5}
+                  qpoints={10}
                   isScrolled={isScrolled}
                   onLogout={handleLogout}
                   isOpen = {isOpen}

@@ -5,6 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Pencil, X, Save } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import DatePicker from '@/components/DatePicker';
 
 const Personal = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -185,10 +186,9 @@ const Personal = () => {
                   onChange={(e) => setLastName(e.target.value)}
                   className="mb-2 w-[300px]"
                 />
-                <Input
-                  type="text"
-                  value={dob}
-                  onChange={(e) => setDob(e.target.value)}
+                <DatePicker
+                date={dob}
+                setDate={(e) => setDob(e.target.value)}
                 />
               </>
             ) : (

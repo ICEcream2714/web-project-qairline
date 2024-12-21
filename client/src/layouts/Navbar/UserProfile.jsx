@@ -44,7 +44,7 @@ const UserProfile = ({
         <div className="grid grid-cols-2 gap-4 bg-white p-4 pl-8">
           <div>
             <div className="text-2xl font-bold">{avios}</div>
-            <div className="text-sm text-gray-500">Avios</div>
+            <div className="text-sm text-gray-500">Apoints</div>
           </div>
           <div>
             <div className="text-2xl font-bold">{qpoints}</div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +9,7 @@ import { NavbarSimple } from '@/layouts/Navbar/NavbarSimple';
 import Footer from '@/layouts/Footer';
 import Booking from '@/pages/HomePage/Booking';
 import StartPlanning from '../HomePage/PlanningCard';
+import Navbar from '@/layouts/Navbar/Navbar';
 
 export default function PassengerDetailsPage() {
   const navigate = useNavigate();
@@ -21,6 +22,30 @@ export default function PassengerDetailsPage() {
 
   console.log('Outbound Seat ID:', outboundFlight?.seatId);
   console.log('Return Seat ID:', returnFlight?.seatId);
+  const [isVisible, setIsVisible] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+  
+    const handleScroll = () => {
+      if (typeof window !== "undefined") {
+        const currentScrollY = window.scrollY;
+  
+        // If the current scroll position is greater than the last scroll position, hide the Navbar
+        if (currentScrollY >= lastScrollY) {
+          setIsVisible(false);
+        } else {
+          setIsVisible(true);
+        }
+  
+        setLastScrollY(currentScrollY);
+      }
+    };
+  
+    useEffect(() => {
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+      };
+    }, [lastScrollY]);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -52,7 +77,7 @@ export default function PassengerDetailsPage() {
   return (
     <div className="-mt-11 h-screen min-h-screen bg-gray-50 bg-gradient-to-r from-gray-500 to-slate-300">
       {/* Navbar */}
-      <NavbarSimple />
+      {isVisible && <Navbar />}
       <Booking />
       {/* Main */}
       <main className="-mt-20 bg-gradient-to-t from-slate-700 to-slate-300 sm:px-3 md:h-full md:px-10">
