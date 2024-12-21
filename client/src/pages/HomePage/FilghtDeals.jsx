@@ -36,6 +36,7 @@ const DestinationCard = ({ city, image, dates, price, large = false }) => {
           {/* Buttons with hover effect */}
           <div className="translate-y-4 space-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
             <Button
+              variant="outline"
               className={`w-full bg-white text-primary hover:bg-white/20 ${large ? 'py-2 text-sm' : 'py-1 text-xs'}`}
             >
               Book now
@@ -123,7 +124,7 @@ export function FlightDeals() {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="mb-6 text-2xl font-bold">Find great fares</h2>
+      <h2 className="mb-6 text-2xl font-bold text-primary">Find great fares</h2>
       <div className="mb-8 max-w-xs">
         <Label htmlFor="from">From</Label>
         <div className="relative">

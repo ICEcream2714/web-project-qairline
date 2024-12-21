@@ -9,7 +9,7 @@ import {
 import UserProfile from '@/layouts/Navbar/UserProfile'; // Import UserProfile từ ShadCN
 import { CircleUserRound } from 'lucide-react';
 import axios from 'axios'; // Import axios for API calls
-import logo from "../../assets/image.png";
+import logo from '../../assets/image.png';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -82,30 +82,28 @@ function Navbar() {
   return (
     <nav
       className={`fixed left-0 top-0 z-30 w-full p-4 ${
-        (isScrolled || isOpen) ? 'bg-white shadow-md' : 'bg-transparent'
+        isScrolled || isOpen ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <button
-  className={`flex items-center space-x-2 text-lg font-extrabold ${(isScrolled || isOpen) ? 'text-gray-800' : 'text-white'} transition-colors duration-300`}
-  onClick={handleLogoClick}
->
-  {/* Logo bên cạnh */}
-  
-  <img
-    src={logo} // Path to your image
-    alt="Logo"
-    className="w-12 h-10 " // Adjust size and ensure it fits inside the circle
-  />
+          className={`flex items-center space-x-2 text-lg font-extrabold ${isScrolled || isOpen ? 'text-gray-800' : 'text-white'} transition-colors duration-300`}
+          onClick={handleLogoClick}
+        >
+          {/* Logo bên cạnh */}
 
+          <img
+            src={logo} // Path to your image
+            alt="Logo"
+            className="h-10 w-12" // Adjust size and ensure it fits inside the circle
+          />
 
-  {/* Tên hãng */}
-  <span className="font-serif text-2xl tracking-wider">
-    Q<span className="text-purple-400">Airlines</span>
-  </span>
-</button>
-
+          {/* Tên hãng */}
+          <span className="font-serif text-2xl tracking-wider">
+            Q<span className="text-secondary">Airlines</span>
+          </span>
+        </button>
 
         {/* Desktop Menu */}
         <div className="hidden space-x-8 md:flex">
@@ -115,7 +113,7 @@ function Navbar() {
               onClick={() => toggleDropdown(1)}
               className={`${
                 isScrolled ? 'text-gray-800' : 'text-white'
-              } font-semibold hover:text-purple-600`}
+              } font-semibold hover:text-secondary-foreground`}
             >
               Book
             </Button>
@@ -144,13 +142,13 @@ function Navbar() {
           </div>
           <Button
             variant="link"
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-secondary-foreground`}
           >
             Discover
           </Button>
           <Button
             variant="link"
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-secondary-foreground`}
           >
             Help
           </Button>
@@ -160,7 +158,7 @@ function Navbar() {
               <Button
                 variant="link"
                 onClick={handleLoginClick}
-                className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+                className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-secondary-foreground`}
               >
                 Login / Sign Up
               </Button>
@@ -184,7 +182,7 @@ function Navbar() {
           <Button
             variant="link" // Sử dụng Button với variant "link"
             onClick={() => setIsOpen(!isOpen)}
-            className={`${(isScrolled || isOpen) ? 'text-gray-800' : 'text-white'} focus:outline-none`}
+            className={`${isScrolled || isOpen ? 'text-gray-800' : 'text-white'} focus:outline-none`}
           >
             <svg
               className="h-6 w-6"
@@ -253,7 +251,7 @@ function Navbar() {
                   qpoints={0}
                   isScrolled={isScrolled}
                   onLogout={handleLogout}
-                  isOpen = {isOpen}
+                  isOpen={isOpen}
                 />
               </div>
             )}
