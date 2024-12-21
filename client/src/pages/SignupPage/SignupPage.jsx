@@ -31,6 +31,8 @@ import {
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import 'tailwindcss/tailwind.css';
 import AlertDialog from '@/layouts/Notification/alert-dialog';
+import logo from '@/assets/image.png';
+import Booking from '@/pages/HomePage/Booking';
 
 const SignupPage = () => {
   //route
@@ -230,7 +232,9 @@ const SignupPage = () => {
   return (
     <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-background">
       <Navbar />
-      <div className="mb-6 h-[350px] w-full bg-gradient-to-r from-gray-700 to-gray-300"></div>
+      <div className="-mt-8 w-full">
+        <Booking />
+      </div>
 
       <div className="mb-6">
         <Breadcrumb>
@@ -247,13 +251,9 @@ const SignupPage = () => {
       </div>
 
       {/* Form Signup */}
-      <Card className="mb-10 w-full max-w-5xl rounded-lg bg-slate-100 px-3 py-6 text-card-foreground shadow-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
+      <Card className="mb-16 w-full max-w-5xl rounded-lg bg-slate-100 p-6 px-3 text-card-foreground shadow-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
         <CardHeader className="flex flex-col items-center space-y-2">
-          <img
-            src="https://i.pinimg.com/control2/736x/b2/63/62/b2636225a15957cad9babd1bd8272e06.jpg"
-            alt="logo"
-            className="w-14"
-          />
+          <img src={logo} alt="logo" className="h-20 w-20" />
           <h2 className="text-center text-xl font-semibold md:text-2xl">
             Register for your account
           </h2>

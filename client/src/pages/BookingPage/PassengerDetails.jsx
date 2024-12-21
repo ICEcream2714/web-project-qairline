@@ -55,11 +55,11 @@ export default function PassengerDetailsPage() {
       <NavbarSimple />
       <Booking />
       {/* Main */}
-      <main className="-mt-20 bg-gradient-to-t from-slate-700 to-slate-300 sm:px-3 md:h-full md:px-10">
+      <main className="-mt-20 bg-white sm:px-3 md:h-full md:px-10">
         <div className="container relative z-20 mx-auto -mt-24 px-3 md:px-28 lg:px-16">
           <div className="grid grid-cols-3 gap-8">
             <div className="col-span-3 lg:col-span-2">
-              <Card>
+              <Card className="px-3 py-7 shadow-lg">
                 <CardHeader>
                   <CardTitle>Passenger Details</CardTitle>
                 </CardHeader>
@@ -252,10 +252,12 @@ export default function PassengerDetailsPage() {
             </div>
           </div>
         </div>
-        <StartPlanning />
+        <div className="py-5">
+          <StartPlanning />
+        </div>
       </main>
       {/* Footer */}
-      <footer className="w-full bg-slate-700 bg-transparent px-3 pb-5 pt-3 md:px-36">
+      <footer className="mt-10 w-full bg-gradient-to-b from-white to-slate-200 px-3 pb-5 pt-3 md:px-36">
         <div className="flex justify-between text-sm text-black">
           <p>© 2024 Airline Booking. All rights reserved.</p>
           <div className="space-x-4">

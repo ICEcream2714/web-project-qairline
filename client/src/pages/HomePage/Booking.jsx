@@ -1,11 +1,9 @@
-
-
 const BookingSection = () => {
   return (
     <div className="font-sans">
       {/* Nội dung phần "Đặt vé ngay" */}
       <div
-        className="relative my-8 flex flex-col items-start justify-center overflow-hidden rounded-lg bg-gray-100 px-6 py-12 shadow-lg md:flex-row"
+        className="relative my-8 flex flex-col items-start justify-center overflow-hidden rounded-bl-lg rounded-br-lg bg-gray-100 px-6 py-12 shadow-lg md:flex-row"
         style={{ minHeight: '425px' }} // Tăng chiều cao phần Booking
       >
         {/* Hình ảnh */}
@@ -21,17 +19,16 @@ const BookingSection = () => {
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
         {/* Phần thông tin */}
-        <div className="relative z-10 ml-2 w-full pt-15 text-left text-white sm:ml-4 md:ml-10 md:pt-20">
-  <h1 className="mb-4 text-2xl font-bold md:mb-6 md:text-4xl">
-    Welcome aboard QAirline! <br />
-    Thank you for choosing to fly with us!
-  </h1>
-  <p className="mb-4 text-sm md:mb-6 md:text-lg">
-    Amazing offers await
-  </p>
-  {/* Sử dụng Button từ shadcn */}
-</div>
-
+        <div className="pt-15 relative z-10 ml-2 w-full text-left text-white sm:ml-4 md:ml-10 md:pt-20">
+          <h1 className="mb-4 text-2xl font-bold md:mb-6 md:text-4xl">
+            Welcome aboard QAirline! <br />
+            Thank you for choosing to fly with us!
+          </h1>
+          <p className="mb-4 text-sm md:mb-6 md:text-lg">
+            Amazing offers await
+          </p>
+          {/* Sử dụng Button từ shadcn */}
+        </div>
       </div>
     </div>
   );
