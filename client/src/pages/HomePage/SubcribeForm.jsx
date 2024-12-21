@@ -63,7 +63,7 @@ const SubscriptionForm = () => {
             {/* Submit button */}
             <Button
               type="submit"
-              className="w-full py-3 text-lg bg-white text-black rounded-md hover:bg-gray-200"
+              className="w-full py-3 text-lg bg-secondary text-black rounded-md hover:bg-secondary-foreground"
             >
               Subscribe
             </Button>

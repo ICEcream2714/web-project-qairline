@@ -79,7 +79,7 @@ const DynamicBanner = () => {
           <p className="mb-6 text-sm leading-relaxed md:text-base">
             {activeTab.description}
           </p>
-          <button className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-black hover:bg-gray-200">
+          <button className="rounded-full bg-secondary px-4 py-2 text-sm font-semibold text-black hover:bg-secondary-foreground">
             {activeTab.buttonText}
           </button>
         </div>

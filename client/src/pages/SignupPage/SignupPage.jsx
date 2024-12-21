@@ -230,7 +230,7 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-background">
+    <div className="flex min-w-[300px] flex-col items-center overflow-x-hidden bg-gradient-to-b from-primary/60 to-gray-50">
       <Navbar />
       <div className="-mt-8 w-full">
         <Booking />
@@ -241,15 +241,15 @@ const SignupPage = () => {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink
-                className="text-primary hover:text-secondary"
+                className="text-secondary hover:text-secondary-foreground"
                 href="/"
               >
                 Home
               </BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator className="text-primary" />
+            <BreadcrumbSeparator className="text-secondary" />
             <BreadcrumbItem>
-              <BreadcrumbPage className="text-secondary">
+              <BreadcrumbPage className="text-secondary-foreground">
                 Sign up
               </BreadcrumbPage>
             </BreadcrumbItem>
@@ -258,7 +258,7 @@ const SignupPage = () => {
       </div>
 
       {/* Form Signup */}
-      <Card className="mb-16 w-full max-w-5xl rounded-lg bg-slate-100 p-6 px-3 text-card-foreground shadow-md sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
+      <Card className="mb-16 w-full max-w-5xl rounded-lg bg-card p-6 px-3 text-card-foreground shadow-lg sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
         <CardHeader className="flex flex-col items-center space-y-2">
           <img src={logo} alt="logo" className="h-20 w-20" />
           <h2 className="text-center text-xl font-semibold md:text-2xl">
@@ -697,7 +697,7 @@ const SignupPage = () => {
           {/* Sign up Button */}
           <div className="mt-5">
             <Button
-              className="w-full rounded-lg bg-primary py-2 text-secondary hover:bg-secondary-foreground"
+              className="w-full rounded-lg bg-secondary py-2 text-white hover:bg-secondary-foreground"
               disabled={!isLoginBtnValid}
               onClick={handleSignup}
             >

@@ -89,7 +89,7 @@ export function NavbarBooking() {
               />
               {/* Tên hãng */}
               <span className="font-serif text-2xl tracking-wider">
-                Q<span className="text-purple-400">Airlines</span>
+                Q<span className={isScrolled ? "text-secondary" : "text-white"}>Airlines</span>
               </span>
           </a>
         </div>
@@ -102,7 +102,7 @@ export function NavbarBooking() {
         >
           <div className="flex items-center gap-2">
             <span className="font-medium">HAN</span>
-            <ChevronRight className="h-5 w-5 text-primary" />
+            <ChevronRight className="h-5 w-5 " />
             <span className="font-medium">SGN</span>
           </div>
           <div className="hidden h-6 w-px bg-primary/20 xl:block" />
@@ -119,7 +119,7 @@ export function NavbarBooking() {
           <div>
             <Button
               variant="ghost"
-              className="text-primary hover:bg-primary/5 hover:text-primary"
+              className=" hover:bg-primary/5 hover:text-primary"
             >
               <Search className="mr-2 h-4 w-4" />
               Modify search
@@ -152,7 +152,6 @@ export function NavbarBooking() {
             />
           )}
           <span className="hidden text-sm font-medium text-gray-800 lg:block hover:text-primary transition-colors">
-  {isLoggedIn ? userInfo.name : ''}
 </span>
 
         </div>

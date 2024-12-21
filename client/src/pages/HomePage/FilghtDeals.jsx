@@ -124,7 +124,7 @@ export function FlightDeals() {
 
   return (
     <div className="container mx-auto p-6">
-      <h2 className="mb-6 text-2xl font-bold text-primary">Find great fares</h2>
+      <h2 className="mb-6 text-2xl font-bold text-secondary">Find great fares</h2>
       <div className="mb-8 max-w-xs">
         <Label htmlFor="from">From</Label>
         <div className="relative">

@@ -82,7 +82,7 @@ function MyBookingPage() {
     <div className="h-full bg-gradient-to-r from-gray-500 to-slate-300">
       {isVisible && <Navbar/>}
       <div className="container mx-auto px-3 py-8 pt-24 md:px-28">
-        <h1 className="mb-7 text-3xl font-bold text-primary">Manage booking</h1>
+        <h1 className="mb-7 text-3xl font-bold text-white">Manage booking</h1>
 
         <div className="space-y-6">
           {loading && <div className="py-8 text-center">Loading...</div>}
