@@ -6,16 +6,16 @@ import { Button } from "@/components/ui/button";
 const SubscriptionForm = () => {
   return (
     <div
-      className="relative bg-cover bg-center text-white rounded-lg max-w-6xl mx-auto overflow-hidden min-h-screen lg:min-h-0 flex flex-col justify-center"
+      className="relative bg-cover bg-center text-white rounded-lg max-w-6xl mx-auto overflow-hidden lg:min-h-0 flex flex-col justify-center"
       style={{
-        backgroundImage: `url('https://www.qatarairways.com/content/dam/images/custom/enl-subscribe-component/NL_Background_Mobile.png')`,
+        backgroundImage: `url('https://media-api.advertisingvietnam.com/oapi/v1/media?uuid=0fed776e-a3a0-47c3-a26f-962b96a06a6c&resolution=1440x756&type=image')`,
       }}
     >
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/60 pointer-events-none"></div>
 
       {/* Content */}
-      <div className="relative flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 p-8 lg:p-16 overflow-y-auto">
+      <div className="relative flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8 p-8 lg:p-16 overflow-y-auto h-[55vh] md:h-auto">
         {/* Form section */}
         <div className="w-full lg:w-1/2 text-white">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-center lg:text-left">
@@ -48,7 +48,7 @@ const SubscriptionForm = () => {
                 htmlFor="agreement"
                 className="text-sm text-gray-300 leading-relaxed"
               >
-                I would like to get offers and news from Qatar Airways. I have
+                I would like to get offers and news from QAirline. I have
                 read and understood the{" "}
                 <a
                   href="#"

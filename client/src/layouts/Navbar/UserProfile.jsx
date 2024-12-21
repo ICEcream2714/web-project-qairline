@@ -15,6 +15,7 @@ const UserProfile = ({
   qpoints,
   onLogout,
   isScrolled = false,
+  isOpen,
 }) => {
   const navigate = useNavigate();
   return (
@@ -26,7 +27,7 @@ const UserProfile = ({
         >
           <CircleUserRound
             size={24}
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'}`}
+            className={`${isScrolled || isOpen ? 'text-gray-800 ' : 'text-white'}`}
           />
         </Button>
       </PopoverTrigger>

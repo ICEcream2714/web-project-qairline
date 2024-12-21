@@ -5,28 +5,29 @@ const tabs = [
     id: "privilege",
     title: "Privilege Club",
     description:
-      "Earn Avios and use them towards shopping at Qatar Duty Free, flights, upgrades, extra baggage, and more exclusive benefits.",
+      "Earn Avios and enjoy exclusive benefits such as free flights, upgrades, priority check-in, and more. Elevate your travel experience with QAirline.",
     buttonText: "Join now",
     image:
-      "https://www.qatarairways.com/content/dam/images/renditions/horizontal-1/privilege-club/cards-circle/h1-ffp-cards-qsuite-crew.jpg", // Replace with actual link
+      "https://c.ekstatic.net/ecl/photo-gallery/a380/economy-class/dining/emirates-a380-economy-class-dining-inflight-meal-720x480.jpg?h=SH-0t5qnKXrW539DzbBbqge",
   },
   {
     id: "mobile",
     title: "Mobile App",
     description:
-      "Access exclusive features with our mobile app. Book flights, check-in, and manage your booking seamlessly.",
+      "Book flights, manage bookings, and access your e-boarding pass all in one place. Download the QAirline app for ultimate convenience.",
     buttonText: "Download now",
     image:
-      "https://www.qatarairways.com/content/dam/images/renditions/horizontal-1/campaigns/global/mobile/H1-Mobile-App-QRcode-en2.jpg", // Replace with actual link
+      "https://vnn-imgs-f.vgcloud.vn/2019/06/19/14/ly-ky-vu-mat-tich-may-bay-mh370.jpg",
   },
   {
     id: "stopover",
-    title: "Qatar Stopover",
+    title: "QAirline Stopover",
     description:
-      "Experience the best of Qatar with our stopover packages starting at $14. Discover the country like never before.",
+      "Experience the best of our hub city with our stopover packages starting at $14. Discover the culture, cuisine, and attractions like never before.",
     buttonText: "Explore more",
     image:
-      "https://www.qatarairways.com/content/dam/images/mobile/campaign/gobal/feel-more-in-qatar/h1-visit-qatar-mia-family-dhow-qta-hn.jpg", // Replace with actual link
+      "https://cellphones.com.vn/sforum/wp-content/uploads/2023/07/hinh-nen-ai-1.jpg",
+     
   },
   {
     id: "student",
@@ -35,9 +36,10 @@ const tabs = [
       "Enjoy special discounts and benefits as a student. Travel smarter with exclusive offers designed just for you.",
     buttonText: "Join now",
     image:
-      "https://www.qatarairways.com/content/dam/images/mobile/campaign/gobal/feel-more-in-qatar/h1-visit-qatar-mia-family-dhow-qta-hn.jpg", // Replace with actual link
+    "https://cdn.baohatinh.vn/images/77aa7d2e98b7f36166ba739628db583d914ebed3e3a748f37b351256ef230d3b0c4bae7e2d2e7774ea2fb1eedeed2720/105d3145200t51452205l4.jpg",
   },
 ];
+
 const DynamicBanner = () => {
   const [activeTab, setActiveTab] = useState(tabs[0]);
 

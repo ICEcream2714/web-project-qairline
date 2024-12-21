@@ -80,17 +80,25 @@ function Navbar() {
   return (
     <nav
       className={`fixed left-0 top-0 z-30 w-full p-4 ${
-        isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        (isScrolled || isOpen) ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <button
-          className={`text-lg font-bold ${isScrolled ? 'text-gray-800' : 'text-white'}`}
-          onClick={handleLogoClick}
-        >
-          QAirlines
-        </button>
+  className={`flex items-center space-x-2 text-lg font-extrabold ${(isScrolled || isOpen) ? 'text-gray-800' : 'text-white'} transition-colors duration-300`}
+  onClick={handleLogoClick}
+>
+  {/* Logo bên cạnh */}
+  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md">
+    ✈️
+  </span>
+  {/* Tên hãng */}
+  <span className="font-serif text-2xl tracking-wider">
+    Q<span className="text-purple-400">Airlines</span>
+  </span>
+</button>
+
 
         {/* Desktop Menu */}
         <div className="hidden space-x-8 md:flex">
@@ -190,6 +198,7 @@ function Navbar() {
                 qpoints={0}
                 isScrolled={isScrolled}
                 onLogout={handleLogout}
+                isOpen={isOpen}
               />
             )}
           </div>
@@ -200,7 +209,7 @@ function Navbar() {
           <Button
             variant="link" // Sử dụng Button với variant "link"
             onClick={() => setIsOpen(!isOpen)}
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} focus:outline-none`}
+            className={`${(isScrolled || isOpen) ? 'text-gray-800' : 'text-white'} focus:outline-none`}
           >
             <svg
               className="h-6 w-6"
@@ -289,6 +298,7 @@ function Navbar() {
                   qpoints={0}
                   isScrolled={isScrolled}
                   onLogout={handleLogout}
+                  isOpen = {isOpen}
                 />
               </div>
             )}

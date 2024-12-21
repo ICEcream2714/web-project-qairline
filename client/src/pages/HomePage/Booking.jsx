@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'; // Button từ shadcn
+
 
 const BookingSection = () => {
   return (
@@ -11,7 +11,7 @@ const BookingSection = () => {
         {/* Hình ảnh */}
         <div className="absolute inset-0">
           <img
-            src="https://www.qatarairways.com/content/dam/images/renditions/horizontal-1/campaigns/global/black-friday/hn-black-friday-window-no-text-ar.jpg"
+            src="https://genk.mediacdn.vn/thumb_w/640/139269124445442048/2022/5/24/take-photo-out-an-airplane-window-800x534-1653368460753-1653368460868632169694.jpg"
             alt="Qatar Airways"
             className="h-full w-full object-cover"
           />
@@ -21,22 +21,17 @@ const BookingSection = () => {
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
 
         {/* Phần thông tin */}
-        <div className="relative z-10 ml-2 w-full pt-20 text-left text-white sm:ml-4 md:ml-10">
-          <h1 className="mb-4 text-2xl font-bold md:mb-6 md:text-4xl">
-            Save up to 30% with our Black Friday Exclusive
-          </h1>
-          <p className="mb-4 text-sm md:mb-6 md:text-lg">
-            Amazing offers await
-          </p>
-          {/* Sử dụng Button từ shadcn */}
-          <Button
-            variant="default"
-            size="lg"
-            className="w-3/4 bg-blue-800 text-white hover:bg-blue-900 md:w-auto"
-          >
-            Book now
-          </Button>
-        </div>
+        <div className="relative z-10 ml-2 w-full pt-15 text-left text-white sm:ml-4 md:ml-10 md:pt-20">
+  <h1 className="mb-4 text-2xl font-bold md:mb-6 md:text-4xl">
+    Welcome aboard QAirline! <br />
+    Thank you for choosing to fly with us!
+  </h1>
+  <p className="mb-4 text-sm md:mb-6 md:text-lg">
+    Amazing offers await
+  </p>
+  {/* Sử dụng Button từ shadcn */}
+</div>
+
       </div>
     </div>
   );
