@@ -36,7 +36,7 @@ export default {
         },
         accent: {
           DEFAULT: 'hsl(0 0% 96.1%)',
-          foreground: 'hsl(0 0% 9%)',
+          foreground: '#7E60BF',
         },
         destructive: {
           DEFAULT: 'hsl(0 84.2% 60.2%)',
@@ -53,11 +53,11 @@ export default {
           5: 'hsl(27 87% 67%)',
         },
       },
-      fontFamily: {
-        sans: ['YourCustomFont', 'sans-serif'],
-        serif: ['YourCustomFontSerif', 'serif'],
-        mono: ['YourCustomFontMono', 'monospace'],
-      },
+      // fontFamily: {
+      //   sans: ['B612', 'sans-serif'],
+      //   serif: ['B612', 'serif'],
+      //   mono: ['B612 Mono', 'monospace'],
+      // },
       keyframes: {
         'accordion-down': {
           from: {

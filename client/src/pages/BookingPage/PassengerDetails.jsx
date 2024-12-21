@@ -23,29 +23,29 @@ export default function PassengerDetailsPage() {
   console.log('Outbound Seat ID:', outboundFlight?.seatId);
   console.log('Return Seat ID:', returnFlight?.seatId);
   const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
-  
-    const handleScroll = () => {
-      if (typeof window !== "undefined") {
-        const currentScrollY = window.scrollY;
-  
-        // If the current scroll position is greater than the last scroll position, hide the Navbar
-        if (currentScrollY >= lastScrollY) {
-          setIsVisible(false);
-        } else {
-          setIsVisible(true);
-        }
-  
-        setLastScrollY(currentScrollY);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+      const currentScrollY = window.scrollY;
+
+      // If the current scroll position is greater than the last scroll position, hide the Navbar
+      if (currentScrollY >= lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
       }
+
+      setLastScrollY(currentScrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
-  
-    useEffect(() => {
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }, [lastScrollY]);
+  }, [lastScrollY]);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -154,7 +154,7 @@ export default function PassengerDetailsPage() {
             <div className="col-span-3 lg:col-span-1">
               <Card className="rounded-lg border border-gray-200 shadow-lg">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-xl font-bold text-primary">
+                  <CardTitle className="text-xl font-bold text-secondary">
                     Your trip review
                   </CardTitle>
                 </CardHeader>
@@ -264,10 +264,8 @@ export default function PassengerDetailsPage() {
                   {/* Total Price */}
                   <div className="border-t pt-4">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-700">
-                        Total trip price:
-                      </span>
-                      <span className="text-xl font-bold">
+                      <span className="font-medium">Total trip price:</span>
+                      <span className="text-xl font-bold text-secondary">
                         {totalPrice.toFixed(2)} USD
                       </span>
                     </div>
@@ -281,10 +279,9 @@ export default function PassengerDetailsPage() {
           <StartPlanning />
         </div>
       </div>
-      <div className='-mt-10'>
-      <Footer/>
+      <div className="-mt-10">
+        <Footer />
       </div>
-      
     </div>
   );
 }

@@ -6,7 +6,7 @@ const Family = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl text-primary">
+        <CardTitle className="text-2xl text-secondary">
           Nominate family member
         </CardTitle>
       </CardHeader>
@@ -17,7 +17,7 @@ const Family = () => {
             your spouse, children older than 2 years, parents and the parents of
             your spouse to your Privilege Club membership.
           </p>
-          <p className="text-primary">
+          <p className="text-secondary">
             The higher your Privilege Club membership tier, the more Avios your
             family members will earn.
           </p>
@@ -35,7 +35,10 @@ const Family = () => {
           </div>
         </Button>
 
-        <Button variant="link" className="text-primary hover:text-primary/80">
+        <Button
+          variant="link"
+          className="text-secondary hover:text-secondary/80"
+        >
           → More about the family programme
         </Button>
       </CardContent>

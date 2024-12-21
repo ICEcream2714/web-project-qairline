@@ -11,7 +11,7 @@ function ProfilePage() {
     //   <Main />
     //   <Side />
     // </div>
-    <div className="h-full min-h-px overflow-x-hidden bg-secondary p-0">
+    <div className="h-full min-h-px overflow-x-hidden">
       <Navbar />
       <Header />
       <div className="md: flex flex-col justify-center overflow-hidden pt-9 md:flex-row">
@@ -19,7 +19,7 @@ function ProfilePage() {
         {/* <HeaderTabs /> */}
         <Main />
       </div>
-       <Footer /> 
+      <Footer />
     </div>
   );
 }

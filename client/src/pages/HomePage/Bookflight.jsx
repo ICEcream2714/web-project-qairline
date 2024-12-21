@@ -324,10 +324,7 @@ export default function BookAFlight() {
             </div>
           )}
         </div>
-        <Button
-          className="rounded-lg bg-secondary px-6 py-3 text-white hover:bg-secondary-foreground"
-          onClick={handleSearchFlights}
-        >
+        <Button className="rounded-lg" onClick={handleSearchFlights}>
           Search flights
         </Button>
       </div>

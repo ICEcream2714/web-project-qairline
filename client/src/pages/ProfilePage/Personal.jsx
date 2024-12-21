@@ -129,7 +129,9 @@ const Personal = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl text-primary">More about you</CardTitle>
+        <CardTitle className="text-2xl text-secondary">
+          More about you
+        </CardTitle>
         <p>
           Fill in your details to complete your profile. For a smooth travel
           experience, ensure your passport number and expiry date are valid.
@@ -154,7 +156,7 @@ const Personal = () => {
               className="absolute bottom-0 right-0 rounded-full bg-white p-1 shadow"
               onClick={handleAvatarClick}
             >
-              <Pencil className="h-4 w-4 text-primary" />
+              <Pencil className="h-4 w-4 text-secondary" />
             </button>
           </div>
 
@@ -187,8 +189,8 @@ const Personal = () => {
                   className="mb-2 w-[300px]"
                 />
                 <DatePicker
-                date={dob}
-                setDate={(e) => setDob(e.target.value)}
+                  date={dob}
+                  setDate={(e) => setDob(e.target.value)}
                 />
               </>
             ) : (
@@ -203,21 +205,21 @@ const Personal = () => {
           <div className="ml-auto flex flex-col items-center gap-1">
             <button
               onClick={handleEditClick}
-              className={`flex items-center gap-1 ${isEditing ? 'text-red-600' : 'text-primary'}`}
+              className={`flex items-center gap-1 ${isEditing ? 'text-red-600' : 'text-secondary'}`}
             >
               {isEditing ? (
                 <X className="h-4 w-4 text-red-600" />
               ) : (
-                <Pencil className="h-4 w-4 text-primary" />
+                <Pencil className="h-4 w-4 text-secondary" />
               )}
               {isEditing ? 'Exit' : 'Edit'}
             </button>
             {isEditing && (
               <button
                 onClick={handleSaveProfile}
-                className="mt-4 flex items-center gap-1 text-primary"
+                className="mt-4 flex items-center gap-1 text-secondary"
               >
-                <Save className="h-4 w-4 text-primary" />
+                <Save className="h-4 w-4 text-secondary" />
                 Save
               </button>
             )}

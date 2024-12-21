@@ -16,29 +16,29 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
-  
-    const handleScroll = () => {
-      if (typeof window !== "undefined") {
-        const currentScrollY = window.scrollY;
-  
-        // If the current scroll position is greater than the last scroll position, hide the Navbar
-        if (currentScrollY >= lastScrollY) {
-          setIsVisible(false);
-        } else {
-          setIsVisible(true);
-        }
-  
-        setLastScrollY(currentScrollY);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+      const currentScrollY = window.scrollY;
+
+      // If the current scroll position is greater than the last scroll position, hide the Navbar
+      if (currentScrollY >= lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
       }
+
+      setLastScrollY(currentScrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
-  
-    useEffect(() => {
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }, [lastScrollY]);
+  }, [lastScrollY]);
 
   //alert dialog state
   const [alert, setAlert] = useState({
@@ -338,10 +338,8 @@ export default function PaymentPage() {
                   {/* Total Price */}
                   <div className="border-t pt-4">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-700">
-                        Total trip price:
-                      </span>
-                      <span className="text-xl font-bold">
+                      <span className="font-medium">Total trip price:</span>
+                      <span className="text-xl font-bold text-secondary">
                         {totalPrice.toFixed(2)} USD
                       </span>
                     </div>
@@ -353,8 +351,8 @@ export default function PaymentPage() {
         </div>
         <StartPlanning />
       </div>
-      <div className='-mt-10'>
-        <Footer/>
+      <div className="-mt-10">
+        <Footer />
       </div>
     </div>
   );

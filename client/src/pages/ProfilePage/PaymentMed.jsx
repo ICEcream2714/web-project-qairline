@@ -7,7 +7,7 @@ const PaymentMed = () => {
     <Card>
       <CardHeader className="pb-2">
         <CardTitle>
-          <h1 className="text-2xl">Manage payment methods</h1>
+          <h1 className="text-2xl text-secondary">Manage payment methods</h1>
         </CardTitle>
       </CardHeader>
       <CardContent>

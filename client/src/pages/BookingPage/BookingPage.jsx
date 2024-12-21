@@ -23,7 +23,6 @@ import { format } from 'date-fns';
 import { NavbarBooking } from '../../layouts/Navbar/NavbarBooking';
 import Footer from '@/layouts/Footer';
 
-
 function BookingPage() {
   const navigate = useNavigate();
   const location = useLocation(); // Nhận dữ liệu từ location
@@ -43,29 +42,29 @@ function BookingPage() {
   const [destination, setDestination] = useState('Al-Baha'); // Default destination
   const [totalPrice, setTotalPrice] = useState(0); // State to track total price
   const [isVisible, setIsVisible] = useState(true);
-    const [lastScrollY, setLastScrollY] = useState(0);
-  
-    const handleScroll = () => {
-      if (typeof window !== "undefined") {
-        const currentScrollY = window.scrollY;
-  
-        // If the current scroll position is greater than the last scroll position, hide the Navbar
-        if (currentScrollY >= lastScrollY) {
-          setIsVisible(false);
-        } else {
-          setIsVisible(true);
-        }
-  
-        setLastScrollY(currentScrollY);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+      const currentScrollY = window.scrollY;
+
+      // If the current scroll position is greater than the last scroll position, hide the Navbar
+      if (currentScrollY >= lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
       }
+
+      setLastScrollY(currentScrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
     };
-  
-    useEffect(() => {
-      window.addEventListener('scroll', handleScroll);
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }, [lastScrollY]);
+  }, [lastScrollY]);
   // Lấy dữ liệu chuyến bay từ location.state
   useEffect(() => {
     if (location.state) {
@@ -153,7 +152,7 @@ function BookingPage() {
   return (
     <div>
       {/* Navbar */}
-      {isVisible &&<NavbarBooking />}
+      {isVisible && <NavbarBooking />}
       {/* Main */}
       <div className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pb-8 pt-28 md:px-10">
         <div className="mb-8">
@@ -164,11 +163,11 @@ function BookingPage() {
           </h1>
           <p className="text-lg text-muted-foreground">
             from{' '}
-            <span className="text-purple-600">
+            <span className="text-secondary">
               {isSelectingReturnFlight ? destination : origin}
             </span>{' '}
             to{' '}
-            <span className="text-purple-600">
+            <span className="text-secondary">
               {isSelectingReturnFlight ? origin : destination}
             </span>
           </p>
@@ -195,7 +194,7 @@ function BookingPage() {
                     <TabsTrigger
                       key={`${date}-${index}`}
                       value={date}
-                      className="flex w-full flex-col text-wrap items-center gap-1 rounded-t-lg p-4 text-center data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
+                      className="flex w-full flex-col items-center gap-1 text-wrap rounded-t-lg p-4 text-center data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
                     >
                       <span className="text-sm">
                         {format(new Date(date), 'EEE, d MMM')}
@@ -460,8 +459,8 @@ function BookingPage() {
         </Dialog>
       </div>
       {/* Footer */}
-      <div className='-mt-10'>
-      <Footer />
+      <div className="-mt-10">
+        <Footer />
       </div>
     </div>
   );

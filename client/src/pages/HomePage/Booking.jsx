@@ -3,7 +3,7 @@ const BookingSection = () => {
     <div className="font-sans">
       {/* Nội dung phần "Đặt vé ngay" */}
       <div
-        className="relative my-8 flex flex-col items-start justify-center overflow-hidden rounded-bl-lg rounded-br-lg bg-gray-100 px-6 py-12 shadow-lg md:flex-row"
+        className="relative my-8 flex flex-col items-start justify-center overflow-hidden rounded-bl-lg rounded-br-lg bg-gray-100 px-6 py-12 font-sans shadow-lg md:flex-row"
         style={{ minHeight: '425px' }} // Tăng chiều cao phần Booking
       >
         {/* Hình ảnh */}
