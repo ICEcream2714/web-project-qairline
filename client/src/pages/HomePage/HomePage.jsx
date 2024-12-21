@@ -17,7 +17,7 @@ function HomePage() {
       const currentScrollY = window.scrollY;
 
       // If the current scroll position is greater than the last scroll position, hide the Navbar
-      if (currentScrollY > lastScrollY) {
+      if (currentScrollY >= lastScrollY) {
         setIsVisible(false);
       } else {
         setIsVisible(true);

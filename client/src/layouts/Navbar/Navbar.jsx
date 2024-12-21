@@ -9,6 +9,7 @@ import {
 import UserProfile from '@/layouts/Navbar/UserProfile'; // Import UserProfile từ ShadCN
 import { CircleUserRound } from 'lucide-react';
 import axios from 'axios'; // Import axios for API calls
+import logo from "../../assets/image.png";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -90,9 +91,14 @@ function Navbar() {
   onClick={handleLogoClick}
 >
   {/* Logo bên cạnh */}
-  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-md">
-    ✈️
-  </span>
+  
+  <img
+    src={logo} // Path to your image
+    alt="Logo"
+    className="w-12 h-10 " // Adjust size and ensure it fits inside the circle
+  />
+
+
   {/* Tên hãng */}
   <span className="font-serif text-2xl tracking-wider">
     Q<span className="text-purple-400">Airlines</span>
