@@ -148,6 +148,7 @@ export function NavbarBooking() {
               qpoints={10}
               isScrolled={isScrolled}
               onLogout={handleLogout}
+              isBooking={true}
             />
           )}
           <span className="hidden text-sm font-medium text-gray-800 lg:block hover:text-primary transition-colors">

@@ -174,6 +174,7 @@ function Navbar() {
                 isScrolled={isScrolled}
                 onLogout={handleLogout}
                 isOpen={isOpen}
+                isBooking={false}
               />
             )}
           </div>
@@ -254,6 +255,7 @@ function Navbar() {
                   isScrolled={isScrolled}
                   onLogout={handleLogout}
                   isOpen = {isOpen}
+                  isBooking={false}
                 />
               </div>
             )}

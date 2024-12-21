@@ -97,6 +97,7 @@ export function NavbarSimple() {
               qpoints={0}
               isScrolled={isScrolled}
               onLogout={handleLogout}
+              isBooking={false}
             />
           )}
           <span className="hidden text-sm lg:block">
