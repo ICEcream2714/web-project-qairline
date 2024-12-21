@@ -21,6 +21,7 @@ import {
 
 import { format } from 'date-fns';
 import { NavbarBooking } from '../../layouts/Navbar/NavbarBooking';
+import Footer from '@/layouts/Footer';
 
 function BookingPage() {
   const navigate = useNavigate();
@@ -130,7 +131,7 @@ function BookingPage() {
       {/* Navbar */}
       <NavbarBooking />
       {/* Main */}
-      <main className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pt-28 md:px-10">
+      <main className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pb-8 pt-28 md:px-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium">
             {isSelectingReturnFlight
@@ -170,7 +171,7 @@ function BookingPage() {
                     <TabsTrigger
                       key={`${date}-${index}`}
                       value={date}
-                      className="flex w-full flex-col gap-1 rounded-t-lg p-4 data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
+                      className="flex w-full flex-col items-center gap-1 rounded-t-lg p-4 text-center data-[state=active]:border-b-2 data-[state=active]:border-purple-600 sm:w-auto"
                     >
                       <span className="text-sm">
                         {format(new Date(date), 'EEE, d MMM')}
@@ -435,22 +436,7 @@ function BookingPage() {
         </Dialog>
       </main>
       {/* Footer */}
-      <footer className="w-full bg-slate-700 bg-transparent px-36 pb-5 pt-3">
-        <div className="flex justify-between text-sm text-black">
-          <p>© 2024 Airline Booking. All rights reserved.</p>
-          <div className="space-x-4">
-            <a href="#" className="hover:text-gray-700">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-gray-700">
-              Terms of Service
-            </a>
-            <a href="#" className="hover:text-gray-700">
-              Contact
-            </a>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

@@ -7,6 +7,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { NavbarSimple } from '@/layouts/Navbar/NavbarSimple';
 import Footer from '@/layouts/Footer';
+import Booking from '@/pages/HomePage/Booking';
+import StartPlanning from '../HomePage/PlanningCard';
 
 export default function PassengerDetailsPage() {
   const navigate = useNavigate();
@@ -48,14 +50,15 @@ export default function PassengerDetailsPage() {
   };
 
   return (
-    <div className="h-screen min-h-screen bg-gray-50 bg-gradient-to-r from-gray-500 to-slate-300">
+    <div className="-mt-11 h-screen min-h-screen bg-gray-50 bg-gradient-to-r from-gray-500 to-slate-300">
       {/* Navbar */}
       <NavbarSimple />
+      <Booking />
       {/* Main */}
-      <main className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 md:px-10">
-        <div className="container mx-auto px-28 py-36">
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="md:col-span-2">
+      <main className="-mt-20 bg-gradient-to-t from-slate-700 to-slate-300 sm:px-3 md:h-full md:px-10">
+        <div className="container relative z-20 mx-auto -mt-24 px-3 md:px-28 lg:px-16">
+          <div className="grid grid-cols-3 gap-8">
+            <div className="col-span-3 lg:col-span-2">
               <Card>
                 <CardHeader>
                   <CardTitle>Passenger Details</CardTitle>
@@ -123,7 +126,7 @@ export default function PassengerDetailsPage() {
                 </CardContent>
               </Card>
             </div>
-            <div>
+            <div className="col-span-3 lg:col-span-1">
               <Card className="rounded-lg border border-gray-200 shadow-lg">
                 <CardHeader className="text-center">
                   <CardTitle className="text-xl font-bold text-primary">
@@ -249,9 +252,10 @@ export default function PassengerDetailsPage() {
             </div>
           </div>
         </div>
+        <StartPlanning />
       </main>
       {/* Footer */}
-      <footer className="w-full bg-slate-700 bg-transparent px-36 pb-5 pt-3">
+      <footer className="w-full bg-slate-700 bg-transparent px-3 pb-5 pt-3 md:px-36">
         <div className="flex justify-between text-sm text-black">
           <p>© 2024 Airline Booking. All rights reserved.</p>
           <div className="space-x-4">

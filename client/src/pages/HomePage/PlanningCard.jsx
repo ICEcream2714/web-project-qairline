@@ -80,7 +80,7 @@ const StartPlanning = () => {
   }, [emblaApi]);
 
   return (
-    <div className="bg-gray-50 px-6 py-12 md:px-28">
+    <div className="bg-transparent px-6 py-12 md:px-28">
       <h2 className="mb-8 text-center text-3xl font-bold">
         Start planning your next trip
       </h2>

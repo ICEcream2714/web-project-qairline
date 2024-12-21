@@ -6,6 +6,7 @@ import SubscribeForm from '@/pages/HomePage/SubcribeForm';
 import Footer from '@/layouts/Footer';
 import FlightTabs from '@/pages/HomePage/BookingTab';
 import Navbar from '@/layouts/Navbar/Navbar';
+import { FlightDeals } from './FilghtDeals';
 
 function HomePage() {
   return (
@@ -24,6 +25,7 @@ function HomePage() {
       <PlanningCard />
       {/* <Fares /> */}
       <SuggestionHome />
+      <FlightDeals />
       <SubscribeForm />
       <Footer />
     </div>
