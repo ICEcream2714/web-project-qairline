@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-  Calendar,
-  ChevronLeft,
-  ChevronRight,
-  Search,
-  Users,
-} from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import UserProfile from './UserProfile';
+import axios from 'axios';
 
 export function NavbarSimple() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: '', email: '' });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,13 +19,13 @@ export function NavbarSimple() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Kiểm tra nếu người dùng đã đăng nhập
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      setIsLoggedIn(true); // Người dùng đã đăng nhập
+      setIsLoggedIn(true);
+      fetchUserInfo(token);
     } else {
-      setIsLoggedIn(false); // Người dùng chưa đăng nhập
+      setIsLoggedIn(false);
     }
   }, []);
 
@@ -41,11 +36,29 @@ export function NavbarSimple() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+    setUserInfo({ name: '', email: '' });
     navigate('/');
   };
 
   const handleLogoClick = () => {
     navigate('/');
+  };
+
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:5000/api/customer/my-info',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const { first_name, last_name, User } = response.data;
+      setUserInfo({ name: `${first_name} ${last_name}`, email: User.email });
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
   };
 
   return (
@@ -77,8 +90,8 @@ export function NavbarSimple() {
             </Button>
           ) : (
             <UserProfile
-              name="Ngoc Bao"
-              id="681897319"
+              name={userInfo.name}
+              id={userInfo.email}
               tier="Burgundy"
               avios={0}
               qpoints={0}
@@ -87,7 +100,7 @@ export function NavbarSimple() {
             />
           )}
           <span className="hidden text-sm lg:block">
-            {isLoggedIn ? 'Ngoc Bao' : ''}
+            {isLoggedIn ? userInfo.name : ''}
           </span>
         </div>
       </div>
