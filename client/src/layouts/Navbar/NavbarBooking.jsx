@@ -10,11 +10,13 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import UserProfile from './UserProfile';
+import axios from 'axios';
 
 export function NavbarBooking() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: '', email: '' });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +31,7 @@ export function NavbarBooking() {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true); // Người dùng đã đăng nhập
+      fetchUserInfo(token);
     } else {
       setIsLoggedIn(false); // Người dùng chưa đăng nhập
     }
@@ -41,11 +44,29 @@ export function NavbarBooking() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     setIsLoggedIn(false);
+    setUserInfo({ name: '', email: '' });
     navigate('/');
   };
 
   const handleLogoClick = () => {
     navigate('/');
+  };
+
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:5000/api/customer/my-info',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const { first_name, last_name, User } = response.data;
+      setUserInfo({ name: `${first_name} ${last_name}`, email: User.email });
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
   };
 
   return (
@@ -115,8 +136,8 @@ export function NavbarBooking() {
             </Button>
           ) : (
             <UserProfile
-              name="Ngoc Bao"
-              id="681897319"
+              name={userInfo.name}
+              id={userInfo.email}
               tier="Burgundy"
               avios={0}
               qpoints={0}
@@ -125,7 +146,7 @@ export function NavbarBooking() {
             />
           )}
           <span className="hidden text-sm lg:block">
-            {isLoggedIn ? 'Ngoc Bao' : ''}
+            {isLoggedIn ? userInfo.name : ''}
           </span>
         </div>
       </div>
