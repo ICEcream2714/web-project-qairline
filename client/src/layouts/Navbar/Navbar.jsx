@@ -141,45 +141,13 @@ function Navbar() {
           >
             Discover
           </Button>
-          <div className="">
-            <Button
-              variant="link"
-              onClick={() => toggleDropdown(2)}
-              className={`${
-                isScrolled ? 'text-gray-800' : 'text-white'
-              } font-semibold hover:text-purple-600`}
-            >
-              Experience
-            </Button>
-            {dropdownOpen === 2 && (
-              <div className="absolute mt-2 w-48 rounded-md bg-white py-2 shadow-md">
-                <a
-                  href="/"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                >
-                  Onboard
-                </a>
-                <a
-                  href="/"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                >
-                  Lounge
-                </a>
-              </div>
-            )}
-          </div>
           <Button
             variant="link"
             className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
           >
             Help
           </Button>
-          <Button
-            variant="link"
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
-          >
-            Privilege Club
-          </Button>
+
           <div className="relative m-0 p-0">
             {!isLoggedIn ? (
               <Button
@@ -255,28 +223,8 @@ function Navbar() {
           <Button variant="link" className="font-semibold text-gray-800">
             Discover
           </Button>
-          <Button
-            variant="link"
-            onClick={() => toggleDropdown(2)}
-            className="font-semibold text-gray-800"
-          >
-            Experience
-          </Button>
-          {dropdownOpen === 2 && (
-            <div className="ml-4 flex flex-col space-y-2">
-              <a href="/" className="text-gray-700">
-                Onboard
-              </a>
-              <a href="/" className="text-gray-700">
-                Lounge
-              </a>
-            </div>
-          )}
           <Button variant="link" className="font-semibold text-gray-800">
             Help
-          </Button>
-          <Button variant="link" className="font-semibold text-gray-800">
-            Privilege Club
           </Button>
           {}
           <div className="relative m-0 pl-4">
