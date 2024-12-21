@@ -115,7 +115,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary to-gray-50 px-3">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary/80 to-gray-50 px-3">
       <Navbar />
       <div className="mb-6">
         <Breadcrumb>

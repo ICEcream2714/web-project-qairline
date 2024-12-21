@@ -101,7 +101,7 @@ function Navbar() {
 
           {/* Tên hãng */}
           <span className="font-serif text-2xl tracking-wider">
-            Q<span className="text-secondary">Airlines</span>
+            Q<span className={isScrolled? "text-secondary" : "text-white"}>Airlines</span>
           </span>
         </button>
 

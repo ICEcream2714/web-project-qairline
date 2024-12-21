@@ -154,7 +154,7 @@ export default function PassengerDetailsPage() {
             <div className="col-span-3 lg:col-span-1">
               <Card className="rounded-lg border border-gray-200 shadow-lg">
                 <CardHeader className="text-center">
-                  <CardTitle className="text-xl font-bold text-primary">
+                  <CardTitle className="text-xl font-bold text-secondary">
                     Your trip review
                   </CardTitle>
                 </CardHeader>
