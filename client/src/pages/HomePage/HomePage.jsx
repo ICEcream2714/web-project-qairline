@@ -14,7 +14,7 @@ function HomePage() {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const handleScroll = () => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== 'undefined') {
       const currentScrollY = window.scrollY;
 
       // If the current scroll position is greater than the last scroll position, hide the Navbar
@@ -30,7 +30,7 @@ function HomePage() {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
@@ -52,9 +52,9 @@ function HomePage() {
       </div>
 
       <PlanningCard />
+      <FlightDeals />
       {/* <Fares /> */}
       <SuggestionHome />
-      <FlightDeals />
       <SubscribeForm />
       <Footer />
     </div>
