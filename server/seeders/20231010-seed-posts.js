@@ -25,6 +25,18 @@ module.exports = {
       },
       {
         image:
+          "https://theglobalcitys.vn/wp-content/uploads/2022/07/the-global-city-3-1.jpg",
+        title: "Want to travel?",
+        content: "Introduction content...",
+        cta: "Book now",
+        post_type: "introduction",
+        start_date: new Date(),
+        end_date: new Date(),
+        is_published: true,
+        admin_id: admin.id,
+      },
+      {
+        image:
           "https://t3.ftcdn.net/jpg/00/01/47/28/360_F_1472821_kMjcU0El8NkcU0k7zNtlVTU0Fl8W2l.jpg",
         title: "Special Promotion",
         content: "Promotion content...",
@@ -37,7 +49,7 @@ module.exports = {
       },
       {
         image:
-          "https://www.qatarairways.com/content/dam/images/renditions/horizontal-2/privilege-club/partner-images/h2-cardless-Aug-2024-tactical2.jpg",
+          "https://info.ehl.edu/hubfs/Luxury-brands-hospitality-industry.jpg",
         title: "Important Announcement",
         content: "Announcement content...",
         cta: "Learn more",
@@ -49,10 +61,22 @@ module.exports = {
       },
       {
         image:
-          "https://www.qatarairways.com/content/dam/images/renditions/horizontal-2/miscellaneous/sponsorships/h2-fifa-intercontinental-cup-2024.jpg",
+          "https://res.cloudinary.com/adrenalinecom/image/upload/f_auto,q_auto/v1671570532/adventures/eps_5896.png",
         title: "Latest News",
         content: "News content...",
         cta: "Read more",
+        post_type: "news",
+        start_date: new Date(),
+        end_date: new Date(),
+        is_published: true,
+        admin_id: admin.id,
+      },
+      {
+        image:
+          "https://upload.wikimedia.org/wikipedia/commons/0/07/2006-06-22_12-37-59_Seychelles_-_Machabee_%28Sainte_Anne_Island%29.jpg",
+        title: "Oldest News",
+        content: "News content...",
+        cta: "Read less",
         post_type: "news",
         start_date: new Date(),
         end_date: new Date(),
