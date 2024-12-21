@@ -115,7 +115,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-pink-300 to-gray-50 px-3">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary to-gray-50 px-3">
       <Navbar />
       <div className="mb-6">
         <Breadcrumb>
@@ -133,7 +133,7 @@ const LoginPage = () => {
       <Card className="mb-3 w-full max-w-sm rounded-lg bg-card shadow-md sm:max-w-md md:max-w-lg">
         <CardHeader className="flex flex-col items-center space-y-2">
           <img src={logo} alt="logo" className="h-20 w-20" />
-          <h2 className="text-center text-xl font-semibold text-primary md:text-2xl">
+          <h2 className="text-center text-xl font-semibold text-foreground md:text-2xl">
             Log in to your account
           </h2>
         </CardHeader>
@@ -143,7 +143,7 @@ const LoginPage = () => {
             <Input
               type="text"
               id="username"
-              className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
+              className="peer block h-11 w-full rounded-lg bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
               placeholder=""
               required
               onChange={handleEmailChange}
@@ -188,7 +188,7 @@ const LoginPage = () => {
             <div className="mt-2 text-right">
               <a
                 href="#"
-                className="text-sm font-bold text-primary/80 underline hover:text-primary/50"
+                className="text-sm font-bold text-secondary/80 underline hover:text-secondary-foreground/50"
               >
                 Forgot Password?
               </a>
@@ -198,7 +198,7 @@ const LoginPage = () => {
           {/* Log in Button */}
           <div className="mt-4">
             <Button
-              className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/50"
+              className="w-full rounded-lg bg-secondary py-2 text-primary-foreground hover:bg-secondary-foreground"
               onClick={handleLogin}
             >
               Log in
@@ -250,7 +250,7 @@ const LoginPage = () => {
         <CardFooter className="justify-center text-center">
           <p>
             Haven't got an account yet?{' '}
-            <Link to="/signup" className="text-primary/80 underline">
+            <Link to="/signup" className="text-secondary/80 underline">
               Sign up now!
             </Link>{' '}
           </p>

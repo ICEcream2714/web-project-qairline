@@ -120,7 +120,7 @@ export default function BookAFlight() {
             <RadioGroupItem
               value={type}
               id={`trip-type-${type}`}
-              className="text-purple-600"
+              className="text-secondary"
             />
             <Label
               htmlFor={`trip-type-${type}`}
@@ -325,7 +325,7 @@ export default function BookAFlight() {
           )}
         </div>
         <Button
-          className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
+          className="rounded-lg bg-secondary px-6 py-3 text-white hover:bg-secondary-foreground"
           onClick={handleSearchFlights}
         >
           Search flights
