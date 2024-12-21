@@ -25,25 +25,25 @@ function FlightTabs() {
           <TabsList className="flex justify-between rounded-lg">
             <TabsTrigger
               value="book"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-blue-500 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
             >
               <FaPlane className="text-xl" /> Book a flight
             </TabsTrigger>
             <TabsTrigger
               value="stopover"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-blue-500 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
             >
               <FaHotel className="text-xl" /> Stopover / Packages
             </TabsTrigger>
             <TabsTrigger
               value="manage"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-blue-500 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
             >
               <FaUserCheck className="text-xl" /> Manage / Check in
             </TabsTrigger>
             <TabsTrigger
               value="status"
-              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-blue-500 hover:text-white focus:outline-none"
+              className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-4 text-gray-700 transition duration-200 ease-in-out hover:bg-purple-700 hover:text-white focus:outline-none"
             >
               <FaInfoCircle className="text-xl" /> Flight status
             </TabsTrigger>
