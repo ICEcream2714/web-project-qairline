@@ -19,9 +19,20 @@ import {
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import Navbar from '@/layouts/Navbar/Navbar';
 import 'tailwindcss/tailwind.css';
+import AlertDialog from '@/layouts/Notification/alert-dialog';
+import logo from '@/assets/image.png';
 
 const LoginPage = () => {
   const navigate = useNavigate();
+
+  //alert dialog state
+  const [alert, setAlert] = useState({
+    open: false,
+    title: '',
+    message: '',
+    isSuccess: false,
+    onClose: null,
+  });
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -57,10 +68,25 @@ const LoginPage = () => {
 
       if (response.ok) {
         const data = await response.json();
+        const { token, role } = data;
         console.log('Login ok', data);
-        localStorage.setItem('token', data.token); // Lưu token vào localStorage
-        alert('Login successfully!');
-        navigate('/');
+        localStorage.setItem('token', token); // Lưu token vào localStorage
+        // alert('Login successfully!');
+        setAlert({
+          open: true,
+          title: 'QAirline',
+          message: 'Login successfully!',
+          isSuccess: true,
+          onClose: () => {
+            if (email === 'admin@example.com') {
+              navigate('/admin/post-information');
+            } else {
+              setTimeout(() => {
+                navigate('/'); // Điều hướng đến trang chính sau khi hiển thị thông báo
+              }, 0);
+            }
+          },
+        });
       } else {
         const error = await response.json();
         const errorMessage =
@@ -68,16 +94,28 @@ const LoginPage = () => {
             ? error.errors[0].msg
             : 'Login failed!';
         console.log('Login failed', error);
-        alert('Lỗi đăng nhập: ', errorMessage);
+        // alert('Lỗi đăng nhập: ', errorMessage);
+        setAlert({
+          open: true,
+          title: 'QAirline',
+          message: `Login failed: + ${errorMessage}`,
+          isSuccess: false,
+        });
       }
     } catch (error) {
       console.error('Lỗi kết nối:', error);
-      alert('Lỗi kết nối, vui lòng thử lại sau.');
+      // alert('Lỗi kết nối, vui lòng thử lại sau.');
+      setAlert({
+        open: true,
+        title: 'QAirline',
+        message: `Connect failed: + ${error}  + . Please try again!`,
+        isSuccess: false,
+      });
     }
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-gray-700 to-gray-300 px-3">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-r from-secondary-foreground to-accent-foreground px-3">
       <Navbar />
       <div className="mb-6">
         <Breadcrumb>
@@ -92,14 +130,10 @@ const LoginPage = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <Card className="w-full max-w-sm rounded-lg bg-card shadow-md sm:max-w-md md:max-w-lg">
+      <Card className="mb-3 w-full max-w-sm rounded-lg bg-card shadow-md sm:max-w-md md:max-w-lg">
         <CardHeader className="flex flex-col items-center space-y-2">
-          <img
-            src="https://i.pinimg.com/control2/736x/56/ed/da/56edda40a95cab939a8cc5f04b5b2109.jpg"
-            alt="logo"
-            className="w-20"
-          />
-          <h2 className="text-center text-xl font-semibold text-primary md:text-2xl">
+          <img src={logo} alt="logo" className="h-20 w-20" />
+          <h2 className="text-center text-xl font-semibold text-foreground md:text-2xl">
             Log in to your account
           </h2>
         </CardHeader>
@@ -109,7 +143,7 @@ const LoginPage = () => {
             <Input
               type="text"
               id="username"
-              className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
+              className="peer block h-11 w-full rounded-lg bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
               placeholder=""
               required
               onChange={handleEmailChange}
@@ -128,7 +162,7 @@ const LoginPage = () => {
               <Input
                 type={showPassword ? 'text' : 'password'}
                 id="password"
-                className="peer block h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
+                className="peer block h-11 w-full rounded-lg border border-border bg-transparent pb-2 pl-3 pr-10 pt-5 text-sm text-muted-foreground focus:border-primary focus:outline-none"
                 placeholder=""
                 required
                 onChange={handlePasswordChange}
@@ -154,7 +188,7 @@ const LoginPage = () => {
             <div className="mt-2 text-right">
               <a
                 href="#"
-                className="text-sm font-bold text-primary/80 underline hover:text-primary/50"
+                className="text-sm font-bold text-secondary/80 underline hover:text-secondary-foreground/50"
               >
                 Forgot Password?
               </a>
@@ -164,11 +198,23 @@ const LoginPage = () => {
           {/* Log in Button */}
           <div className="mt-4">
             <Button
-              className="w-full rounded-lg bg-primary py-2 text-primary-foreground hover:bg-primary/50"
+              className="w-full rounded-lg bg-secondary py-2 text-white hover:bg-secondary-foreground"
               onClick={handleLogin}
             >
               Log in
             </Button>
+            <AlertDialog
+              open={alert.open}
+              onClose={() => {
+                if (alert.onClose) {
+                  alert.onClose();
+                }
+                setAlert({ ...alert, open: false });
+              }}
+              title={alert.title}
+              message={alert.message}
+              isSuccess={alert.isSuccess}
+            />
           </div>
 
           <div className="my-5 flex items-center">
@@ -204,7 +250,7 @@ const LoginPage = () => {
         <CardFooter className="justify-center text-center">
           <p>
             Haven't got an account yet?{' '}
-            <Link to="/signup" className="text-primary/80 underline">
+            <Link to="/signup" className="text-secondary/80 underline">
               Sign up now!
             </Link>{' '}
           </p>

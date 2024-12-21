@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
+import { NavbarSimple } from '@/layouts/Navbar/NavbarSimple';
+import Footer from '@/layouts/Footer';
+import Booking from '@/pages/HomePage/Booking';
+import StartPlanning from '../HomePage/PlanningCard';
+import Navbar from '@/layouts/Navbar/Navbar';
 
 export default function PassengerDetailsPage() {
   const navigate = useNavigate();
@@ -17,6 +22,30 @@ export default function PassengerDetailsPage() {
 
   console.log('Outbound Seat ID:', outboundFlight?.seatId);
   console.log('Return Seat ID:', returnFlight?.seatId);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+      const currentScrollY = window.scrollY;
+
+      // If the current scroll position is greater than the last scroll position, hide the Navbar
+      if (currentScrollY >= lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -46,120 +75,212 @@ export default function PassengerDetailsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid gap-8 md:grid-cols-3">
-          <div className="md:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>Passenger Details</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid gap-4 md:grid-cols-2">
+    <div className="-mt-11 bg-gray-50 bg-gradient-to-r from-gray-500 to-slate-300">
+      {/* Navbar */}
+      {isVisible && <Navbar />}
+      <Booking />
+      {/* Main */}
+      <div className="-mt-20 bg-white sm:px-3 md:h-full md:px-10">
+        <div className="container relative z-20 mx-auto -mt-24 px-3 md:px-28 lg:px-16">
+          <div className="grid grid-cols-3 gap-8">
+            <div className="col-span-3 lg:col-span-2">
+              <Card className="px-3 py-7 shadow-lg">
+                <CardHeader>
+                  <CardTitle>Passenger Details</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="grid gap-4 md:grid-cols-2">
+                      <div className="space-y-2">
+                        <Label htmlFor="firstName">First Name</Label>
+                        <Input
+                          id="firstName"
+                          value={formData.firstName}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              firstName: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="lastName">Last Name</Label>
+                        <Input
+                          id="lastName"
+                          value={formData.lastName}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              lastName: e.target.value,
+                            })
+                          }
+                          required
+                        />
+                      </div>
+                    </div>
                     <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name</Label>
+                      <Label htmlFor="email">Email</Label>
                       <Input
-                        id="firstName"
-                        value={formData.firstName}
+                        id="email"
+                        type="email"
+                        value={formData.email}
                         onChange={(e) =>
-                          setFormData({
-                            ...formData,
-                            firstName: e.target.value,
-                          })
+                          setFormData({ ...formData, email: e.target.value })
                         }
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name</Label>
+                      <Label htmlFor="phone">Phone Number</Label>
                       <Input
-                        id="lastName"
-                        value={formData.lastName}
+                        id="phone"
+                        type="tel"
+                        value={formData.phone}
                         onChange={(e) =>
-                          setFormData({ ...formData, lastName: e.target.value })
+                          setFormData({ ...formData, phone: e.target.value })
                         }
                         required
                       />
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <Button type="submit" className="w-full">
-                    Continue to Payment
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-          <div>
-            <Card>
-              <CardHeader>
-                <CardTitle>Trip Summary</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+                    <Button type="submit" className="w-full text-white">
+                      Continue to Payment
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+            <div className="col-span-3 lg:col-span-1">
+              <Card className="rounded-lg border border-gray-200 shadow-lg">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-xl font-bold text-secondary">
+                    Your trip review
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Outbound Flight */}
                   {outboundFlight && (
-                    <div>
-                      <h3 className="font-medium">Outbound Flight</h3>
-                      <p className="text-sm text-gray-500">
-                        {outboundFlight.origin} → {outboundFlight.destination}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {format(
-                          new Date(outboundFlight.departure_time),
-                          'EEE, d MMM yyyy'
-                        )}
-                      </p>
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium text-gray-700">
+                        Outbound flight
+                      </h3>
+                      <div className="flex justify-between text-sm font-medium">
+                        <div className="w-1/3 text-center">
+                          <p className="text-sm text-gray-500">
+                            {format(
+                              new Date(outboundFlight.departure_time),
+                              'EEE, dd MMM yyyy'
+                            )}
+                          </p>
+                          <p className="text-lg font-bold">
+                            {format(
+                              new Date(outboundFlight.departure_time),
+                              'HH:mm'
+                            )}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {outboundFlight.origin}
+                          </p>
+                        </div>
+                        <div className="flex w-1/3 flex-col items-center justify-center">
+                          <span className="text-gray-500">
+                            {outboundFlight.duration}
+                          </span>
+                          <div className="h-px w-full bg-gray-300"></div>
+                        </div>
+                        <div className="w-1/3 text-center">
+                          <p className="text-sm text-gray-500">
+                            {format(
+                              new Date(outboundFlight.arrival_time),
+                              'EEE, dd MMM yyyy'
+                            )}
+                          </p>
+                          <p className="text-lg font-bold">
+                            {format(
+                              new Date(outboundFlight.arrival_time),
+                              'HH:mm'
+                            )}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {outboundFlight.destination}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   )}
+
+                  {/* Return Flight */}
                   {returnFlight && (
-                    <div>
-                      <h3 className="font-medium">Return Flight</h3>
-                      <p className="text-sm text-gray-500">
-                        {returnFlight.origin} → {returnFlight.destination}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {format(
-                          new Date(returnFlight.departure_time),
-                          'EEE, d MMM yyyy'
-                        )}
-                      </p>
+                    <div className="space-y-2">
+                      <h3 className="text-sm font-medium text-gray-700">
+                        Return flight
+                      </h3>
+                      <div className="flex justify-between text-sm font-medium">
+                        <div className="w-1/3 text-center">
+                          <p className="text-sm text-gray-500">
+                            {format(
+                              new Date(returnFlight.departure_time),
+                              'EEE, dd MMM yyyy'
+                            )}
+                          </p>
+                          <p className="text-lg font-bold">
+                            {format(
+                              new Date(returnFlight.departure_time),
+                              'HH:mm'
+                            )}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {returnFlight.origin}
+                          </p>
+                        </div>
+                        <div className="flex w-1/3 flex-col items-center justify-center">
+                          <span className="text-gray-500">
+                            {returnFlight.duration}
+                          </span>
+                          <div className="my-1 h-px w-full bg-gray-300"></div>
+                        </div>
+                        <div className="w-1/3 text-center">
+                          <p className="text-sm text-gray-500">
+                            {format(
+                              new Date(returnFlight.arrival_time),
+                              'EEE, dd MMM yyy'
+                            )}
+                          </p>
+                          <p className="text-lg font-bold">
+                            {format(
+                              new Date(returnFlight.arrival_time),
+                              'HH:mm'
+                            )}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {returnFlight.destination}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   )}
+
+                  {/* Total Price */}
                   <div className="border-t pt-4">
-                    <div className="flex justify-between">
-                      <span className="font-medium">Total Price</span>
-                      <span className="font-bold">USD {totalPrice}</span>
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">Total trip price:</span>
+                      <span className="text-xl font-bold text-secondary">
+                        {totalPrice.toFixed(2)} USD
+                      </span>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
+        <div className="py-5">
+          <StartPlanning />
+        </div>
+      </div>
+      <div className="-mt-10">
+        <Footer />
       </div>
     </div>
   );

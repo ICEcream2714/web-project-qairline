@@ -15,6 +15,8 @@ const UserProfile = ({
   qpoints,
   onLogout,
   isScrolled = false,
+  isOpen,
+  isBooking,
 }) => {
   const navigate = useNavigate();
   return (
@@ -22,16 +24,16 @@ const UserProfile = ({
       <PopoverTrigger asChild>
         <Button
           variant="link"
-          className="p-0 font-semibold hover:text-purple-600 [&_svg]:size-auto"
+          className="p-0 font-semibold hover:text-secondary [&_svg]:size-auto"
         >
           <CircleUserRound
             size={24}
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'}`}
+            className={`${isScrolled || isOpen || isBooking ? 'text-gray-800' : 'text-white'}`}
           />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-0">
-        <div className="rounded-md bg-gradient-to-r from-[#3c1053] to-[#ad5389] p-6">
+        <div className="rounded-md bg-gradient-to-r from-secondary-foreground to-accent-foreground p-6">
           <div className="space-y-1 text-white">
             <h4 className="text-xl font-semibold">{name}</h4>
             <p className="text-sm opacity-90">
@@ -43,7 +45,7 @@ const UserProfile = ({
         <div className="grid grid-cols-2 gap-4 bg-white p-4 pl-8">
           <div>
             <div className="text-2xl font-bold">{avios}</div>
-            <div className="text-sm text-gray-500">Avios</div>
+            <div className="text-sm text-gray-500">Apoints</div>
           </div>
           <div>
             <div className="text-2xl font-bold">{qpoints}</div>
@@ -54,21 +56,22 @@ const UserProfile = ({
         <div className="flex justify-self-center border-t p-4">
           <Button
             variant="link"
-            className="text-gray-700 hover:text-purple-600"
+            className="text-gray-700 hover:text-secondary"
+            onClick={() => navigate('/mybooking')}
           >
-            Dashboard
+            My bookings
           </Button>
           <Button
             variant="link"
             onClick={() => navigate('/profile')}
-            className="text-gray-700 hover:text-purple-600"
+            className="text-gray-700 hover:text-secondary"
           >
             Edit profile
           </Button>
           <Button
             variant="link"
             onClick={onLogout}
-            className="text-gray-700 hover:text-purple-600"
+            className="text-gray-700 hover:text-secondary"
           >
             Logout
           </Button>

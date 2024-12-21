@@ -1,28 +1,26 @@
-import { useState } from "react";
-import BookAFlight from "@/pages/HomePage/Bookflight";
-import StopoverPackage from "./Stopover";
-import ManageBooking from "./ManageBooking";
-import FlightStatus from "./FlightStatus";
+import { useState } from 'react';
+import BookAFlight from '@/pages/HomePage/Bookflight';
+import StopoverPackage from './Stopover';
+import ManageBooking from './ManageBooking';
+import FlightStatus from './FlightStatus';
 
 // shadcn components
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 const FlightTabs = () => {
-  const [activeTab, setActiveTab] = useState("book");
+  const [activeTab, setActiveTab] = useState('book');
 
   return (
-    <div className="relative bg-gray-100 py-6 px-6 md:px-12 max-w-4xl mx-auto rounded-lg shadow-md">
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="w-full"
-      >
+    <div className="relative mx-auto max-w-4xl rounded-lg bg-gray-100 px-6 py-6 shadow-md md:px-12">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* Tabs List */}
-        <TabsList className="flex justify-center space-x-4 mb-6">
+        <TabsList className="mb-6 flex justify-center space-x-4">
           <TabsTrigger
             value="book"
             className={`px-6 py-2 text-sm font-medium ${
-              activeTab === "book" ? "text-blue-900 border-b-2 border-blue-900" : "text-gray-600"
+              activeTab === 'book'
+                ? 'rounded-none border-b-2 border-blue-900 text-blue-900'
+                : 'text-gray-600'
             }`}
           >
             Book a Flight
@@ -30,7 +28,9 @@ const FlightTabs = () => {
           <TabsTrigger
             value="stopover"
             className={`px-6 py-2 text-sm font-medium ${
-              activeTab === "stopover" ? "text-blue-900 border-b-2 border-blue-900" : "text-gray-600"
+              activeTab === 'stopover'
+                ? 'rounded-none border-b-2 border-blue-900 text-blue-900'
+                : 'text-gray-600'
             }`}
           >
             Stop Over
@@ -38,7 +38,9 @@ const FlightTabs = () => {
           <TabsTrigger
             value="manage"
             className={`px-6 py-2 text-sm font-medium ${
-              activeTab === "manage" ? "text-blue-900 border-b-2 border-blue-900" : "text-gray-600"
+              activeTab === 'manage'
+                ? 'rounded-none border-b-2 border-blue-900 text-blue-900'
+                : 'text-gray-600'
             }`}
           >
             Manage Booking
@@ -46,7 +48,9 @@ const FlightTabs = () => {
           <TabsTrigger
             value="status"
             className={`px-6 py-2 text-sm font-medium ${
-              activeTab === "status" ? "text-blue-900 border-b-2 border-blue-900" : "text-gray-600"
+              activeTab === 'status'
+                ? 'rounded-none border-b-2 border-blue-900 text-blue-900'
+                : 'text-gray-600'
             }`}
           >
             Flight Status

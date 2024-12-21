@@ -20,13 +20,15 @@ export default {
           DEFAULT: 'hsl(0 0% 100%)',
           foreground: 'hsl(0 0% 3.9%)',
         },
+        // dành cho text
         primary: {
-          DEFAULT: 'hsl(0 0% 9%)',
-          foreground: 'hsl(0 0% 98%)',
+          DEFAULT: '#F9AFD7',
+          foreground: '#FFE1FF',
         },
+        // dành cho các button hoặc link, các đường dẫn
         secondary: {
-          DEFAULT: 'hsl(0 0% 96.1%)',
-          foreground: 'hsl(0 0% 9%)',
+          DEFAULT: '#7E60BF',
+          foreground: '#433878', //khi hover
         },
         muted: {
           DEFAULT: 'hsl(0 0% 96.1%)',
@@ -34,7 +36,7 @@ export default {
         },
         accent: {
           DEFAULT: 'hsl(0 0% 96.1%)',
-          foreground: 'hsl(0 0% 9%)',
+          foreground: '#ad5389',
         },
         destructive: {
           DEFAULT: 'hsl(0 84.2% 60.2%)',
@@ -51,6 +53,11 @@ export default {
           5: 'hsl(27 87% 67%)',
         },
       },
+      // fontFamily: {
+      //   sans: ['B612', 'sans-serif'],
+      //   serif: ['B612', 'serif'],
+      //   mono: ['B612 Mono', 'monospace'],
+      // },
       keyframes: {
         'accordion-down': {
           from: {

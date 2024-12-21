@@ -1,4 +1,3 @@
-import React from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   Accordion,
@@ -25,7 +24,7 @@ import Personal from './Personal';
 
 const Main = () => {
   return (
-    <div className="max-w-3xl">
+    <div className="max-w-4xl">
       {/* Accordion visible on mobile*/}
       <div className="block md:hidden">
         <Accordion

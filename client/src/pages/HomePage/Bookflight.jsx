@@ -1,11 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router-dom';
+import DatePicker from '@/components/DatePicker';
 
 export default function BookAFlight() {
+  const [activeDropdown, setActiveDropdown] = useState(null); // null | "from" | "to"
+  const [fromCities, setFromCities] = useState([]);
+  const [toCities, setToCities] = useState([]);
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/flights/');
+        const data = await response.json();
+        const origins = [...new Set(data.map((flight) => flight.origin))];
+        const destinations = [
+          ...new Set(data.map((flight) => flight.destination)),
+        ];
+        setFromCities(origins);
+        setToCities(destinations);
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+      }
+    };
+
+    fetchCities();
+  }, []);
+
+  const handleCitySelect = (city, field) => {
+    if (field === 'from') setFrom(city);
+    if (field === 'to') setTo(city);
+    setActiveDropdown(null); // Đóng dropdown
+  };
+
+  const handleOutsideClick = () => setActiveDropdown(null);
+
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -81,14 +113,14 @@ export default function BookAFlight() {
       <RadioGroup
         value={tripType}
         onValueChange={(value) => setTripType(value)}
-        className="flex items-center space-x-8"
+        className="flex flex-col items-start space-y-4 sm:items-center md:flex-row md:space-x-8 md:space-y-0"
       >
         {['return', 'one-way', 'multi-city'].map((type) => (
           <div key={type} className="flex items-center space-x-2">
             <RadioGroupItem
               value={type}
               id={`trip-type-${type}`}
-              className="text-purple-600"
+              className="text-secondary"
             />
             <Label
               htmlFor={`trip-type-${type}`}
@@ -105,33 +137,83 @@ export default function BookAFlight() {
       </RadioGroup>
 
       {/* Input Fields */}
-      <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="relative">
-          <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
-            From
-          </Label>
-          <Input
-            id="from"
-            type="text"
-            placeholder="From"
-            className="pl-10"
-            onChange={(e) => setFrom(e.target.value)}
-          />
-          <span className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-400">
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {/* From and To with switch arrow */}
+        <div
+          className="relative col-span-1 flex flex-col items-center md:col-span-2 md:flex-row"
+          onClick={(e) => e.stopPropagation()} // Chặn click event không lan ra ngoài
+        >
+          {/* From Field */}
+          <div className="relative w-full">
+            <Label htmlFor="from" className="mb-1 block text-sm text-gray-600">
+              From
+            </Label>
+            <Input
+              id="from"
+              type="text"
+              placeholder="From"
+              value={from}
+              className="w-full"
+              onClick={() => setActiveDropdown('from')} // Hiển thị dropdown "from"
+              onChange={(e) => setFrom(e.target.value)}
+            />
+            {activeDropdown === 'from' && (
+              <div className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
+                {fromCities.map((city) => (
+                  <div
+                    key={city}
+                    className="cursor-pointer p-2 hover:bg-gray-100"
+                    onClick={() => handleCitySelect(city, 'from')}
+                  >
+                    {city}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Switch Arrow */}
+          <span
+            className="mx-0 mt-3 cursor-pointer text-gray-400 hover:text-gray-600 md:mx-4 md:mt-4"
+            onClick={() => {
+              setFrom(to);
+              setTo(from);
+            }}
+          >
             ⇄
           </span>
+
+          {/* To Field */}
+          <div className="relative w-full">
+            <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
+              To
+            </Label>
+            <Input
+              id="to"
+              type="text"
+              placeholder="To"
+              value={to}
+              className="w-full"
+              onClick={() => setActiveDropdown('to')} // Hiển thị dropdown "to"
+              onChange={(e) => setTo(e.target.value)}
+            />
+            {activeDropdown === 'to' && (
+              <div className="absolute z-10 mt-2 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
+                {toCities.map((city) => (
+                  <div
+                    key={city}
+                    className="cursor-pointer p-2 hover:bg-gray-100"
+                    onClick={() => handleCitySelect(city, 'to')}
+                  >
+                    {city}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <div>
-          <Label htmlFor="to" className="mb-1 block text-sm text-gray-600">
-            To
-          </Label>
-          <Input
-            id="to"
-            type="text"
-            placeholder="To"
-            onChange={(e) => setTo(e.target.value)}
-          />
-        </div>
+
+        {/* Departure */}
         <div>
           <Label
             htmlFor="departure"
@@ -139,13 +221,10 @@ export default function BookAFlight() {
           >
             Departure
           </Label>
-          <Input
-            id="departure"
-            type="date"
-            className="rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
-            onChange={(e) => setDeparture(e.target.value)}
-          />
+          <DatePicker id="departure" date={departure} setDate={setDeparture} />
         </div>
+
+        {/* Return (only for "return" trip type) */}
         {tripType === 'return' && (
           <div>
             <Label
@@ -154,22 +233,17 @@ export default function BookAFlight() {
             >
               Return
             </Label>
-            <Input
-              id="return"
-              type="date"
-              className="rounded-lg border bg-white p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-600"
-              onChange={(e) => setReturnDate(e.target.value)}
-            />
+            <DatePicker id="return" date={returnDate} setDate={setReturnDate} />
           </div>
         )}
       </div>
 
       {/* Passenger Selector */}
-      <div className="mt-6 flex items-center justify-between">
-        <div className="relative w-full max-w-xs">
+      <div className="mt-6 flex flex-col space-y-4 sm:flex-row md:items-center md:justify-between md:space-y-0">
+        <div className="relative w-full pr-0 md:max-w-xs md:pr-4">
           <Button
             onClick={toggleDropdown}
-            className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700"
+            className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700 hover:bg-white hover:text-secondary"
           >
             {`${passengers.adults + passengers.children + passengers.infants} Passenger${
               passengers.adults + passengers.children + passengers.infants > 1
@@ -241,7 +315,7 @@ export default function BookAFlight() {
               {/* Confirm Button */}
               <div className="border-t p-4">
                 <Button
-                  className="w-full bg-purple-600 text-white hover:bg-purple-700"
+                  className="w-full text-white"
                   onClick={() => setIsOpen(false)}
                 >
                   Confirm
@@ -250,13 +324,11 @@ export default function BookAFlight() {
             </div>
           )}
         </div>
-        <Button
-          className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700"
-          onClick={handleSearchFlights}
-        >
+        <Button className="text-white" onClick={handleSearchFlights}>
           Search flights
         </Button>
       </div>
+      {document.addEventListener('click', handleOutsideClick)}
     </div>
   );
 }

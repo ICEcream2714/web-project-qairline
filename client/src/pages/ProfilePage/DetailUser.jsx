@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Pencil, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Pencil, X, Save } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -11,10 +11,42 @@ import {
 
 const DetailUser = () => {
   const [isClickedEditBtn, setIsClickedEditBtn] = useState(false);
-  const [homeAddress, setHomeAddress] = useState('Vietnam');
-  const [email, setEmail] = useState('mtchoang271@gmail.com');
-  const [countryCode, setCountryCode] = useState('84');
-  const [phone, setPhone] = useState('793258778');
+  const [homeAddress, setHomeAddress] = useState('');
+  const [email, setEmail] = useState('');
+  const [countryCode, setCountryCode] = useState('');
+  const [phone, setPhone] = useState('');
+  const [gender, setGender] = useState('');
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:5000/api/customer/my-info',
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setUserData(data);
+        setHomeAddress(data?.address || '');
+        setEmail(data?.User?.email || '');
+        setCountryCode(data?.country_code?.toString() || ''); // Convert to string
+        setPhone(data?.User?.phone || '');
+        setGender(data?.gender || '');
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (!userData) {
+    return <div>Loading...</div>;
+  }
 
   const countryCodes = [
     { code: '1', country: 'United States' },
@@ -42,9 +74,43 @@ const DetailUser = () => {
   const handleEditBtnChange = () => {
     setIsClickedEditBtn((prevState) => !prevState);
   };
+
   const handleHomeAddressChange = (e) => setHomeAddress(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handlePhoneChange = (e) => setPhone(e.target.value);
+  const handleGenderChange = (value) => setGender(value);
+
+  const handleSaveDetails = async () => {
+    const detailsData = {
+      address: homeAddress,
+      email,
+      country_code: countryCode,
+      phone,
+      gender,
+    };
+
+    try {
+      const response = await fetch(
+        'http://localhost:5000/api/customer/update-profile',
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: JSON.stringify(detailsData),
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to update details');
+      }
+      const data = await response.json();
+      console.log('Details updated successfully', data);
+      setIsClickedEditBtn(false);
+    } catch (error) {
+      console.error('Error updating details:', error);
+    }
+  };
 
   return (
     <div className="mb-6 md:border-b md:border-gray-300 md:pb-6">
@@ -52,19 +118,33 @@ const DetailUser = () => {
         <h2 className="text-lg font-semibold text-gray-700">
           Your contact details
         </h2>
-        <button
-          className={`flex items-center gap-1 ${isClickedEditBtn ? 'text-red-600' : 'text-primary'}`}
-          onClick={handleEditBtnChange}
+        <div
+          className={`flex ${isClickedEditBtn ? 'flex-col items-end' : 'items-center gap-1'}`}
         >
-          {isClickedEditBtn ? (
-            <X className="h-4 w-4 text-red-600" />
-          ) : (
-            <Pencil className="h-4 w-4 text-primary" />
-          )}
+          <button
+            className={`flex items-center gap-1 ${isClickedEditBtn ? 'text-red-600' : 'text-secondary'}`}
+            onClick={handleEditBtnChange}
+          >
+            {isClickedEditBtn ? (
+              <X className="h-4 w-4 text-red-600" />
+            ) : (
+              <Pencil className="h-4 w-4 text-secondary" />
+            )}
+            {isClickedEditBtn ? 'Exit' : 'Edit'}
+          </button>
 
-          {isClickedEditBtn ? 'Exit' : 'Edit'}
-        </button>
+          {isClickedEditBtn && (
+            <button
+              onClick={handleSaveDetails}
+              className="mt-2 flex items-center gap-1 text-secondary"
+            >
+              <Save className="h-4 w-4 text-secondary" />
+              Save
+            </button>
+          )}
+        </div>
       </div>
+
       {!isClickedEditBtn ? (
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -84,9 +164,13 @@ const DetailUser = () => {
             </p>
           </div>
           <div>
+            <p className="font-semibold text-gray-800">Gender</p>
+            <p className="text-gray-600">{gender}</p>
+          </div>
+          {/* <div>
             <p className="font-semibold text-gray-800">Home/work phone</p>
             <p className="text-gray-600">N/A</p>
-          </div>
+          </div> */}
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-4">
@@ -103,7 +187,7 @@ const DetailUser = () => {
               />
               <label
                 htmlFor="email"
-                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-secondary peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary"
               >
                 Email
               </label>
@@ -133,7 +217,7 @@ const DetailUser = () => {
               </Select>
               <label
                 htmlFor="countrycode"
-                className="peer-placeholder-shown:top-2.2 absolute left-3 top-1 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                className="peer-placeholder-shown:top-2.2 absolute left-3 top-1 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-secondary peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary"
               >
                 Country Code
               </label>
@@ -153,9 +237,35 @@ const DetailUser = () => {
               />
               <label
                 htmlFor="phone"
-                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-secondary peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary"
               >
-                Home address
+                Phone number
+              </label>
+            </div>
+          </div>
+
+          <div className="col-span-full md:col-span-1">
+            <div className="relative">
+              <Select
+                id="gender"
+                onValueChange={handleGenderChange}
+                value={gender}
+                className="peer w-full"
+              >
+                <SelectTrigger className="peer h-11 w-full rounded-lg border border-border bg-transparent px-3 pb-2 pt-5 text-sm text-foreground focus:border-primary focus:outline-none">
+                  <SelectValue placeholder="Select gender" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="male">Male</SelectItem>
+                  <SelectItem value="female">Female</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+              <label
+                htmlFor="gender"
+                className="peer-placeholder-shown:top-2.2 absolute left-3 top-1 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-secondary peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary"
+              >
+                Gender
               </label>
             </div>
           </div>
@@ -173,16 +283,11 @@ const DetailUser = () => {
               />
               <label
                 htmlFor="homeaddress"
-                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-primary peer-focus:top-0 peer-focus:text-sm peer-focus:text-primary"
+                className="peer-placeholder-shown:top-2.2 absolute left-3 top-2.5 max-w-full truncate pr-4 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-muted-foreground peer-valid:top-0.5 peer-valid:text-sm peer-valid:text-secondary peer-focus:top-0 peer-focus:text-sm peer-focus:text-secondary"
               >
                 Home address
               </label>
             </div>
-          </div>
-
-          <div className="col-span-full px-2.5 md:col-span-1">
-            <p className="font-semibold text-primary">Home/work phone</p>
-            <p className="text-primary">N/A</p>
           </div>
         </div>
       )}

@@ -64,7 +64,7 @@ module.exports = {
         first_name: "John",
         middle_name: "A.",
         last_name: "Doe",
-        date_of_birth: "1990-01-01",
+        date_of_birth: "1990-12-15",
         address: "123 Main St, Ha Noi",
         country_name: "Vietnam",
         country_code: 84,
@@ -539,6 +539,64 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        customer_id: 2,
+        outbound_flight_id: 3,
+        return_flight_id: 4,
+        departure_time: new Date("2024-12-11T09:00:00Z"),
+        return_time: new Date("2024-12-21T09:00:00Z"),
+        booking_date: new Date(),
+        status: "Confirmed",
+        passengers: 2,
+        total_price: 7000,
+        payment_status: "Paid",
+        payment_method: "Debit Card",
+        cardholder_name: "Jane Smith",
+        card_number: "4222222222222222",
+        expiry_date: "11/24",
+        cvv: "456",
+        outbound_seat_id: 3,
+        return_seat_id: 4,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
+
+    // Query the inserted bookings to get their IDs
+    const bookings = await queryInterface.sequelize.query(
+      `SELECT id FROM Bookings WHERE customer_id IN (1, 2);`,
+      { type: queryInterface.sequelize.QueryTypes.SELECT }
+    );
+
+    // Thêm dữ liệu vào bảng Passengers
+    await queryInterface.bulkInsert("Passengers", [
+      {
+        booking_id: bookings[0].id, // Liên kết với booking_id của Booking 1
+        first_name: "John",
+        last_name: "Doe",
+        email: "john.doe@example.com",
+        phone: "123456789",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        booking_id: bookings[1].id, // Liên kết với booking_id của Booking 2
+        first_name: "Jane",
+        last_name: "Smith",
+        email: "jane.smith@example.com",
+        phone: "123456790",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        booking_id: bookings[1].id, // Liên kết với booking_id của Booking 2
+        first_name: "Alice",
+        last_name: "Smith",
+        email: "alice.smith@example.com",
+        phone: "123456791",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
@@ -558,6 +616,9 @@ module.exports = {
 
     // Xóa dữ liệu trong bảng Airlines
     await queryInterface.bulkDelete("Airlines", null, {});
+
+    // Xóa dữ liệu trong bảng Passengers
+    await queryInterface.bulkDelete("Passengers", null, {});
 
     // Xóa dữ liệu trong bảng Bookings
     await queryInterface.bulkDelete("Bookings", null, {});

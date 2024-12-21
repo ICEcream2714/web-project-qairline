@@ -89,26 +89,28 @@ const Footer = () => {
           </div>
 
           {/* Column 4 */}
-          <div>
-            <h2 className="text-lg font-semibold mb-4">Follow us</h2>
-            <ul className="flex space-x-4">
-              <li>
-                <a href="#" className="hover:text-gray-600 transition">
-                  <i className="fab fa-facebook-f"></i> Facebook
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-gray-600 transition">
-                  <i className="fab fa-twitter"></i> Twitter
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-gray-600 transition">
-                  <i className="fab fa-instagram"></i> Instagram
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/* Column 4 */}
+<div>
+  <h2 className="text-lg font-semibold mb-4">Follow us</h2>
+  <ul className="space-y-4">
+    <li>
+      <a href="#" className="hover:text-gray-600 transition">
+        <i className="fab fa-facebook-f"></i> Facebook
+      </a>
+    </li>
+    <li>
+      <a href="#" className="hover:text-gray-600 transition">
+        <i className="fab fa-twitter"></i> Twitter
+      </a>
+    </li>
+    <li>
+      <a href="#" className="hover:text-gray-600 transition">
+        <i className="fab fa-instagram"></i> Instagram
+      </a>
+    </li>
+  </ul>
+</div>
+
         </div>
 
         {/* Divider */}
@@ -117,7 +119,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <p className="text-sm text-gray-600">
-            © {new Date().getFullYear()} Qatar Airways. All rights reserved.
+            © {new Date().getFullYear()} QAirline. All rights reserved.
           </p>
           <ul className="flex space-x-4 text-sm text-gray-600">
             <li>

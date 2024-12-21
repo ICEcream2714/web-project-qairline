@@ -26,4 +26,16 @@ router.get(
   customerController.getBookingDetails
 );
 
+// Lấy tất cả thông tin đặt vé
+router.get("/bookings", customerController.getAllBookings);
+
+// Lấy tất cả thông tin của khách hàng đã đăng nhập
+router.get("/my-info", verifyToken, customerController.getLoggedInCustomerInfo);
+
+// Cập nhật thông tin khách hàng
+router.put("/update-profile", verifyToken, customerController.updateProfile);
+
+// Lấy tất cả thông tin đặt vé của người dùng
+router.get("/my-bookings", verifyToken, customerController.getUserBookings);
+
 module.exports = router;

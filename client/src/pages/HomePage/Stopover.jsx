@@ -4,11 +4,16 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import DatePicker from '@/components/DatePicker';
 
 const Stopover = () => {
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
   const [activeTab, setActiveTab] = useState('stopover');
   const [tripType, setTripType] = useState('round-trip');
   const [isOpen, setIsOpen] = useState(false);
+  const [returnDate, setReturnDate] = useState('');
+  const [departure, setDeparture] = useState('');
   const [passengers, setPassengers] = useState({
     adults: 1,
     children: 0,
@@ -40,16 +45,16 @@ const Stopover = () => {
   };
 
   return (
-    <Card className="rounded-lg bg-white p-6 shadow-md">
+    <Card className="rounded-lg bg-white p-0 shadow-md">
       {/* Tabs điều hướng */}
       <CardHeader className="border-b">
         <div className="flex">
           <Button
             variant="ghost"
             onClick={() => setActiveTab('stopover')}
-            className={`flex-1 py-2 text-center text-lg font-medium ${
+            className={`flex-1 py-1 text-center text-lg font-medium ${
               activeTab === 'stopover'
-                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                ? 'rounded-none border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
@@ -58,9 +63,9 @@ const Stopover = () => {
           <Button
             variant="ghost"
             onClick={() => setActiveTab('flights-hotel')}
-            className={`flex-1 py-2 text-center text-lg font-medium ${
+            className={`flex-1 py-1 text-center text-lg font-medium ${
               activeTab === 'flights-hotel'
-                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                ? 'rounded-none border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
@@ -70,14 +75,14 @@ const Stopover = () => {
       </CardHeader>
 
       {/* Nội dung tab */}
-      <CardContent className="py-6">
+      <CardContent className="w-full rounded-lg bg-white p-6 shadow-md">
         {activeTab === 'stopover' && (
           <div className="space-y-4">
             {/* Trip Type */}
             <RadioGroup
               value={tripType}
               onValueChange={(value) => setTripType(value)}
-              className="flex space-x-4"
+              className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0"
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem
@@ -102,28 +107,72 @@ const Stopover = () => {
             </RadioGroup>
 
             {/* From, To, Departure Date, Return Date */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div>
-                <Label htmlFor="from">From</Label>
-                <Input id="from" placeholder="Enter departure city" />
+            <div className="col-span-1 flex flex-col items-center md:col-span-2 md:flex-row">
+              <div className="relative w-full">
+                <Label
+                  htmlFor="from"
+                  className="mb-1 block text-sm text-gray-600"
+                >
+                  From
+                </Label>
+                <Input
+                  id="from"
+                  placeholder="Enter departure city"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
+                />
               </div>
-              <div>
-                <Label htmlFor="to">To</Label>
-                <Input id="to" placeholder="Enter destination city" />
+
+              {/* Switch Arrow */}
+              <span
+                className="mx-0 mt-2 cursor-pointer text-gray-400 hover:text-gray-600 md:mx-4 md:mt-6"
+                onClick={() => {
+                  // Swap From and To values
+                  setFrom(to);
+                  setTo(from);
+                }}
+              >
+                ⇄
+              </span>
+
+              {/* To */}
+              <div className="relative w-full">
+                <Label
+                  htmlFor="to"
+                  className="mb-1 block text-sm text-gray-600"
+                >
+                  To
+                </Label>
+                <Input
+                  id="to"
+                  placeholder="Enter destination city"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                />
               </div>
-              <div>
-                <Label htmlFor="departure">Departure Date</Label>
-                <Input id="departure" type="date" />
+              <div className="relative w-full md:px-4">
+                <Label htmlFor="departure">Departure</Label>
+                <DatePicker
+                  id="departure"
+                  date={departure}
+                  setDate={setDeparture}
+                />
               </div>
-              <div>
-                <Label htmlFor="return">Return Date</Label>
-                <Input id="return" type="date" />
-              </div>
+              {tripType === 'round-trip' && (
+                <div className="relative w-full">
+                  <Label htmlFor="return">Return</Label>
+                  <DatePicker
+                    id="return"
+                    date={returnDate}
+                    setDate={setReturnDate}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Passengers and Class */}
-            <div className="mt-4 flex flex-col items-start justify-between sm:flex-row sm:items-center">
-              <div className="relative w-full max-w-xs sm:max-w-md">
+            <div className="mt-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:items-center md:space-y-0">
+              <div className="relative w-full max-w-xs">
                 <Button
                   onClick={toggleDropdown}
                   className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700"
@@ -246,7 +295,7 @@ const Stopover = () => {
                 )}
               </div>
 
-              <Button className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700">
+              <Button className="rounded-lg bg-purple-600 py-3 text-white hover:bg-purple-700">
                 Search flights
               </Button>
             </div>
@@ -259,7 +308,7 @@ const Stopover = () => {
             <RadioGroup
               value={tripType}
               onValueChange={(value) => setTripType(value)}
-              className="flex space-x-4"
+              className="flex flex-col space-y-2 md:flex-row md:space-x-4 md:space-y-0"
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem
@@ -284,28 +333,72 @@ const Stopover = () => {
             </RadioGroup>
 
             {/* From, To, Departure Date, Return Date */}
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div>
-                <Label htmlFor="from">From</Label>
-                <Input id="from" placeholder="Enter departure city" />
+            <div className="col-span-1 flex flex-col items-center md:col-span-2 md:flex-row">
+              <div className="relative w-full">
+                <Label
+                  htmlFor="from"
+                  className="mb-1 block text-sm text-gray-600"
+                >
+                  From
+                </Label>
+                <Input
+                  id="from"
+                  placeholder="Enter departure city"
+                  value={from}
+                  onChange={(e) => setFrom(e.target.value)}
+                />
               </div>
-              <div>
-                <Label htmlFor="to">To</Label>
-                <Input id="to" placeholder="Enter destination city" />
+
+              {/* Switch Arrow */}
+              <span
+                className="mx-0 mt-2 cursor-pointer text-gray-400 hover:text-gray-600 md:mx-4 md:mt-6"
+                onClick={() => {
+                  // Swap From and To values
+                  setFrom(to);
+                  setTo(from);
+                }}
+              >
+                ⇄
+              </span>
+
+              {/* To */}
+              <div className="relative w-full">
+                <Label
+                  htmlFor="to"
+                  className="mb-1 block text-sm text-gray-600"
+                >
+                  To
+                </Label>
+                <Input
+                  id="to"
+                  placeholder="Enter destination city"
+                  value={to}
+                  onChange={(e) => setTo(e.target.value)}
+                />
               </div>
-              <div>
-                <Label htmlFor="departure">Departure Date</Label>
-                <Input id="departure" type="date" />
+              <div className="relative w-full md:px-4">
+                <Label htmlFor="departure">Departure</Label>
+                <DatePicker
+                  id="departure"
+                  date={departure}
+                  setDate={setDeparture}
+                />
               </div>
-              <div>
-                <Label htmlFor="return">Return Date</Label>
-                <Input id="return" type="date" />
-              </div>
+              {tripType === 'round-trip' && (
+                <div className="relative w-full">
+                  <Label htmlFor="return">Return</Label>
+                  <DatePicker
+                    id="return"
+                    date={returnDate}
+                    setDate={setReturnDate}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Passengers and Class */}
-            <div className="mt-4 flex flex-col items-start justify-between sm:flex-row sm:items-center">
-              <div className="relative w-full max-w-xs sm:max-w-md">
+            <div className="mt-6 flex flex-col space-y-4 sm:flex-row md:items-center md:justify-between md:space-y-0">
+              <div className="relative w-full pr-0 md:max-w-xs md:pr-4">
                 <Button
                   onClick={toggleDropdown}
                   className="w-full rounded-md border border-gray-300 bg-white p-2 text-left text-gray-700"
@@ -429,7 +522,7 @@ const Stopover = () => {
               </div>
 
               <Button className="rounded-lg bg-purple-600 px-6 py-3 text-white hover:bg-purple-700">
-                Search flights & hotels
+                Search flights & Hotels
               </Button>
             </div>
           </div>

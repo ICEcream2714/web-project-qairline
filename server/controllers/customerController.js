@@ -1,8 +1,17 @@
 const { Op } = require("sequelize");
-const { Flight, Seat, Booking, Passenger, Airplane } = require("../models");
+const {
+  Flight,
+  Seat,
+  Booking,
+  Passenger,
+  Airplane,
+  User,
+  Customer,
+} = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { User } = require("../models");
+const fs = require("fs");
+const path = require("path");
 
 // controllers/customerController.js
 const customerService = require("../services/customerService");
@@ -157,7 +166,9 @@ exports.bookFlight = async (req, res) => {
     passengerDetails,
     paymentDetails,
   } = req.body;
-  const customerId = req.userId; // Lấy customerId từ user đã đăng nhập
+  const userId = req.userId; // Changed from customerId to userId for clarity
+
+  console.log("User ID:", userId);
 
   // Validate inputs
   if (!totalPrice || !outboundFlight || !passengerDetails || !paymentDetails) {
@@ -165,8 +176,33 @@ exports.bookFlight = async (req, res) => {
   }
 
   try {
+    // Changed from findByPk to findOne with where clause
+    const customer = await Customer.findOne({
+      where: { user_id: userId },
+    });
+    console.log("Customer:", customer);
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    // Verify that the outbound flight exists
+    const outboundFlightRecord = await Flight.findByPk(outboundFlight.id);
+    if (!outboundFlightRecord) {
+      return res.status(404).json({ message: "Outbound flight not found" });
+    }
+
+    // Verify that the return flight exists (if provided)
+    let returnFlightRecord = null;
+    if (returnFlight) {
+      returnFlightRecord = await Flight.findByPk(returnFlight.id);
+      if (!returnFlightRecord) {
+        return res.status(404).json({ message: "Return flight not found" });
+      }
+    }
+
     const booking = await Booking.create({
-      customer_id: customerId,
+      customer_id: customer.id, // Changed from userId to customer.id
       outbound_flight_id: outboundFlight.id,
       return_flight_id: returnFlight ? returnFlight.id : null,
       departure_time: outboundFlight.departure_time,
@@ -250,6 +286,7 @@ exports.getBookingDetails = async (req, res) => {
             "destination",
             "departure_time",
             "arrival_time",
+            "status",
           ],
         },
         {
@@ -260,6 +297,7 @@ exports.getBookingDetails = async (req, res) => {
             "destination",
             "departure_time",
             "arrival_time",
+            "status",
           ],
         },
         {
@@ -284,6 +322,144 @@ exports.getBookingDetails = async (req, res) => {
     res.status(200).json(booking);
   } catch (error) {
     console.error("Error fetching booking details:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
+  }
+};
+
+// Lấy tất cả thông tin đặt vé
+exports.getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.findAll({
+      include: [
+        {
+          model: Passenger,
+          attributes: ["first_name", "last_name", "email", "phone"],
+        },
+        {
+          model: Flight,
+          as: "outboundFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+          ],
+        },
+        {
+          model: Flight,
+          as: "returnFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+          ],
+        },
+        {
+          model: Seat,
+          as: "outboundSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+        {
+          model: Seat,
+          as: "returnSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+      ],
+    });
+
+    if (!bookings.length) {
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy thông tin đặt vé" });
+    }
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching all booking details:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
+  }
+};
+
+// Lấy tất cả thông tin đặt vé của người dùng
+exports.getUserBookings = async (req, res) => {
+  try {
+    // First, find the customer using user_id
+    const customer = await Customer.findOne({
+      where: { user_id: req.userId },
+    });
+
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    // Then find bookings using customer_id
+    const bookings = await Booking.findAll({
+      where: { customer_id: customer.id }, // Use customer.id instead of req.userId
+      include: [
+        {
+          model: Passenger,
+          attributes: ["first_name", "last_name", "email", "phone"],
+        },
+        {
+          model: Flight,
+          as: "outboundFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+            "duration",
+          ],
+        },
+        {
+          model: Flight,
+          as: "returnFlight",
+          attributes: [
+            "origin",
+            "destination",
+            "departure_time",
+            "arrival_time",
+            "status",
+            "duration",
+          ],
+        },
+        {
+          model: Seat,
+          as: "outboundSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+        {
+          model: Seat,
+          as: "returnSeat",
+          attributes: ["seat_number", "seat_type"],
+        },
+      ],
+    });
+
+    // Even if no bookings are found, return an empty array instead of 404
+    return res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching user bookings:", error);
+    res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
+  }
+};
+
+// Lấy tất cả thông tin của khách hàng đã đăng nhập
+exports.getLoggedInCustomerInfo = async (req, res) => {
+  try {
+    const customer = await customerService.getCustomerByUserId(req.userId);
+    if (!customer) {
+      return res
+        .status(404)
+        .json({ message: "Không tìm thấy thông tin khách hàng." });
+    }
+    res.status(200).json(customer);
+  } catch (error) {
+    console.error("Error fetching logged-in customer info:", error);
     res.status(500).json({ message: "Lỗi hệ thống", error: error.message });
   }
 };
@@ -313,5 +489,81 @@ exports.login = async (req, res) => {
     res.status(200).json({ token });
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+// Cập nhật thông tin khách hàng
+exports.updateProfile = async (req, res) => {
+  const {
+    email,
+    phone,
+    profilePicture,
+    address,
+    country_name,
+    title,
+    country_code,
+    first_name,
+    middle_name,
+    last_name,
+    date_of_birth,
+    gender,
+    promo_code,
+  } = req.body;
+  const userId = req.userId;
+
+  try {
+    // Cập nhật thông tin User
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.email = email || user.email;
+    user.phone = phone || user.phone;
+
+    if (profilePicture) {
+      // Xóa ảnh cũ nếu có
+      if (user.profilePicture) {
+        fs.unlink(
+          path.join(__dirname, "..", "avatars", user.profilePicture),
+          (err) => {
+            if (err) {
+              console.error("Error deleting old avatar:", err);
+            }
+          }
+        );
+      }
+
+      // Lưu ảnh mới
+      user.profilePicture = profilePicture;
+    }
+
+    await user.save();
+
+    // Cập nhật thông tin Customer
+    const customer = await Customer.findOne({ where: { user_id: userId } });
+    if (!customer) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+    customer.address = address || customer.address;
+    customer.country_name = country_name || customer.country_name;
+    customer.title = title || customer.title;
+    customer.country_code = country_code || customer.country_code;
+    customer.first_name = first_name || customer.first_name;
+    customer.middle_name = middle_name || customer.middle_name;
+    customer.last_name = last_name || customer.last_name;
+    customer.date_of_birth = date_of_birth || customer.date_of_birth;
+    customer.gender = gender || customer.gender;
+    customer.promo_code = promo_code || customer.promo_code;
+    await customer.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      profilePicture: user.profilePicture,
+    });
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 };

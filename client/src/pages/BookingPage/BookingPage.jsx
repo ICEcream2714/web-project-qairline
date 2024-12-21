@@ -1,4 +1,3 @@
-import Navbar from '@/layouts/Navbar/Navbar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,8 +10,18 @@ import {
 } from '@/components/ui/dialog';
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import {
+  CheckCircle,
+  Luggage,
+  Utensils,
+  Armchair,
+  Briefcase,
+  Crown,
+} from 'lucide-react'; // Import thêm icon Crown cho Premium
 
 import { format } from 'date-fns';
+import { NavbarBooking } from '../../layouts/Navbar/NavbarBooking';
+import Footer from '@/layouts/Footer';
 
 function BookingPage() {
   const navigate = useNavigate();
@@ -27,11 +36,35 @@ function BookingPage() {
   const [selectedOutgoingFlight, setSelectedOutgoingFlight] = useState(null); // Chuyến bay đi được chọn
   const [selectedReturnFlight, setSelectedReturnFlight] = useState(null); // Chuyến bay về được chọn
   const [showFareDetails, setShowFareDetails] = useState(false); // Hiển thị dialog fare details
+  const [selectedFareType, setSelectedFareType] = useState(''); // Loại ghế đã chọn
   const [isSelectingReturnFlight, setIsSelectingReturnFlight] = useState(false); // State to track if selecting return flight
   const [origin, setOrigin] = useState('Doha'); // Default origin
   const [destination, setDestination] = useState('Al-Baha'); // Default destination
   const [totalPrice, setTotalPrice] = useState(0); // State to track total price
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
+  const handleScroll = () => {
+    if (typeof window !== 'undefined') {
+      const currentScrollY = window.scrollY;
+
+      // If the current scroll position is greater than the last scroll position, hide the Navbar
+      if (currentScrollY >= lastScrollY) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [lastScrollY]);
   // Lấy dữ liệu chuyến bay từ location.state
   useEffect(() => {
     if (location.state) {
@@ -86,6 +119,7 @@ function BookingPage() {
           seatId: selectedSeat.id, // Store the seat ID
         });
       }
+      setSelectedFareType(fare); // Lưu loại ghế
       setTotalPrice((prevPrice) => prevPrice + selectedSeat.price);
       setShowFareDetails(true);
     }
@@ -116,9 +150,11 @@ function BookingPage() {
   };
 
   return (
-    <div className="h-screen min-h-screen bg-slate-50">
-      <Navbar />
-      <main className="h-full bg-slate-200 pt-28 md:px-10">
+    <div>
+      {/* Navbar */}
+      {isVisible && <NavbarBooking />}
+      {/* Main */}
+      <div className="h-full bg-gradient-to-t from-secondary-foreground to-primary px-3 pb-8 pt-28 md:px-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium">
             {isSelectingReturnFlight
@@ -127,16 +163,15 @@ function BookingPage() {
           </h1>
           <p className="text-lg text-muted-foreground">
             from{' '}
-            <span className="text-purple-600">
+            <span className="text-secondary">
               {isSelectingReturnFlight ? destination : origin}
             </span>{' '}
             to{' '}
-            <span className="text-purple-600">
+            <span className="text-secondary">
               {isSelectingReturnFlight ? origin : destination}
             </span>
           </p>
         </div>
-
         <div className="mb-8 overflow-x-auto">
           {/* Date picker for outgoing or return flights */}
           {(isSelectingReturnFlight ? returnDates : outgoingDates)?.length >
@@ -159,7 +194,7 @@ function BookingPage() {
                     <TabsTrigger
                       key={`${date}-${index}`}
                       value={date}
-                      className="flex w-full flex-col gap-1 rounded-t-lg p-4 data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
+                      className="flex w-full flex-col items-center gap-1 text-wrap rounded-t-lg p-4 text-center data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
                     >
                       <span className="text-sm">
                         {format(new Date(date), 'EEE, d MMM')}
@@ -196,7 +231,7 @@ function BookingPage() {
                     return (
                       <Card key={flight.id} className="mb-3">
                         <CardContent className="p-6">
-                          <div className="flex items-center justify-between">
+                          <div className="flex flex-col items-center justify-between md:flex-row">
                             <div className="flex items-center space-x-8">
                               <div>
                                 <p className="text-2xl font-bold">
@@ -205,7 +240,7 @@ function BookingPage() {
                                     'HH:mm'
                                   )}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="truncate text-sm text-gray-500">
                                   {flight.origin}
                                 </p>
                               </div>
@@ -219,16 +254,18 @@ function BookingPage() {
                                     'HH:mm'
                                   )}
                                 </p>
-                                <p className="text-sm text-gray-500">
+                                <p className="truncate text-sm text-gray-500">
                                   {flight.destination}
                                 </p>
                               </div>
                             </div>
-                            <div className="flex space-x-4">
+                            <div className="mt-4 flex space-x-4 md:mt-0">
                               <div className="text-center">
                                 <p className="text-sm text-gray-500">Economy</p>
                                 <p className="text-lg font-bold">
-                                  USD {economySeat ? economySeat.price : 'N/A'}
+                                  {economySeat
+                                    ? `$${economySeat.price}`
+                                    : 'N/A'}
                                 </p>
                                 <Button
                                   variant="outline"
@@ -242,7 +279,9 @@ function BookingPage() {
                               <div className="text-center">
                                 <p className="text-sm text-gray-500">First</p>
                                 <p className="text-lg font-bold">
-                                  USD {premiumSeat ? premiumSeat.price : 'N/A'}
+                                  {premiumSeat
+                                    ? `$${premiumSeat.price}`
+                                    : 'N/A'}
                                 </p>
                                 <Button
                                   variant="outline"
@@ -263,20 +302,56 @@ function BookingPage() {
             </Tabs>
           )}
         </div>
-
         {/* Fare Details Dialog */}
         <Dialog open={showFareDetails} onOpenChange={setShowFareDetails}>
-          <DialogContent className="sm:max-w-[425px]">
+          <DialogContent
+            className={`rounded-lg shadow-lg sm:max-w-[450px] ${
+              selectedFareType === 'premium'
+                ? 'bg-gradient-to-r from-yellow-500 to-orange-300 text-white'
+                : 'bg-white'
+            }`}
+          >
             <DialogHeader>
-              <DialogTitle>Fare Details</DialogTitle>
-              <DialogDescription>
+              <div className="flex items-center justify-center gap-2">
+                <DialogTitle
+                  className={`text-lg font-bold ${
+                    selectedFareType === 'premium'
+                      ? 'text-white'
+                      : 'text-gray-800'
+                  }`}
+                >
+                  {selectedFareType === 'economy'
+                    ? 'Economy Fare Details'
+                    : 'Premium Fare Details'}
+                </DialogTitle>
+                {selectedFareType === 'premium' && (
+                  <Crown className="h-6 w-6 text-yellow-300" /> // Thêm icon bên phải
+                )}
+              </div>
+              <DialogDescription
+                className={`text-sm ${
+                  selectedFareType === 'premium'
+                    ? 'text-white'
+                    : 'text-gray-500'
+                }`}
+              >
                 Review your selected fare details before proceeding
               </DialogDescription>
             </DialogHeader>
             {(selectedOutgoingFlight || selectedReturnFlight) && (
-              <div className="space-y-4">
+              <div className="space-y-6">
+                {/* Flight Details */}
                 <div className="space-y-2">
-                  <p className="font-medium">Flight Details</p>
+                  <p
+                    className={`flex items-center gap-2 font-medium ${
+                      selectedFareType === 'premium'
+                        ? 'text-white'
+                        : 'text-gray-800'
+                    }`}
+                  >
+                    <Briefcase className="h-5 w-5" />
+                    Flight Details
+                  </p>
                   <p>
                     {isSelectingReturnFlight && selectedReturnFlight
                       ? `${selectedReturnFlight.origin} → ${selectedReturnFlight.destination}`
@@ -304,40 +379,89 @@ function BookingPage() {
                     )}
                   </p>
                 </div>
+
+                {/* Included Benefits */}
                 <div className="space-y-2">
-                  <p className="font-medium">Included Benefits</p>
-                  <ul className="list-disc pl-4 text-sm">
-                    <li>Checked baggage allowance</li>
-                    <li>Cabin baggage allowance</li>
-                    <li>Complimentary meals</li>
-                    <li>Seat selection</li>
+                  <p
+                    className={`flex items-center gap-2 font-medium ${
+                      selectedFareType === 'premium'
+                        ? 'text-white'
+                        : 'text-gray-800'
+                    }`}
+                  >
+                    <CheckCircle className="h-5 w-5 text-green-500" />
+                    Included Benefits
+                  </p>
+                  <ul
+                    className={`space-y-3 pl-4 text-sm ${
+                      selectedFareType === 'premium'
+                        ? 'text-white'
+                        : 'text-gray-600'
+                    }`}
+                  >
+                    <li className="flex items-center gap-2">
+                      <Luggage
+                        className={`h-5 w-5 ${
+                          selectedFareType === 'premium'
+                            ? 'text-white'
+                            : 'text-blue-500'
+                        }`}
+                      />
+                      Checked baggage allowance
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Briefcase
+                        className={`h-5 w-5 ${
+                          selectedFareType === 'premium'
+                            ? 'text-white'
+                            : 'text-blue-500'
+                        }`}
+                      />
+                      Cabin baggage allowance
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Utensils
+                        className={`h-5 w-5 ${
+                          selectedFareType === 'premium'
+                            ? 'text-white'
+                            : 'text-yellow-500'
+                        }`}
+                      />
+                      Complimentary gourmet meals
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Armchair
+                        className={`h-5 w-5 ${
+                          selectedFareType === 'premium'
+                            ? 'text-white'
+                            : 'text-purple-500'
+                        }`}
+                      />
+                      Wider and more comfortable seats
+                    </li>
                   </ul>
                 </div>
-                <Button className="w-full" onClick={handleConfirmBooking}>
+
+                {/* Confirm Button */}
+                <Button
+                  className={`w-full ${
+                    selectedFareType === 'premium'
+                      ? 'bg-yellow-600 text-white hover:bg-yellow-400'
+                      : 'bg-purple-600 text-white hover:bg-purple-700'
+                  }`}
+                  onClick={handleConfirmBooking}
+                >
                   Confirm Selection
                 </Button>
               </div>
             )}
           </DialogContent>
         </Dialog>
-        {/* Footer */}
-        <div className="container mx-auto mt-24 px-4 py-6">
-          <div className="flex justify-between text-sm text-gray-500">
-            <p>© 2024 Airline Booking. All rights reserved.</p>
-            <div className="space-x-4">
-              <a href="#" className="hover:text-gray-900">
-                Privacy Policy
-              </a>
-              <a href="#" className="hover:text-gray-900">
-                Terms of Service
-              </a>
-              <a href="#" className="hover:text-gray-900">
-                Contact
-              </a>
-            </div>
-          </div>
-        </div>
-      </main>
+      </div>
+      {/* Footer */}
+      <div className="-mt-10">
+        <Footer />
+      </div>
     </div>
   );
 }

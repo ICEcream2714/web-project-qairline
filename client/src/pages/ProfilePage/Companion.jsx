@@ -6,7 +6,7 @@ const Companion = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl text-primary">
+        <CardTitle className="text-2xl text-secondary">
           Add Co-traveller(s)
         </CardTitle>
       </CardHeader>

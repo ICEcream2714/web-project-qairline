@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -11,10 +13,11 @@
     @apply min-h-screen;
     overflow-x: hidden; /* Ngăn cuộn ngang nếu không cần thiết */
   }
-  
+
   body {
     @apply min-h-screen;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
   }
   :root {
     --background: 0 0% 100%;

@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.ENUM("customer", "admin"),
       allowNull: false,
     },
+    profilePicture: {
+      type: DataTypes.STRING, // Change to STRING to store the path
+      allowNull: true,
+    },
   });
 
   User.associate = function (models) {

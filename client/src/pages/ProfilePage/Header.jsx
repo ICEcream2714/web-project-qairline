@@ -1,15 +1,9 @@
 const Header = () => {
   return (
-    <div className="relative h-[300px] w-screen">
+    <div className="relative h-[350px] w-full">
       {/* Background Section */}
-      <div className="absolute inset-0 bg-[url('')] bg-gradient-to-t from-gray-200 from-gray-500 bg-cover bg-center"></div>
-      <div className="absolute inset-0 bg-black/50"></div> {/* Overlay */}
-      {/* Text Content */}
-      <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
-        <h1 className="text-3xl font-bold md:text-4xl lg:text-5xl">
-          Manage your profile
-        </h1>
-      </div>
+      <div className="absolute inset-0 w-screen bg-[url('https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg?cs=srgb&dl=pexels-pixabay-206359.jpg&fm=jpg')]"></div>
+      <div className="absolute inset-0 bg-black/50"></div>
     </div>
   );
 };

@@ -8,6 +8,8 @@ import {
 } from '@/components/ui/popover';
 import UserProfile from '@/layouts/Navbar/UserProfile'; // Import UserProfile từ ShadCN
 import { CircleUserRound } from 'lucide-react';
+import axios from 'axios'; // Import axios for API calls
+import logo from '../../assets/image.png';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -16,12 +18,14 @@ function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(null); // Trạng thái để mở dropdown
   const [isScrolled, setIsScrolled] = useState(false); // Trạng thái để thay đổi nền khi cuộn
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({ name: '', email: '' }); // State to store user info
 
   // Kiểm tra nếu người dùng đã đăng nhập
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true); // Người dùng đã đăng nhập
+      fetchUserInfo(token); // Fetch user info
     } else {
       setIsLoggedIn(false); // Người dùng chưa đăng nhập
     }
@@ -47,8 +51,9 @@ function Navbar() {
     navigate('/login');
   };
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('token'); // Remove the token from localStorage
     setIsLoggedIn(false);
+    setUserInfo({ name: '', email: '' }); // Clear user info
     navigate('/');
   };
 
@@ -56,19 +61,48 @@ function Navbar() {
     navigate('/');
   };
 
+  // Fetch user info from the API
+  const fetchUserInfo = async (token) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:5000/api/customer/my-info',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const { first_name, last_name, User } = response.data;
+      setUserInfo({ name: `${first_name} ${last_name}`, email: User.email });
+    } catch (error) {
+      console.error('Error fetching user info:', error);
+    }
+  };
+
   return (
     <nav
       className={`fixed left-0 top-0 z-30 w-full p-4 ${
-        isScrolled ? 'bg-white shadow-md' : 'bg-transparent'
+        isScrolled || isOpen ? 'bg-white shadow-md' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <button
-          className={`text-lg font-bold ${isScrolled ? 'text-gray-800' : 'text-white'}`}
+          className={`flex items-center space-x-2 text-lg font-extrabold ${isScrolled || isOpen ? 'text-gray-800' : 'text-white'} transition-colors duration-300`}
           onClick={handleLogoClick}
         >
-          QAirlines
+          {/* Logo bên cạnh */}
+
+          <img
+            src={logo} // Path to your image
+            alt="Logo"
+            className="h-10 w-12" // Adjust size and ensure it fits inside the circle
+          />
+
+          {/* Tên hãng */}
+          <span className="font-serif text-2xl tracking-wider">
+            Q<span className={isScrolled? "text-secondary" : "text-white"}>Airlines</span>
+          </span>
         </button>
 
         {/* Desktop Menu */}
@@ -79,7 +113,7 @@ function Navbar() {
               onClick={() => toggleDropdown(1)}
               className={`${
                 isScrolled ? 'text-gray-800' : 'text-white'
-              } font-semibold hover:text-purple-600`}
+              } font-semibold hover:text-secondary-foreground`}
             >
               Book
             </Button>
@@ -108,100 +142,38 @@ function Navbar() {
           </div>
           <Button
             variant="link"
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-secondary-foreground`}
           >
             Discover
           </Button>
-          <div className="">
-            <Button
-              variant="link"
-              onClick={() => toggleDropdown(2)}
-              className={`${
-                isScrolled ? 'text-gray-800' : 'text-white'
-              } font-semibold hover:text-purple-600`}
-            >
-              Experience
-            </Button>
-            {dropdownOpen === 2 && (
-              <div className="absolute mt-2 w-48 rounded-md bg-white py-2 shadow-md">
-                <a
-                  href="/"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                >
-                  Onboard
-                </a>
-                <a
-                  href="/"
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                >
-                  Lounge
-                </a>
-              </div>
-            )}
-          </div>
           <Button
             variant="link"
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-secondary-foreground`}
           >
             Help
           </Button>
-          <Button
-            variant="link"
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
-          >
-            Privilege Club
-          </Button>
+
           <div className="relative m-0 p-0">
             {!isLoggedIn ? (
               <Button
                 variant="link"
                 onClick={handleLoginClick}
-                className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+                className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-secondary-foreground`}
               >
                 Login / Sign Up
               </Button>
             ) : (
               <UserProfile
-                name="Hoang Nguyen"
-                id="681897319"
-                tier="Burgundy"
-                avios={0}
-                qpoints={0}
+                name={userInfo.name}
+                id={userInfo.email}
+                tier="New Member"
+                avios={5}
+                qpoints={10}
                 isScrolled={isScrolled}
                 onLogout={handleLogout}
+                isOpen={isOpen}
+                isBooking={false}
               />
-              // <Popover>
-              //   <PopoverTrigger>
-              //     <Button
-              //       variant="link"
-              //       className={`${isScrolled ? 'text-gray-800' : 'text-white'} p-0 font-semibold hover:text-purple-600 [&_svg]:size-auto`}
-              //     >
-              //       <CircleUserRound size={24} />
-              //     </Button>
-              //   </PopoverTrigger>
-              //   <PopoverContent className="border-0 bg-white">
-              //     <UserProfile
-              //       name="Hoang Nguyen"
-              //       id="681897319"
-              //       tier="Burgundy"
-              //       avios={0}
-              //       qpoints={0}
-              //       onLogout={handleLogout}
-              //     />
-              //     <div className="border-b-2">
-              //       <div>Hoang Nguyen</div>
-              //       <div>681897319 | Burgundy</div>
-              //     </div>
-              //     <div>2</div>
-              //     <div className="flex flex-row">
-              //       <Button variant="link">Flight</Button>
-              //       <Button variant="link">Profile</Button>
-              //       <Button variant="link" onClick={handleLogout}>
-              //         Logout
-              //       </Button>
-              //     </div>
-              //   </PopoverContent>
-              // </Popover>
             )}
           </div>
         </div>
@@ -211,7 +183,7 @@ function Navbar() {
           <Button
             variant="link" // Sử dụng Button với variant "link"
             onClick={() => setIsOpen(!isOpen)}
-            className={`${isScrolled ? 'text-gray-800' : 'text-white'} focus:outline-none`}
+            className={`${isScrolled || isOpen ? 'text-gray-800' : 'text-white'} focus:outline-none`}
           >
             <svg
               className="h-6 w-6"
@@ -257,33 +229,35 @@ function Navbar() {
           <Button variant="link" className="font-semibold text-gray-800">
             Discover
           </Button>
-          <Button
-            variant="link"
-            onClick={() => toggleDropdown(2)}
-            className="font-semibold text-gray-800"
-          >
-            Experience
-          </Button>
-          {dropdownOpen === 2 && (
-            <div className="ml-4 flex flex-col space-y-2">
-              <a href="/" className="text-gray-700">
-                Onboard
-              </a>
-              <a href="/" className="text-gray-700">
-                Lounge
-              </a>
-            </div>
-          )}
           <Button variant="link" className="font-semibold text-gray-800">
             Help
           </Button>
-          <Button variant="link" className="font-semibold text-gray-800">
-            Privilege Club
-          </Button>
           {}
-          <Button variant="link" className="font-semibold text-gray-800">
-            Login / Sign Up
-          </Button>
+          <div className="relative m-0 pl-4">
+            {!isLoggedIn ? (
+              <Button
+                variant="link"
+                onClick={handleLoginClick}
+                className={`${isScrolled ? 'text-gray-800' : 'text-white'} font-semibold hover:text-purple-600`}
+              >
+                Login / Sign Up
+              </Button>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <UserProfile
+                  name={userInfo.name}
+                  id={userInfo.email}
+                  tier="New Member"
+                  avios={5}
+                  qpoints={10}
+                  isScrolled={isScrolled}
+                  onLogout={handleLogout}
+                  isOpen = {isOpen}
+                  isBooking={false}
+                />
+              </div>
+            )}
+          </div>
         </div>
       )}
     </nav>

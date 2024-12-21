@@ -4,6 +4,7 @@ import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
+import DatePicker from '@/components/DatePicker';
 
 const ManageBooking = () => {
   const [activeTab, setActiveTab] = useState('manage_booking');
@@ -35,15 +36,15 @@ const ManageBooking = () => {
   };
 
   return (
-    <Card className="rounded-lg bg-white p-6 shadow-md">
+    <Card className="rounded-lg bg-white p-0 shadow-md">
       <CardHeader className="border-b">
         <div className="flex">
           <Button
             variant="ghost"
             onClick={() => setActiveTab('manage_booking')}
-            className={`flex-1 py-2 text-center text-lg font-medium ${
+            className={`flex-1 py-1 text-center text-lg font-medium ${
               activeTab === 'manage_booking'
-                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                ? 'rounded-none border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
@@ -54,7 +55,7 @@ const ManageBooking = () => {
             onClick={() => setActiveTab('checkin')}
             className={`flex-1 py-2 text-center text-lg font-medium ${
               activeTab === 'checkin'
-                ? 'border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
+                ? 'rounded-none border-b-2 border-purple-600 text-purple-600 hover:bg-transparent'
                 : 'text-gray-600 hover:bg-transparent hover:text-purple-500'
             }`}
           >
@@ -64,7 +65,7 @@ const ManageBooking = () => {
       </CardHeader>
 
       <CardContent>
-        <form className="flex flex-col gap-4 md:flex-row md:gap-6">
+        <form className="flex flex-col gap-4 pt-4 md:flex-row md:gap-6">
           {/* Booking Reference */}
           <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="bookingCode">Booking Reference</Label>
@@ -92,12 +93,10 @@ const ManageBooking = () => {
           {/* Date of Birth */}
           <div className="w-full flex-1 md:w-auto">
             <Label htmlFor="birthDate">Date of Birth</Label>
-            <Input
+            <DatePicker
               id="birthDate"
-              type="date"
-              value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
-              className="w-full"
+              date={birthDate}
+              setDate={setBirthDate}
             />
           </div>
 

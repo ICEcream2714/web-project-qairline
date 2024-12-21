@@ -8,7 +8,7 @@ const Preferences = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-2xl text-primary">
+        <CardTitle className="text-2xl text-secondary">
           Your travel choices
         </CardTitle>
         <p className="my-2 text-sm text-muted-foreground">
