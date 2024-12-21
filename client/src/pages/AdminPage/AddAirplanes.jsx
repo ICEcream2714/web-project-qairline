@@ -234,8 +234,8 @@ const AirplanePage = () => {
             <div className="text-right">
               <Button
                 onClick={handleAddAirplane}
-                className={`bg-blue-600 text-white hover:bg-blue-700 ${
-                  !newAirplane.model || !newAirplane.seat_count? 'opacity-50 cursor-not-allowed' : ''
+                className={`bg-blue-400 text-white hover:bg-blue-500 ${
+                  !newAirplane.model || !newAirplane.seat_count? 'opacity-50 cursor-not-allowed bg-gray-400' : ''
                 }`}
                 disabled={!newAirplane.model || !newAirplane.seat_count}
               >
@@ -308,14 +308,14 @@ const AirplanePage = () => {
                         <div className="flex justify-center space-x-2">
                           <Button
                             onClick={() => handleEditAirplane(plane)}
-                            className="rounded-md bg-yellow-500 p-2 hover:bg-yellow-600"
+                            className="rounded-md bg-green-400 p-2 hover:bg-green-500"
                             size="icon"
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
                           <Button
                             onClick={() => handleDeleteAirplane(plane.id)}
-                            className="rounded-md bg-red-500 p-2 hover:bg-red-600"
+                            className="rounded-md bg-red-400 p-2 hover:bg-red-500"
                             size="icon"
                           >
                             <Trash className="h-4 w-4" />

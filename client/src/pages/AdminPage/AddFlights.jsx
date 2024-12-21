@@ -378,13 +378,13 @@ const FlightsPage = () => {
             <div className="text-right">
               <Button
                 onClick={handleAddFlight}
-                className={`bg-blue-600 text-white hover:bg-blue-700 ${
+                className={`bg-blue-400 text-white hover:bg-blue-500 ${
                   !newFlight.arrival_time ||
                   !newFlight.departure_time ||
                   !newFlight.destination ||
                   !newFlight.flight_number ||
                   !newFlight.origin ||
-                  !newFlight.aircraft_type? 'opacity-50 cursor-not-allowed' : ''
+                  !newFlight.aircraft_type? 'opacity-50 cursor-not-allowed bg-gray-400' : ''
                 }`}
                 disabled={!newFlight.arrival_time ||
                   !newFlight.departure_time ||
@@ -530,14 +530,14 @@ const FlightsPage = () => {
                     <TableCell className="flex space-x-2">
                       <Button
                         onClick={() => handleEditFlight(flight)}
-                        className="rounded-md bg-yellow-500 p-2 hover:bg-yellow-600"
+                        className="rounded-md bg-green-400 p-2 hover:bg-green-500"
                         size="icon"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
                       <Button
                         onClick={() => handleDeleteFlight(flight.id)}
-                        className="rounded-md bg-red-500 p-2 hover:bg-red-600"
+                        className="rounded-md bg-red-400 p-2 hover:bg-red-500"
                         size="icon"
                       >
                         <Trash className="h-4 w-4" />
