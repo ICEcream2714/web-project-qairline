@@ -10,6 +10,7 @@ import AlertDialog from '@/layouts/Notification/alert-dialog';
 import Booking from '@/pages/HomePage/Booking';
 import StartPlanning from '../HomePage/PlanningCard';
 import Navbar from '@/layouts/Navbar/Navbar';
+import Footer from '@/layouts/Footer';
 
 export default function PaymentPage() {
   const navigate = useNavigate();
@@ -136,12 +137,12 @@ export default function PaymentPage() {
   };
 
   return (
-    <div className="-mt-11 h-screen min-h-screen">
+    <div className="-mt-11">
       {/* Navbar */}
       {isVisible && <Navbar />}
       <Booking />
       {/* Main */}
-      <main className="-mt-20 sm:px-3 md:h-full md:px-10">
+      <div className="-mt-20 sm:px-3 md:h-full md:px-10">
         <div className="container relative z-20 mx-auto -mt-24 px-3 md:px-28 lg:px-16">
           <div className="grid grid-cols-3 gap-8">
             <div className="col-span-3 lg:col-span-2">
@@ -351,24 +352,10 @@ export default function PaymentPage() {
           </div>
         </div>
         <StartPlanning />
-      </main>
-      {/* Footer */}
-      <footer className="mt-10 w-full bg-gradient-to-b from-white to-slate-200 px-3 pb-5 pt-3 md:px-36">
-        <div className="flex justify-between text-sm text-black">
-          <p>© 2024 Airline Booking. All rights reserved.</p>
-          <div className="space-x-4">
-            <a href="#" className="hover:text-gray-700">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-gray-700">
-              Terms of Service
-            </a>
-            <a href="#" className="hover:text-gray-700">
-              Contact
-            </a>
-          </div>
-        </div>
-      </footer>
+      </div>
+      <div className='-mt-10'>
+        <Footer/>
+      </div>
     </div>
   );
 }

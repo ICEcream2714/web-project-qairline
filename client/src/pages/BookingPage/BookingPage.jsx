@@ -127,11 +127,11 @@ function BookingPage() {
   };
 
   return (
-    <div className="h-screen min-h-screen">
+    <div>
       {/* Navbar */}
       <NavbarBooking />
       {/* Main */}
-      <main className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pb-8 pt-28 md:px-10">
+      <div className="h-full bg-gradient-to-t from-slate-700 to-slate-300 px-3 pb-8 pt-28 md:px-10">
         <div className="mb-8">
           <h1 className="text-2xl font-medium">
             {isSelectingReturnFlight
@@ -171,7 +171,7 @@ function BookingPage() {
                     <TabsTrigger
                       key={`${date}-${index}`}
                       value={date}
-                      className="flex w-full flex-col items-center gap-1 rounded-t-lg p-4 text-center data-[state=active]:border-b-2 data-[state=active]:border-purple-600 sm:w-auto"
+                      className="flex w-full flex-col text-wrap items-center gap-1 rounded-t-lg p-4 text-center data-[state=active]:border-b-2 data-[state=active]:border-purple-600"
                     >
                       <span className="text-sm">
                         {format(new Date(date), 'EEE, d MMM')}
@@ -434,9 +434,11 @@ function BookingPage() {
             )}
           </DialogContent>
         </Dialog>
-      </main>
+      </div>
       {/* Footer */}
+      <div className='-mt-10'>
       <Footer />
+      </div>
     </div>
   );
 }
